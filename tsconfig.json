@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "lib": ["esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
+    "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "esnext",
+    "verbatimModuleSyntax": true
+  },
+  "exclude": [
+    "**/node_modules",
+    "**/lib",
+    "**/.eslintrc.js",
+    "**/.prettierrc.js",
+    "**/jest.config.js",
+    "**/babel.config.js",
+    "**/metro.config.js",
+    "**/tsconfig.json"
+  ],
+  "include": ["src/**/*", "nitrogen/**/*.json"]
+}
