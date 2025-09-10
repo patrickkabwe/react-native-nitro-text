@@ -1,7 +1,7 @@
 {
   "name": "react-native-nitro-text",
   "version": "0.1.0",
-  "description": "react-native-nitro-text is a drop in replacement of the react native text component",
+  "description": "Drop‑in, high‑performance Text for React Native (Fabric). Native iOS rendering with smooth selection.",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
