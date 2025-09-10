@@ -1,0 +1,21 @@
+{
+  "uiViewClassName": "NitroText",
+  "supportsRawText": false,
+  "bubblingEventTypes": {},
+  "directEventTypes": {},
+  "validAttributes": {
+    "fragments": true,
+    "selectable": true,
+    "onSelectableTextMeasured": true,
+    "fontSize": true,
+    "fontWeight": true,
+    "fontColor": true,
+    "fontStyle": true,
+    "lineHeight": true,
+    "text": true,
+    "numberOfLines": true,
+    "textAlign": true,
+    "textTransform": true,
+    "hybridRef": true
+  }
+}

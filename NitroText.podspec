@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
     # Implementation (Swift)
     "ios/**/*.{swift}",
     # Autolinking/Registration (Objective-C++)
-    "ios/**/*.{m,mm}",
+    "ios/**/*.{m,mm,hpp}",
     # Implementation (C++ objects)
     "cpp/**/*.{hpp,cpp}",
   ]
