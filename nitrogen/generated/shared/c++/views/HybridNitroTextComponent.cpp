@@ -75,6 +75,16 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.onSelectableTextMeasured: ") + exc.what());
       }
     }()),
+    text([&]() -> CachedProp<std::optional<std::string>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("text", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.text;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::string>>::fromRawValue(*runtime, value, sourceProps.text);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.text: ") + exc.what());
+      }
+    }()),
     fontSize([&]() -> CachedProp<std::optional<double>> {
       try {
         const react::RawValue* rawValue = rawProps.at("fontSize", nullptr, nullptr);
@@ -125,14 +135,14 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.lineHeight: ") + exc.what());
       }
     }()),
-    text([&]() -> CachedProp<std::optional<std::string>> {
+    letterSpacing([&]() -> CachedProp<std::optional<double>> {
       try {
-        const react::RawValue* rawValue = rawProps.at("text", nullptr, nullptr);
-        if (rawValue == nullptr) return sourceProps.text;
+        const react::RawValue* rawValue = rawProps.at("letterSpacing", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.letterSpacing;
         const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
-        return CachedProp<std::optional<std::string>>::fromRawValue(*runtime, value, sourceProps.text);
+        return CachedProp<std::optional<double>>::fromRawValue(*runtime, value, sourceProps.letterSpacing);
       } catch (const std::exception& exc) {
-        throw std::runtime_error(std::string("NitroText.text: ") + exc.what());
+        throw std::runtime_error(std::string("NitroText.letterSpacing: ") + exc.what());
       }
     }()),
     numberOfLines([&]() -> CachedProp<std::optional<double>> {
@@ -183,12 +193,13 @@ namespace margelo::nitro::nitrotext::views {
     allowFontScaling(other.allowFontScaling),
     ellipsizeMode(other.ellipsizeMode),
     onSelectableTextMeasured(other.onSelectableTextMeasured),
+    text(other.text),
     fontSize(other.fontSize),
     fontWeight(other.fontWeight),
     fontColor(other.fontColor),
     fontStyle(other.fontStyle),
     lineHeight(other.lineHeight),
-    text(other.text),
+    letterSpacing(other.letterSpacing),
     numberOfLines(other.numberOfLines),
     textAlign(other.textAlign),
     textTransform(other.textTransform),
@@ -201,12 +212,13 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("allowFontScaling"): return true;
       case hashString("ellipsizeMode"): return true;
       case hashString("onSelectableTextMeasured"): return true;
+      case hashString("text"): return true;
       case hashString("fontSize"): return true;
       case hashString("fontWeight"): return true;
       case hashString("fontColor"): return true;
       case hashString("fontStyle"): return true;
       case hashString("lineHeight"): return true;
-      case hashString("text"): return true;
+      case hashString("letterSpacing"): return true;
       case hashString("numberOfLines"): return true;
       case hashString("textAlign"): return true;
       case hashString("textTransform"): return true;

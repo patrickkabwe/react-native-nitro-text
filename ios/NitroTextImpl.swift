@@ -53,9 +53,6 @@ final class NitroTextImpl {
     func effectiveLineBreakMode(forLines n: Int) -> NSLineBreakMode {
         guard n > 0 else { return .byWordWrapping }
         if n == 1 { return currentEllipsize }
-        // Multi-line behavior: allow wrapping, then apply final-line behavior.
-        // - tail: use truncatingTail to append ellipsis on the last visible line
-        // - clip: keep wrapping and clip after the Nth line (word wrapping)
         switch currentEllipsize {
         case .byClipping:
             return .byClipping
@@ -76,7 +73,6 @@ final class NitroTextImpl {
         } else {
             nitroTextView?.attributedText = attributedText
         }
-        nitroTextView?.setNeedsLayout()
     }
     
     func setPlainText(_ value: String?) {
@@ -122,9 +118,4 @@ final class NitroTextImpl {
 
         setText(result)
     }
-
-    // Attribute helpers moved to NitroTextImpl+Attributes.swift
 }
-
-
-// Fragment merging and font helpers moved to NitroTextImpl+Fragment.swift

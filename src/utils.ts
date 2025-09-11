@@ -19,6 +19,7 @@ export function styleToFragment(style: StyleProp<TextStyle> | undefined): Partia
         fontWeight: normalizeWeight(s.fontWeight),
         fontStyle: s.fontStyle,
         lineHeight: s.lineHeight,
+        letterSpacing: s.letterSpacing as number | undefined,
         textAlign: s.textAlign as any,
         textTransform: s.textTransform as any,
     };

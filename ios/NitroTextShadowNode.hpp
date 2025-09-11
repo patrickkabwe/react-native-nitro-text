@@ -176,6 +176,16 @@ namespace margelo::nitro::nitrotext::views
                     a.lineHeight = props.lineHeight.value.value();
                 }
 
+                // letterSpacing
+                if (fragOpt.has_value() && fragOpt->letterSpacing.has_value())
+                {
+                    a.letterSpacing = fragOpt->letterSpacing.value();
+                }
+                else if (props.letterSpacing.value.has_value())
+                {
+                    a.letterSpacing = props.letterSpacing.value.value();
+                }
+
                 // textAlign
                 auto applyAlign = [&](margelo::nitro::nitrotext::TextAlign al)
                 {
@@ -212,7 +222,7 @@ namespace margelo::nitro::nitrotext::views
                     applyAlign(props.textAlign.value.value());
                 }
 
-                // Effective textTransform
+                // textTransform
                 auto applyTransform = [&](margelo::nitro::nitrotext::TextTransform t)
                 {
                     using RNTransform = facebook::react::TextTransform;

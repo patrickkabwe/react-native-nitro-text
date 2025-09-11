@@ -96,6 +96,11 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setOnSelectableTextMeasured(newViewProps.onSelectableTextMeasured.value);
     newViewProps.onSelectableTextMeasured.isDirty = false;
   }
+  // text: optional
+  if (newViewProps.text.isDirty) {
+    swiftPart.setText(newViewProps.text.value);
+    newViewProps.text.isDirty = false;
+  }
   // fontSize: optional
   if (newViewProps.fontSize.isDirty) {
     swiftPart.setFontSize(newViewProps.fontSize.value);
@@ -121,10 +126,10 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setLineHeight(newViewProps.lineHeight.value);
     newViewProps.lineHeight.isDirty = false;
   }
-  // text: optional
-  if (newViewProps.text.isDirty) {
-    swiftPart.setText(newViewProps.text.value);
-    newViewProps.text.isDirty = false;
+  // letterSpacing: optional
+  if (newViewProps.letterSpacing.isDirty) {
+    swiftPart.setLetterSpacing(newViewProps.letterSpacing.value);
+    newViewProps.letterSpacing.isDirty = false;
   }
   // numberOfLines: optional
   if (newViewProps.numberOfLines.isDirty) {

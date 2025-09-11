@@ -36,6 +36,10 @@ extension NitroTextImpl {
         let color = resolveColor(for: fragment, defaultColor: defaultColor)
         attrs[.foregroundColor] = color
 
+        if let spacing = fragment.letterSpacing {
+            attrs[.kern] = spacing
+        }
+
         return attrs
     }
 

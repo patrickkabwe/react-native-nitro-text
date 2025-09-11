@@ -18,8 +18,14 @@ public extension Fragment {
   /**
    * Create a new instance of `Fragment`.
    */
-  init(fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fontStyle: FontStyle?, lineHeight: Double?, text: String?, numberOfLines: Double?, textAlign: TextAlign?, textTransform: TextTransform?) {
-    self.init({ () -> bridge.std__optional_double_ in
+  init(text: String?, fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fontStyle: FontStyle?, lineHeight: Double?, letterSpacing: Double?, numberOfLines: Double?, textAlign: TextAlign?, textTransform: TextTransform?) {
+    self.init({ () -> bridge.std__optional_std__string_ in
+      if let __unwrappedValue = text {
+        return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_double_ in
       if let __unwrappedValue = fontSize {
         return bridge.create_std__optional_double_(__unwrappedValue)
       } else {
@@ -49,9 +55,9 @@ public extension Fragment {
       } else {
         return .init()
       }
-    }(), { () -> bridge.std__optional_std__string_ in
-      if let __unwrappedValue = text {
-        return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+    }(), { () -> bridge.std__optional_double_ in
+      if let __unwrappedValue = letterSpacing {
+        return bridge.create_std__optional_double_(__unwrappedValue)
       } else {
         return .init()
       }
@@ -76,6 +82,30 @@ public extension Fragment {
     }())
   }
 
+  var text: String? {
+    @inline(__always)
+    get {
+      return { () -> String? in
+        if bridge.has_value_std__optional_std__string_(self.__text) {
+          let __unwrapped = bridge.get_std__optional_std__string_(self.__text)
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__text = { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = newValue {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+        } else {
+          return .init()
+        }
+      }()
+    }
+  }
+  
   var fontSize: Double? {
     @inline(__always)
     get {
@@ -168,23 +198,16 @@ public extension Fragment {
     }
   }
   
-  var text: String? {
+  var letterSpacing: Double? {
     @inline(__always)
     get {
-      return { () -> String? in
-        if bridge.has_value_std__optional_std__string_(self.__text) {
-          let __unwrapped = bridge.get_std__optional_std__string_(self.__text)
-          return String(__unwrapped)
-        } else {
-          return nil
-        }
-      }()
+      return self.__letterSpacing.value
     }
     @inline(__always)
     set {
-      self.__text = { () -> bridge.std__optional_std__string_ in
+      self.__letterSpacing = { () -> bridge.std__optional_double_ in
         if let __unwrappedValue = newValue {
-          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+          return bridge.create_std__optional_double_(__unwrappedValue)
         } else {
           return .init()
         }

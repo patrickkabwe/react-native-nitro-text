@@ -16,12 +16,13 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var allowFontScaling: Bool? { get set }
   var ellipsizeMode: EllipsizeMode? { get set }
   var onSelectableTextMeasured: ((_ height: Double) -> Void)? { get set }
+  var text: String? { get set }
   var fontSize: Double? { get set }
   var fontWeight: FontWeight? { get set }
   var fontColor: String? { get set }
   var fontStyle: FontStyle? { get set }
   var lineHeight: Double? { get set }
-  var text: String? { get set }
+  var letterSpacing: Double? { get set }
   var numberOfLines: Double? { get set }
   var textAlign: TextAlign? { get set }
   var textTransform: TextTransform? { get set }
