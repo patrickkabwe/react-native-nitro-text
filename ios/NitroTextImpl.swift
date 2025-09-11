@@ -12,8 +12,7 @@ final class NitroTextImpl {
     var currentTextAlignment: NSTextAlignment = .natural
     var currentTransform: TextTransform = .none
     var currentEllipsize: NSLineBreakMode = .byTruncatingTail
-    // Small font cache to avoid repeatedly recreating identical UIFonts
-    var fontCache: [NitroTextImpl.FontKey: UIFont] = [:]
+    var fontCache: [FontKey: UIFont] = [:]
     
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
@@ -45,16 +44,10 @@ final class NitroTextImpl {
     func effectiveLineBreakMode(forLines n: Int) -> NSLineBreakMode {
         guard n > 0 else { return .byWordWrapping }
         if n == 1 { return currentEllipsize }
-        // Multi-line behavior: allow wrapping, then apply final-line behavior.
-        // - tail: use truncatingTail to append ellipsis on the last visible line
-        // - clip: keep wrapping and clip after the Nth line (word wrapping)
+        // For multi-line, iOS only reliably supports tail truncation or clipping.
         switch currentEllipsize {
         case .byClipping:
-            return .byClipping
-        case .byTruncatingHead:
-            return .byTruncatingHead
-        case .byTruncatingMiddle:
-            return .byTruncatingMiddle
+            return .byWordWrapping
         default:
             return .byTruncatingTail
         }
