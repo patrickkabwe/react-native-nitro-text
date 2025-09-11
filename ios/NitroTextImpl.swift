@@ -8,10 +8,10 @@
 import UIKit
 
 final class NitroTextImpl {
-    private weak var nitroTextView : NitroTextView?
-    private var currentTextAlignment: NSTextAlignment = .natural
-    private var currentTransform: TextTransform = .none
-    private var currentEllipsize: NSLineBreakMode = .byTruncatingTail
+    weak var nitroTextView : NitroTextView?
+    var currentTextAlignment: NSTextAlignment = .natural
+    var currentTransform: TextTransform = .none
+    var currentEllipsize: NSLineBreakMode = .byTruncatingTail
     
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
@@ -40,7 +40,7 @@ final class NitroTextImpl {
         nitroTextView?.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
     }
 
-    private func effectiveLineBreakMode(forLines n: Int) -> NSLineBreakMode {
+    func effectiveLineBreakMode(forLines n: Int) -> NSLineBreakMode {
         guard n > 0 else { return .byWordWrapping }
         if n == 1 { return currentEllipsize }
         // Multi-line behavior: allow wrapping, then apply final-line behavior.
@@ -113,81 +113,7 @@ final class NitroTextImpl {
         setText(result)
     }
 
-    // MARK: - Attribute helpers
-
-    private func makeAttributes(
-        for fragment: Fragment,
-        defaultColor: UIColor
-    ) -> [NSAttributedString.Key: Any] {
-        var attrs: [NSAttributedString.Key: Any] = [:]
-
-        let font = makeFont(for: fragment, defaultPointSize: nitroTextView?.font?.pointSize)
-        attrs[.font] = font.value
-        if font.isItalic { attrs[.obliqueness] = 0.2 }
-
-        let para = makeParagraphStyle(for: fragment)
-        attrs[.paragraphStyle] = para
-
-        let color = resolveColor(for: fragment, defaultColor: defaultColor)
-        attrs[.foregroundColor] = color
-
-        return attrs
-    }
-
-    // makeFont moved to NitroTextImpl+Font.swift
-
-    private func makeParagraphStyle(for fragment: Fragment) -> NSMutableParagraphStyle {
-        let para = NSMutableParagraphStyle()
-
-        if let lineHeight = fragment.lineHeight, lineHeight > 0 {
-            para.minimumLineHeight = lineHeight
-            para.maximumLineHeight = lineHeight
-        }
-
-        if let align = fragment.textAlign {
-            switch align {
-            case .center: para.alignment = .center
-            case .right: para.alignment = .right
-            case .justify: para.alignment = .justified
-            case .left: para.alignment = .left
-            case .auto: para.alignment = .natural
-            }
-        } else {
-            para.alignment = currentTextAlignment
-        }
-
-        guard let n = nitroTextView?.textContainer.maximumNumberOfLines else { return para }
-        para.lineBreakMode = effectiveLineBreakMode(forLines: n)
-        return para
-    }
-
-    private func resolveColor(for fragment: Fragment, defaultColor: UIColor) -> UIColor {
-        if let value = fragment.fontColor, let parsed = ColorParser.parse(value) {
-            return parsed
-        }
-        return defaultColor
-    }
-
-    private func transform(_ text: String, with fragment: Fragment) -> String {
-        let effective: TextTransform = {
-            if let ft = fragment.textTransform {
-                switch ft {
-                case .uppercase: return .uppercase
-                case .lowercase: return .lowercase
-                case .capitalize: return .capitalize
-                case .none: return .none
-                }
-            }
-            return currentTransform
-        }()
-
-        switch effective {
-        case .uppercase: return text.uppercased()
-        case .lowercase: return text.lowercased()
-        case .capitalize: return text.capitalized
-        case .none: return text
-        }
-    }
+    // Attribute helpers moved to NitroTextImpl+Attributes.swift
 }
 
 
