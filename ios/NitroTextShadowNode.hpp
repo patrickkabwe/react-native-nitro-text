@@ -67,157 +67,133 @@ namespace margelo::nitro::nitrotext::views
                 return layoutConstraints.clamp({0.f, 0.f});
             }
 
-            // 2) Build AttributedString from props (simplified: plain text or joined fragments)
+            // 2) Build AttributedString with per-fragment attributes to mirror rendering
             const auto &props = this->getConcreteProps();
 
-            std::string textToMeasure;
-            if (props.text.value.has_value())
-            {
-                textToMeasure = props.text.value.value();
-            }
-            else if (props.fragments.value.has_value())
-            {
-                const auto &frags = props.fragments.value.value();
-                textToMeasure.reserve(64);
-                for (const auto &f : frags)
-                {
-                    if (f.text.has_value())
-                        textToMeasure += f.text.value();
-                }
-            }
+            auto makeTextAttributes = [&](const std::optional<margelo::nitro::nitrotext::Fragment> &fragOpt) {
+                react::TextAttributes a = react::TextAttributes::defaultTextAttributes();
+                
+                // allowFontScaling
+                bool allowFontScaling = props.allowFontScaling.value.value_or(true);
+                a.allowFontScaling = allowFontScaling;
+                a.fontSizeMultiplier = allowFontScaling ? layoutContext.fontSizeMultiplier : 1.0f;
+                a.dynamicTypeRamp = facebook::react::DynamicTypeRamp::Body;
 
-            react::TextAttributes textAttributes =
-                react::TextAttributes::defaultTextAttributes();
-            // Apply font scaling context and allowFontScaling prop (defaults to true)
-            textAttributes.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
-            if (props.allowFontScaling.value.has_value())
-            {
-                textAttributes.allowFontScaling = props.allowFontScaling.value.value();
-            }
-            if (props.fontSize.value.has_value())
-            {
-                textAttributes.fontSize = props.fontSize.value.value();
-            }
-
-            if (props.fontStyle.value.has_value())
-            {
-                using RNFontStyle = facebook::react::FontStyle;
-                using NitroFontStyle = margelo::nitro::nitrotext::FontStyle;
-                switch (props.fontStyle.value.value())
-                {
-                case NitroFontStyle::NORMAL:
-                    textAttributes.fontStyle = RNFontStyle::Normal;
-                    break;
-                case NitroFontStyle::ITALIC:
-                    textAttributes.fontStyle = RNFontStyle::Italic;
-                    break;
-                case NitroFontStyle::OBLIQUE:
-                    textAttributes.fontStyle = RNFontStyle::Oblique;
-                    break;
+                // fontSize
+                if (fragOpt.has_value() && fragOpt->fontSize.has_value()) {
+                    a.fontSize = fragOpt->fontSize.value();
+                } else if (props.fontSize.value.has_value()) {
+                    a.fontSize = props.fontSize.value.value();
                 }
-            }
 
-            if (props.fontWeight.value.has_value())
-            {
-                using RNFontWeight = facebook::react::FontWeight;
-                using NitroFontWeight = margelo::nitro::nitrotext::FontWeight;
-                switch (props.fontWeight.value.value())
-                {
-                case NitroFontWeight::ULTRALIGHT:
-                    textAttributes.fontWeight = RNFontWeight::UltraLight;
-                    break;
-                case NitroFontWeight::THIN:
-                    textAttributes.fontWeight = RNFontWeight::Thin;
-                    break;
-                case NitroFontWeight::LIGHT:
-                    textAttributes.fontWeight = RNFontWeight::Light;
-                    break;
-                case NitroFontWeight::REGULAR:
-                    textAttributes.fontWeight = RNFontWeight::Regular;
-                    break;
-                case NitroFontWeight::MEDIUM:
-                    textAttributes.fontWeight = RNFontWeight::Medium;
-                    break;
-                case NitroFontWeight::SEMIBOLD:
-                    textAttributes.fontWeight = RNFontWeight::Semibold;
-                    break;
-                case NitroFontWeight::BOLD:
-                    textAttributes.fontWeight = RNFontWeight::Bold;
-                    break;
-                case NitroFontWeight::HEAVY:
-                    textAttributes.fontWeight = RNFontWeight::Heavy;
-                    break;
-                case NitroFontWeight::BLACK:
-                    textAttributes.fontWeight = RNFontWeight::Black;
-                    break;
-                default:
-                    textAttributes.fontWeight = RNFontWeight::Regular;
+                // fontStyle
+                auto applyFontStyle = [&](margelo::nitro::nitrotext::FontStyle s) {
+                    using RNFontStyle = facebook::react::FontStyle;
+                    using NitroFontStyle = margelo::nitro::nitrotext::FontStyle;
+                    switch (s) {
+                        case NitroFontStyle::NORMAL:  a.fontStyle = RNFontStyle::Normal; break;
+                        case NitroFontStyle::ITALIC:  a.fontStyle = RNFontStyle::Italic; break;
+                        case NitroFontStyle::OBLIQUE: a.fontStyle = RNFontStyle::Oblique; break;
+                    }
+                };
+                
+                if (fragOpt.has_value() && fragOpt->fontStyle.has_value()) {
+                    applyFontStyle(fragOpt->fontStyle.value());
+                } else if (props.fontStyle.value.has_value()) {
+                    applyFontStyle(props.fontStyle.value.value());
                 }
-            }
 
-            if (props.lineHeight.value.has_value())
-            {
-                textAttributes.lineHeight = props.lineHeight.value.value();
-            }
-            if (props.textAlign.value.has_value())
-            {
-                using NitroAlign = margelo::nitro::nitrotext::TextAlign;
-                using RNAlign = facebook::react::TextAlignment;
-                switch (props.textAlign.value.value())
-                {
-                case NitroAlign::AUTO:
-                    textAttributes.alignment = RNAlign::Natural;
-                    break;
-                case NitroAlign::LEFT:
-                    textAttributes.alignment = RNAlign::Left;
-                    break;
-                case NitroAlign::RIGHT:
-                    textAttributes.alignment = RNAlign::Right;
-                    break;
-                case NitroAlign::CENTER:
-                    textAttributes.alignment = RNAlign::Center;
-                    break;
-                case NitroAlign::JUSTIFY:
-                    textAttributes.alignment = RNAlign::Justified;
-                    break;
-                default:
-                    textAttributes.alignment = RNAlign::Natural;
-                    break;
+                // fontWeight
+                auto applyFontWeight = [&](margelo::nitro::nitrotext::FontWeight w) {
+                    using RNFontWeight = facebook::react::FontWeight;
+                    using NitroFontWeight = margelo::nitro::nitrotext::FontWeight;
+                    switch (w) {
+                        case NitroFontWeight::ULTRALIGHT: a.fontWeight = RNFontWeight::UltraLight; break;
+                        case NitroFontWeight::THIN:       a.fontWeight = RNFontWeight::Thin; break;
+                        case NitroFontWeight::LIGHT:      a.fontWeight = RNFontWeight::Light; break;
+                        case NitroFontWeight::REGULAR:    a.fontWeight = RNFontWeight::Regular; break;
+                        case NitroFontWeight::MEDIUM:     a.fontWeight = RNFontWeight::Medium; break;
+                        case NitroFontWeight::SEMIBOLD:   a.fontWeight = RNFontWeight::Semibold; break;
+                        case NitroFontWeight::BOLD:       a.fontWeight = RNFontWeight::Bold; break;
+                        case NitroFontWeight::HEAVY:      a.fontWeight = RNFontWeight::Heavy; break;
+                        case NitroFontWeight::BLACK:      a.fontWeight = RNFontWeight::Black; break;
+                        default:                          a.fontWeight = RNFontWeight::Regular; break;
+                    }
+                };
+                
+                if (fragOpt.has_value() && fragOpt->fontWeight.has_value()) {
+                    applyFontWeight(fragOpt->fontWeight.value());
+                } else if (props.fontWeight.value.has_value()) {
+                    applyFontWeight(props.fontWeight.value.value());
                 }
-            }
-            if (props.textTransform.value.has_value())
-            {
-                using NitroTransform = margelo::nitro::nitrotext::TextTransform;
-                using RNTransform = facebook::react::TextTransform;
-                switch (props.textTransform.value.value())
-                {
-                case NitroTransform::NONE:
-                    textAttributes.textTransform = RNTransform::None;
-                    break;
-                case NitroTransform::UPPERCASE:
-                    textAttributes.textTransform = RNTransform::Uppercase;
-                    break;
-                case NitroTransform::LOWERCASE:
-                    textAttributes.textTransform = RNTransform::Lowercase;
-                    break;
-                case NitroTransform::CAPITALIZE:
-                    textAttributes.textTransform = RNTransform::Capitalize;
-                    break;
-                default:
-                    textAttributes.textTransform = RNTransform::None;
-                    break;
-                }
-            }
 
-            // NOTE: You can also map fontWeight/fontStyle/fontColor into
-            // textAttributes here when you settle on your Fragment <->
-            // TextAttributes mapping.
+                // lineHeight
+                if (fragOpt.has_value() && fragOpt->lineHeight.has_value()) {
+                    a.lineHeight = fragOpt->lineHeight.value();
+                } else if (props.lineHeight.value.has_value()) {
+                    a.lineHeight = props.lineHeight.value.value();
+                }
+
+                // textAlign
+                auto applyAlign = [&](margelo::nitro::nitrotext::TextAlign al) {
+                    using RNAlign = facebook::react::TextAlignment;
+                    using NitroAlign = margelo::nitro::nitrotext::TextAlign;
+                    switch (al) {
+                        case NitroAlign::AUTO:     a.alignment = RNAlign::Natural; break;
+                        case NitroAlign::LEFT:     a.alignment = RNAlign::Left; break;
+                        case NitroAlign::RIGHT:    a.alignment = RNAlign::Right; break;
+                        case NitroAlign::CENTER:   a.alignment = RNAlign::Center; break;
+                        case NitroAlign::JUSTIFY:  a.alignment = RNAlign::Justified; break;
+                        default:                    a.alignment = RNAlign::Natural; break;
+                    }
+                };
+                if (fragOpt.has_value() && fragOpt->textAlign.has_value()) {
+                    applyAlign(fragOpt->textAlign.value());
+                } else if (props.textAlign.value.has_value()) {
+                    applyAlign(props.textAlign.value.value());
+                }
+
+                // Effective textTransform
+                auto applyTransform = [&](margelo::nitro::nitrotext::TextTransform t) {
+                    using RNTransform = facebook::react::TextTransform;
+                    using NitroTransform = margelo::nitro::nitrotext::TextTransform;
+                    switch (t) {
+                        case NitroTransform::NONE:       a.textTransform = RNTransform::None; break;
+                        case NitroTransform::UPPERCASE:  a.textTransform = RNTransform::Uppercase; break;
+                        case NitroTransform::LOWERCASE:  a.textTransform = RNTransform::Lowercase; break;
+                        case NitroTransform::CAPITALIZE: a.textTransform = RNTransform::Capitalize; break;
+                        default:                          a.textTransform = RNTransform::None; break;
+                    }
+                };
+                if (fragOpt.has_value() && fragOpt->textTransform.has_value()) {
+                    applyTransform(fragOpt->textTransform.value());
+                } else if (props.textTransform.value.has_value()) {
+                    applyTransform(props.textTransform.value.value());
+                }
+
+                return a;
+            };
 
             react::AttributedString attributedString;
-            attributedString.appendFragment(react::AttributedString::Fragment{
-                .string = textToMeasure,
-                .textAttributes = textAttributes,
-                .parentShadowView = react::ShadowView(*this)});
+            if (props.fragments.value.has_value()) {
+                const auto &frags = props.fragments.value.value();
+                for (const auto &f : frags) {
+                    const std::string fragmentText = f.text.has_value() ? f.text.value() : std::string("");
+                    if (fragmentText.empty()) continue;
+                    auto attrs = makeTextAttributes(f);
+                    attributedString.appendFragment(react::AttributedString::Fragment{
+                        .string = fragmentText,
+                        .textAttributes = attrs,
+                        .parentShadowView = react::ShadowView(*this)});
+                }
+            } else {
+                const std::string textToMeasure = props.text.value.has_value() ? props.text.value.value() : std::string("");
+                auto attrs = makeTextAttributes(std::nullopt);
+                attributedString.appendFragment(react::AttributedString::Fragment{
+                    .string = textToMeasure,
+                    .textAttributes = attrs,
+                    .parentShadowView = react::ShadowView(*this)});
+            }
 
             react::ParagraphAttributes paragraphAttributes;
             
