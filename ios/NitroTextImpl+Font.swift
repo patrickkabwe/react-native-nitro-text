@@ -15,7 +15,7 @@ extension NitroTextImpl {
             return 14.0
         }()
         let weightToken = fragment.fontWeight ?? FontWeight.normal
-        let uiWeight = Self.fontWeightFromString(weightToken)
+        let uiWeight = Self.uiFontWeight(for: weightToken)
 
         var base = UIFont.systemFont(ofSize: resolvedSize, weight: uiWeight)
         let isItalic = fragment.fontStyle == FontStyle.italic
@@ -32,8 +32,8 @@ extension NitroTextImpl {
         }
         return (base, isItalic)
     }
-    static func fontWeightFromString(_ s: FontWeight) -> UIFont.Weight {
-        switch s {
+    static func uiFontWeight(for weight: FontWeight) -> UIFont.Weight {
+        switch weight {
         case .ultralight:
             return .ultraLight
         case .thin:
