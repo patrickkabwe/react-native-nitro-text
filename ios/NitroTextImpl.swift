@@ -8,7 +8,7 @@
 import UIKit
 
 final class NitroTextImpl {
-    private let nitroTextView : NitroTextView
+    private weak var nitroTextView : NitroTextView?
     private var currentTextAlignment: NSTextAlignment = .natural
     private var currentTransform: TextTransform = .none
     private var currentEllipsize: NSLineBreakMode = .byTruncatingTail
@@ -18,14 +18,13 @@ final class NitroTextImpl {
     }
     
     func setSelectable(_ selectable: Bool?) {
-        nitroTextView.isSelectable = selectable ?? true
+        nitroTextView?.isSelectable = selectable ?? true
     }
     
     func setNumberOfLines(_ value: Double?) {
         let n = Int(value ?? 0)
-        nitroTextView.textContainer.maximumNumberOfLines = n
-        nitroTextView.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
-        nitroTextView.setNeedsLayout()
+        nitroTextView?.textContainer.maximumNumberOfLines = n
+        nitroTextView?.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
     }
 
     func setEllipsizeMode(_ mode: EllipsizeMode?) {
@@ -37,9 +36,8 @@ final class NitroTextImpl {
         default: currentEllipsize = .byTruncatingTail
         }
         // Re-apply to container based on current numberOfLines
-        let n = nitroTextView.textContainer.maximumNumberOfLines
-        nitroTextView.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
-        nitroTextView.setNeedsLayout()
+        guard let n = nitroTextView?.textContainer.maximumNumberOfLines else { return }
+        nitroTextView?.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
     }
 
     private func effectiveLineBreakMode(forLines n: Int) -> NSLineBreakMode {
@@ -51,20 +49,24 @@ final class NitroTextImpl {
         switch currentEllipsize {
         case .byClipping:
             return .byClipping
-        default:
+        case .byTruncatingHead:
+            return .byTruncatingHead
+        case .byTruncatingMiddle:
             return .byTruncatingMiddle
+        default:
+            return .byTruncatingTail
         }
     }
 
     func setText(_ attributedText: NSAttributedString) {
-        if let storage = nitroTextView.tkStorage ?? nitroTextView.layoutManager.textStorage {
+        if let storage = nitroTextView?.tkStorage ?? nitroTextView?.layoutManager.textStorage {
             storage.beginEditing()
             storage.setAttributedString(attributedText)
             storage.endEditing()
         } else {
-            nitroTextView.attributedText = attributedText
+            nitroTextView?.attributedText = attributedText
         }
-        nitroTextView.setNeedsLayout()
+        nitroTextView?.setNeedsLayout()
     }
     
     func setPlainText(_ value: String?) {
@@ -80,7 +82,7 @@ final class NitroTextImpl {
         case .some(.left): currentTextAlignment = .left
         default: currentTextAlignment = .natural
         }
-        nitroTextView.textAlignment = currentTextAlignment
+        nitroTextView?.textAlignment = currentTextAlignment
     }
 
     func setTextTransform(_ transform: TextTransform?) {
@@ -94,12 +96,12 @@ final class NitroTextImpl {
     
     func setFragments(_ fragments: [Fragment]?) {
         guard let fragments = fragments, !fragments.isEmpty else {
-            nitroTextView.attributedText = nil
+            nitroTextView?.attributedText = nil
             return
         }
 
         let result = NSMutableAttributedString()
-        let defaultColor = nitroTextView.textColor ?? UIColor.label
+        let defaultColor = nitroTextView?.textColor ?? UIColor.label
 
         for fragment in fragments {
             guard let rawText = fragment.text else { continue }
@@ -135,7 +137,7 @@ final class NitroTextImpl {
     private func makeFont(for fragment: Fragment) -> (value: UIFont, isItalic: Bool) {
         let resolvedSize: CGFloat = {
             if let s = fragment.fontSize { return CGFloat(s) }
-            if let current = nitroTextView.font?.pointSize { return current }
+            if let current = nitroTextView?.font?.pointSize { return current }
             return 14.0
         }()
         let weightToken = fragment.fontWeight ?? FontWeight.normal
@@ -177,7 +179,7 @@ final class NitroTextImpl {
             para.alignment = currentTextAlignment
         }
 
-        let n = nitroTextView.textContainer.maximumNumberOfLines
+        guard let n = nitroTextView?.textContainer.maximumNumberOfLines else { return para }
         para.lineBreakMode = effectiveLineBreakMode(forLines: n)
         return para
     }
@@ -213,6 +215,54 @@ final class NitroTextImpl {
 
 
 extension NitroTextImpl {
+    struct FragmentTopDefaults {
+        let fontSize: Double?
+        let fontWeight: FontWeight?
+        let fontColor: String?
+        let fontStyle: FontStyle?
+        let lineHeight: Double?
+        let textAlign: TextAlign?
+        let textTransform: TextTransform?
+    }
+
+    func apply(fragments: [Fragment]?, text: String?, top: FragmentTopDefaults) {
+        // Fast path: no fragments, but we have plain text
+        guard let fragments, !fragments.isEmpty else {
+            if let t = text {
+                let single = Fragment(
+                    fontSize: top.fontSize,
+                    fontWeight: top.fontWeight,
+                    fontColor: top.fontColor,
+                    fontStyle: top.fontStyle,
+                    lineHeight: top.lineHeight,
+                    text: t,
+                    numberOfLines: nil,
+                    textAlign: top.textAlign,
+                    textTransform: top.textTransform
+                )
+                setFragments([single])
+            } else {
+                setFragments(nil)
+            }
+            return
+        }
+
+        var merged: [Fragment] = []
+        merged.reserveCapacity(fragments.count)
+
+        for var frag in fragments {
+            if frag.text == nil { frag.text = "" }
+            if frag.fontSize == nil, let v = top.fontSize { frag.fontSize = v }
+            if frag.fontWeight == nil, let v = top.fontWeight { frag.fontWeight = v }
+            if frag.fontStyle == nil, let v = top.fontStyle { frag.fontStyle = v }
+            if frag.lineHeight == nil, let v = top.lineHeight, v > 0 { frag.lineHeight = v }
+            if frag.fontColor == nil, let v = top.fontColor, !v.isEmpty { frag.fontColor = v }
+            if frag.textAlign == nil, let v = top.textAlign { frag.textAlign = v }
+            if frag.textTransform == nil, let v = top.textTransform { frag.textTransform = v }
+            merged.append(frag)
+        }
+        setFragments(merged)
+    }
     private static func fontWeightFromString(_ s: FontWeight) -> UIFont.Weight {
         switch s {
         case .ultralight:

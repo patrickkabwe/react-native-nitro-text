@@ -9,11 +9,13 @@ import Foundation
 import UIKit
 
 class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
-    var view: UIView = NitroTextView()
-    var nitroTextImpl: NitroTextImpl?
+    private let textView = NitroTextView()
+    var view: UIView { textView }
+    let nitroTextImpl: NitroTextImpl
     
     override init() {
-        nitroTextImpl = NitroTextImpl(view as! NitroTextView)
+        self.nitroTextImpl = NitroTextImpl(textView)
+        super.init()
     }
     
     func onNitroTextMeasured(height: Double) {
@@ -30,17 +32,17 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
     
     var selectable: Bool? {
         didSet {
-            nitroTextImpl?.setSelectable(selectable)
+            nitroTextImpl.setSelectable(selectable)
         }
     }
     
     var onSelectableTextMeasured: ((Double) -> Void)? {
         didSet {
             if onSelectableTextMeasured == nil {
-                (view as! NitroTextView).nitroTextDelegate = nil
+                textView.nitroTextDelegate = nil
                 return
             }
-            (view as! NitroTextView).nitroTextDelegate = self
+            textView.nitroTextDelegate = self
         }
     }
     
@@ -58,7 +60,7 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
     
     var fontColor: String? {
         didSet {
-            (view as! NitroTextView).textColor = ColorParser.parse(fontColor)
+            textView.textColor = ColorParser.parse(fontColor)
             applyFragmentsAndProps()
         }
     }
@@ -71,15 +73,13 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
 
     var textAlign: TextAlign? {
         didSet {
-            nitroTextImpl?.setTextAlign(textAlign)
-            applyFragmentsAndProps()
+            nitroTextImpl.setTextAlign(textAlign)
         }
     }
 
     var textTransform: TextTransform? {
         didSet {
-            nitroTextImpl?.setTextTransform(textTransform)
-            applyFragmentsAndProps()
+            nitroTextImpl.setTextTransform(textTransform)
         }
     }
     
@@ -97,75 +97,31 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
     
     var numberOfLines: Double? {
         didSet {
-            nitroTextImpl?.setNumberOfLines(numberOfLines)
+            nitroTextImpl.setNumberOfLines(numberOfLines)
         }
     }
     
     var ellipsizeMode: EllipsizeMode? {
         didSet {
-            nitroTextImpl?.setEllipsizeMode(ellipsizeMode)
-            applyFragmentsAndProps()
+            nitroTextImpl.setEllipsizeMode(ellipsizeMode)
         }
     }
         
-    // Merge per-fragment props with top-level fallbacks and apply to NitroTextImpl
+    // Merge per-fragment props with top-level fallbacks and apply (delegated to NitroTextImpl)
     private func applyFragmentsAndProps() {
-        guard let nitroTextImpl else { return }
-        
-        // If there are no per-fragment entries, but we have `text`, build a single fragment
-        guard let source = fragments, !source.isEmpty else {
-            if let t = text {
-                let single = Fragment(
-                    fontSize: fontSize,
-                    fontWeight: fontWeight,
-                    fontColor: fontColor,
-                    fontStyle: fontStyle,
-                    lineHeight: lineHeight,
-                    text: t,
-                    numberOfLines: numberOfLines,
-                    textAlign: textAlign,
-                    textTransform: textTransform
-                )
-                nitroTextImpl.setFragments([single])
-            } else {
-                nitroTextImpl.setFragments(nil)
-            }
-            return
-        }
-        
-        var merged: [Fragment] = []
-        merged.reserveCapacity(source.count)
-        
-        for var frag in source {
-            if frag.text == nil {
-                frag.text = ""
-            }
-            if frag.fontSize == nil, let top = fontSize {
-                frag.fontSize = top
-            }
-            if frag.fontWeight == nil, let top = fontWeight {
-                frag.fontWeight = top
-            }
-            if frag.fontStyle == nil, let top = fontStyle  {
-                frag.fontStyle = top
-            }
-            if frag.lineHeight == nil, let top = lineHeight, top > 0 {
-                frag.lineHeight = top
-            }
-
-            if frag.fontColor == nil, let top = fontColor, !top.isEmpty {
-                frag.fontColor = top
-            }
-            if frag.textAlign == nil, let ta = textAlign { frag.textAlign = ta }
-            if frag.textTransform == nil, let tt = textTransform { frag.textTransform = tt }
-                        
-            merged.append(frag)
-        }
-        
-        nitroTextImpl.setFragments(merged)
+        let top = NitroTextImpl.FragmentTopDefaults(
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+            fontColor: fontColor,
+            fontStyle: fontStyle,
+            lineHeight: lineHeight,
+            textAlign: textAlign,
+            textTransform: textTransform
+        )
+        nitroTextImpl.apply(fragments: fragments, text: text, top: top)
     }
     
     func afterUpdate() {
-        view.setNeedsLayout()
+        textView.setNeedsLayout()
     }
 }

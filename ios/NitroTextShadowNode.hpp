@@ -202,6 +202,7 @@ namespace margelo::nitro::nitrotext::views
                     break;
                 }
             }
+
             // NOTE: You can also map fontWeight/fontStyle/fontColor into
             // textAttributes here when you settle on your Fragment <->
             // TextAttributes mapping.
@@ -213,6 +214,7 @@ namespace margelo::nitro::nitrotext::views
                 .parentShadowView = react::ShadowView(*this)});
 
             react::ParagraphAttributes paragraphAttributes;
+            
             if (props.numberOfLines.value.has_value())
             {
                 auto n =
@@ -220,6 +222,30 @@ namespace margelo::nitro::nitrotext::views
                 if (n > 0)
                 {
                     paragraphAttributes.maximumNumberOfLines = n;
+                }
+            }
+            
+            if (props.ellipsizeMode.value.has_value())
+            {
+                using NitroEllipsizeMode = margelo::nitro::nitrotext::EllipsizeMode;
+                using RNEllipsizeMode = facebook::react::EllipsizeMode;
+                switch (props.ellipsizeMode.value.value())
+                {
+                case NitroEllipsizeMode::CLIP:
+                    paragraphAttributes.ellipsizeMode = RNEllipsizeMode::Clip;
+                    break;
+                case NitroEllipsizeMode::HEAD:
+                    paragraphAttributes.ellipsizeMode = RNEllipsizeMode::Head;
+                    break;
+                case NitroEllipsizeMode::MIDDLE:
+                    paragraphAttributes.ellipsizeMode = RNEllipsizeMode::Middle;
+                    break;
+                case NitroEllipsizeMode::TAIL:
+                    paragraphAttributes.ellipsizeMode = RNEllipsizeMode::Tail;
+                    break;
+                default:
+                    paragraphAttributes.ellipsizeMode = RNEllipsizeMode::Tail;
+                    break;
                 }
             }
 
