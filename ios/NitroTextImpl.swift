@@ -23,8 +23,9 @@ final class NitroTextImpl {
     func setNumberOfLines(_ value: Double?) {
         let n = Int(value ?? 0)
         nitroTextView.textContainer.maximumNumberOfLines = n
-        // Truncate tail when single line; wrap otherwise
-        nitroTextView.textContainer.lineBreakMode = (n == 1) ? .byTruncatingTail : .byWordWrapping
+        // Show tail ellipsis whenever a max line count is set (> 0)
+        // UIKit supports multi-line truncation with .byTruncatingTail.
+        nitroTextView.textContainer.lineBreakMode = (n > 0) ? .byTruncatingTail : .byWordWrapping
         nitroTextView.setNeedsLayout()
     }
 
@@ -118,8 +119,9 @@ final class NitroTextImpl {
             } else {
                 para.alignment = currentTextAlignment
             }
-            let singleLine = nitroTextView.textContainer.maximumNumberOfLines == 1
-            para.lineBreakMode = singleLine ? .byTruncatingTail : .byWordWrapping
+            // Use tail truncation whenever numberOfLines > 0 (single or multi-line)
+            let hasLineLimit = nitroTextView.textContainer.maximumNumberOfLines > 0
+            para.lineBreakMode = hasLineLimit ? .byTruncatingTail : .byWordWrapping
             attrs[.paragraphStyle] = para
             if let colorValue = fragment.fontColor, let color = ColorParser.parse(colorValue) {
                 attrs[.foregroundColor] = color
