@@ -68,6 +68,12 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
     selectable?: boolean
 
     /**
+     * If true, text respects system font scaling (Dynamic Type).
+     * Matches React Native Text's allowFontScaling. Defaults to true.
+     */
+    allowFontScaling?: boolean
+
+    /**
      * Controls where to truncate text when numberOfLines is set.
      * Defaults to 'tail' like RN Text.
      */

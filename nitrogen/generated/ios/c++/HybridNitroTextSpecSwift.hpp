@@ -87,6 +87,13 @@ namespace margelo::nitro::nitrotext {
     inline void setSelectable(std::optional<bool> selectable) noexcept override {
       _swiftPart.setSelectable(selectable);
     }
+    inline std::optional<bool> getAllowFontScaling() noexcept override {
+      auto __result = _swiftPart.getAllowFontScaling();
+      return __result;
+    }
+    inline void setAllowFontScaling(std::optional<bool> allowFontScaling) noexcept override {
+      _swiftPart.setAllowFontScaling(allowFontScaling);
+    }
     inline std::optional<EllipsizeMode> getEllipsizeMode() noexcept override {
       auto __result = _swiftPart.getEllipsizeMode();
       return __result;

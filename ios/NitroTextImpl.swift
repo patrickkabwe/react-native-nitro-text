@@ -12,8 +12,8 @@ final class NitroTextImpl {
     var currentTextAlignment: NSTextAlignment = .natural
     var currentTransform: TextTransform = .none
     var currentEllipsize: NSLineBreakMode = .byTruncatingTail
-    // Small font cache to avoid repeatedly recreating identical UIFonts
-    var fontCache: [NitroTextImpl.FontKey: UIFont] = [:]
+    var fontCache: [FontKey: UIFont] = [:]
+    var allowFontScaling: Bool = true
     
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
@@ -21,6 +21,14 @@ final class NitroTextImpl {
     
     func setSelectable(_ selectable: Bool?) {
         nitroTextView?.isSelectable = selectable ?? true
+    }
+    
+    func setAllowFontScaling(_ value: Bool?) {
+        allowFontScaling = value ?? true
+        nitroTextView?.adjustsFontForContentSizeCategory = allowFontScaling
+        if let text = nitroTextView?.attributedText, text.length > 0 {
+            nitroTextView?.attributedText = text
+        }
     }
     
     func setNumberOfLines(_ value: Double?) {
