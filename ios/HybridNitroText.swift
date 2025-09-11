@@ -100,6 +100,13 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             nitroTextImpl?.setNumberOfLines(numberOfLines)
         }
     }
+    
+    var ellipsizeMode: EllipsizeMode? {
+        didSet {
+            nitroTextImpl?.setEllipsizeMode(ellipsizeMode)
+            applyFragmentsAndProps()
+        }
+    }
         
     // Merge per-fragment props with top-level fallbacks and apply to NitroTextImpl
     private func applyFragmentsAndProps() {

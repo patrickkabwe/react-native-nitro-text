@@ -351,6 +351,23 @@ open class HybridNitroTextSpec_cxx {
       self.__implementation.textTransform = newValue.value
     }
   }
+  
+  public final var ellipsizeMode: bridge.std__optional_EllipsizeMode_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_EllipsizeMode_ in
+        if let __unwrappedValue = self.__implementation.ellipsizeMode {
+          return bridge.create_std__optional_EllipsizeMode_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.ellipsizeMode = newValue.value
+    }
+  }
 
   // Methods
   public final func getView() -> UnsafeMutableRawPointer {

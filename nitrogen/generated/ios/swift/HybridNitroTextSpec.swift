@@ -23,6 +23,7 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var numberOfLines: Double? { get set }
   var textAlign: TextAlign? { get set }
   var textTransform: TextTransform? { get set }
+  var ellipsizeMode: EllipsizeMode? { get set }
 
   // Methods
   

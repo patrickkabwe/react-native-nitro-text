@@ -11,6 +11,7 @@ final class NitroTextImpl {
     private let nitroTextView : NitroTextView
     private var currentTextAlignment: NSTextAlignment = .natural
     private var currentTransform: TextTransform = .none
+    private var currentEllipsize: NSLineBreakMode = .byTruncatingTail
     
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
@@ -23,9 +24,22 @@ final class NitroTextImpl {
     func setNumberOfLines(_ value: Double?) {
         let n = Int(value ?? 0)
         nitroTextView.textContainer.maximumNumberOfLines = n
-        // Show tail ellipsis whenever a max line count is set (> 0)
-        // UIKit supports multi-line truncation with .byTruncatingTail.
-        nitroTextView.textContainer.lineBreakMode = (n > 0) ? .byTruncatingTail : .byWordWrapping
+        // Apply configured ellipsize mode when limiting lines; wrap otherwise.
+        nitroTextView.textContainer.lineBreakMode = (n > 0) ? currentEllipsize : .byWordWrapping
+        nitroTextView.setNeedsLayout()
+    }
+
+    func setEllipsizeMode(_ mode: EllipsizeMode?) {
+        switch mode {
+        case .some(.head): currentEllipsize = .byTruncatingHead
+        case .some(.middle): currentEllipsize = .byTruncatingMiddle
+        case .some(.tail): currentEllipsize = .byTruncatingTail
+        case .some(.clip): currentEllipsize = .byClipping
+        default: currentEllipsize = .byTruncatingTail
+        }
+        // Re-apply to container based on current numberOfLines
+        let n = nitroTextView.textContainer.maximumNumberOfLines
+        nitroTextView.textContainer.lineBreakMode = (n > 0) ? currentEllipsize : .byWordWrapping
         nitroTextView.setNeedsLayout()
     }
 
@@ -119,9 +133,9 @@ final class NitroTextImpl {
             } else {
                 para.alignment = currentTextAlignment
             }
-            // Use tail truncation whenever numberOfLines > 0 (single or multi-line)
+            // Mirror textContainer's truncation behavior in attributed paragraph style
             let hasLineLimit = nitroTextView.textContainer.maximumNumberOfLines > 0
-            para.lineBreakMode = hasLineLimit ? .byTruncatingTail : .byWordWrapping
+            para.lineBreakMode = hasLineLimit ? currentEllipsize : .byWordWrapping
             attrs[.paragraphStyle] = para
             if let colorValue = fragment.fontColor, let color = ColorParser.parse(colorValue) {
                 attrs[.foregroundColor] = color

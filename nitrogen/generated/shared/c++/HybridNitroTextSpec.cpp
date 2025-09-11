@@ -38,6 +38,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("textAlign", &HybridNitroTextSpec::setTextAlign);
       prototype.registerHybridGetter("textTransform", &HybridNitroTextSpec::getTextTransform);
       prototype.registerHybridSetter("textTransform", &HybridNitroTextSpec::setTextTransform);
+      prototype.registerHybridGetter("ellipsizeMode", &HybridNitroTextSpec::getEllipsizeMode);
+      prototype.registerHybridSetter("ellipsizeMode", &HybridNitroTextSpec::setEllipsizeMode);
     });
   }
 

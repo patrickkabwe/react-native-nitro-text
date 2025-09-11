@@ -26,6 +26,7 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "FontWeight.hpp"
 #include "Fragment.hpp"
 #include "HybridNitroTextSpec.hpp"
+#include "EllipsizeMode.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
 #include <functional>

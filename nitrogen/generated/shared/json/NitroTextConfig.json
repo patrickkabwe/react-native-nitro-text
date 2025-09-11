@@ -14,6 +14,7 @@
     "lineHeight": true,
     "text": true,
     "numberOfLines": true,
+    "ellipsizeMode": true,
     "textAlign": true,
     "textTransform": true,
     "hybridRef": true

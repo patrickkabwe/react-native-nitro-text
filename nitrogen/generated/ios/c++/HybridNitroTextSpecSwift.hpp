@@ -31,6 +31,7 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
+#include "EllipsizeMode.hpp"
 #include <functional>
 
 #include "NitroText-Swift-Cxx-Umbrella.hpp"
@@ -153,6 +154,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setTextTransform(std::optional<TextTransform> textTransform) noexcept override {
       _swiftPart.setTextTransform(textTransform);
+    }
+    inline std::optional<EllipsizeMode> getEllipsizeMode() noexcept override {
+      auto __result = _swiftPart.getEllipsizeMode();
+      return __result;
+    }
+    inline void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) noexcept override {
+      _swiftPart.setEllipsizeMode(ellipsizeMode);
     }
 
   public:

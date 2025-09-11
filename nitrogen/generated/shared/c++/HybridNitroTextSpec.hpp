@@ -23,6 +23,8 @@ namespace margelo::nitro::nitrotext { enum class FontStyle; }
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
+// Forward declaration of `EllipsizeMode` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 
 #include "Fragment.hpp"
 #include <vector>
@@ -33,6 +35,8 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
+// Added manually to support ellipsizeMode without regenerating
+#include "EllipsizeMode.hpp"
 
 namespace margelo::nitro::nitrotext {
 
@@ -85,6 +89,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setTextAlign(std::optional<TextAlign> textAlign) = 0;
       virtual std::optional<TextTransform> getTextTransform() = 0;
       virtual void setTextTransform(std::optional<TextTransform> textTransform) = 0;
+      virtual std::optional<EllipsizeMode> getEllipsizeMode() = 0;
+      virtual void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) = 0;
 
     public:
       // Methods

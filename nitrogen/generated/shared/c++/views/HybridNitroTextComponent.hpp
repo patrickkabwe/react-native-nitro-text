@@ -36,6 +36,8 @@
 #include "TextAlign.hpp"
 #include <optional>
 #include "TextTransform.hpp"
+// Added manually for ellipsizeMode support
+#include "EllipsizeMode.hpp"
 #include <optional>
 #include <memory>
 #include "HybridNitroTextSpec.hpp"
@@ -75,6 +77,7 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<double>> numberOfLines;
     CachedProp<std::optional<TextAlign>> textAlign;
     CachedProp<std::optional<TextTransform>> textTransform;
+    CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
     CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridNitroTextSpec>& /* ref */)>>> hybridRef;
 
   private:

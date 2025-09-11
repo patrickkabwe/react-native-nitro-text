@@ -131,6 +131,11 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setTextTransform(newViewProps.textTransform.value);
     newViewProps.textTransform.isDirty = false;
   }
+  // ellipsizeMode: optional
+  if (newViewProps.ellipsizeMode.isDirty) {
+    swiftPart.setEllipsizeMode(newViewProps.ellipsizeMode.value);
+    newViewProps.ellipsizeMode.isDirty = false;
+  }
 
   swiftPart.afterUpdate();
 

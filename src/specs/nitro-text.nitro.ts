@@ -6,6 +6,7 @@ import type {
 
 type TextAlign = 'auto' | 'left' | 'right' | 'center' | 'justify'
 type TextTransform = 'none' | 'uppercase' | 'lowercase' | 'capitalize'
+type EllipsizeMode = 'head' | 'middle' | 'tail' | 'clip'
 
 // '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'  - Nitro does not support these
 type FontWeight = 'normal' | 'bold' | 'ultralight' | 'thin' | 'light' | 'medium' | 'regular' | 'semibold' | 'condensedBold' | 'condensed' | 'heavy' | 'black'
@@ -65,6 +66,12 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
      * Selectable text.
      */
     selectable?: boolean
+
+    /**
+     * Controls where to truncate text when numberOfLines is set.
+     * Defaults to 'tail' like RN Text.
+     */
+    ellipsizeMode?: EllipsizeMode
 
     /**
      * The onSelectableTextMeasured callback. Used to measure the height of the text.
