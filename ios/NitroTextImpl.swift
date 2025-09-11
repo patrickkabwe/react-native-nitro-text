@@ -14,6 +14,7 @@ final class NitroTextImpl {
     var currentEllipsize: NSLineBreakMode = .byTruncatingTail
     var fontCache: [FontKey: UIFont] = [:]
     var allowFontScaling: Bool = true
+    var dynamicTypeTextStyle: UIFont.TextStyle? = nil
     
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
@@ -31,6 +32,33 @@ final class NitroTextImpl {
         }
     }
     
+    func setDynamicTypeRamp(_ value: DynamicTypeRamp?) {
+        let style: UIFont.TextStyle? = {
+            switch value {
+            case .caption2?: return .caption2
+            case .caption1?: return .caption1
+            case .footnote?: return .footnote
+            case .subheadline?: return .subheadline
+            case .callout?: return .callout
+            case .body?: return .body
+            case .headline?: return .headline
+            case .title3?: return .title3
+            case .title2?: return .title2
+            case .title1?: return .title1
+            case .largetitle?: return .largeTitle
+            case nil: return nil
+            }
+        }()
+        if dynamicTypeTextStyle != style {
+            dynamicTypeTextStyle = style
+            fontCache.removeAll(keepingCapacity: true)
+            if let current = nitroTextView?.attributedText, current.length > 0 {
+                nitroTextView?.attributedText = current
+                nitroTextView?.setNeedsLayout()
+            }
+        }
+    }
+    
     func setNumberOfLines(_ value: Double?) {
         let n = Int(value ?? 0)
         nitroTextView?.textContainer.maximumNumberOfLines = n
@@ -45,7 +73,6 @@ final class NitroTextImpl {
         case .some(.clip): currentEllipsize = .byClipping
         default: currentEllipsize = .byTruncatingTail
         }
-        // Re-apply to container based on current numberOfLines
         guard let n = nitroTextView?.textContainer.maximumNumberOfLines else { return }
         nitroTextView?.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
     }

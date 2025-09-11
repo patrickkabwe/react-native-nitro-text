@@ -77,7 +77,52 @@ namespace margelo::nitro::nitrotext::views
                 bool allowFontScaling = props.allowFontScaling.value.value_or(true);
                 a.allowFontScaling = allowFontScaling;
                 a.fontSizeMultiplier = allowFontScaling ? layoutContext.fontSizeMultiplier : 1.0f;
-                a.dynamicTypeRamp = facebook::react::DynamicTypeRamp::Body;
+
+                if (props.dynamicTypeRamp.value.has_value())
+                {
+                    using NitroDTR = margelo::nitro::nitrotext::DynamicTypeRamp;
+                    using RNDTR = facebook::react::DynamicTypeRamp;
+                    switch (props.dynamicTypeRamp.value.value())
+                    {
+                    case NitroDTR::CAPTION2:
+                        a.dynamicTypeRamp = RNDTR::Caption2;
+                        break;
+                    case NitroDTR::CAPTION1:
+                        a.dynamicTypeRamp = RNDTR::Caption1;
+                        break;
+                    case NitroDTR::FOOTNOTE:
+                        a.dynamicTypeRamp = RNDTR::Footnote;
+                        break;
+                    case NitroDTR::SUBHEADLINE:
+                        a.dynamicTypeRamp = RNDTR::Subheadline;
+                        break;
+                    case NitroDTR::CALLOUT:
+                        a.dynamicTypeRamp = RNDTR::Callout;
+                        break;
+                    case NitroDTR::BODY:
+                        a.dynamicTypeRamp = RNDTR::Body;
+                        break;
+                    case NitroDTR::HEADLINE:
+                        a.dynamicTypeRamp = RNDTR::Headline;
+                        break;
+                    case NitroDTR::TITLE3:
+                        a.dynamicTypeRamp = RNDTR::Title3;
+                        break;
+                    case NitroDTR::TITLE2:
+                        a.dynamicTypeRamp = RNDTR::Title2;
+                        break;
+                    case NitroDTR::TITLE1:
+                        a.dynamicTypeRamp = RNDTR::Title1;
+                        break;
+                    case NitroDTR::LARGETITLE:
+                        a.dynamicTypeRamp = RNDTR::LargeTitle;
+                        break;
+                    }
+                }
+                else
+                {
+                    a.dynamicTypeRamp = facebook::react::DynamicTypeRamp::Body;
+                }
 
                 // fontSize
                 if (fragOpt.has_value() && fragOpt->fontSize.has_value())

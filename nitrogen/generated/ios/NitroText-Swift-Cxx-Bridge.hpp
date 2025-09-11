@@ -8,6 +8,8 @@
 #pragma once
 
 // Forward declarations of C++ defined types
+// Forward declaration of `DynamicTypeRamp` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `FontStyle` to properly resolve imports.
@@ -28,6 +30,7 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 namespace NitroText { class HybridNitroTextSpec_cxx; }
 
 // Include C++ defined types
+#include "DynamicTypeRamp.hpp"
 #include "EllipsizeMode.hpp"
 #include "FontStyle.hpp"
 #include "FontWeight.hpp"
@@ -190,6 +193,21 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline EllipsizeMode get_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<DynamicTypeRamp>
+  /**
+   * Specialized version of `std::optional<DynamicTypeRamp>`.
+   */
+  using std__optional_DynamicTypeRamp_ = std::optional<DynamicTypeRamp>;
+  inline std::optional<DynamicTypeRamp> create_std__optional_DynamicTypeRamp_(const DynamicTypeRamp& value) noexcept {
+    return std::optional<DynamicTypeRamp>(value);
+  }
+  inline bool has_value_std__optional_DynamicTypeRamp_(const std::optional<DynamicTypeRamp>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline DynamicTypeRamp get_std__optional_DynamicTypeRamp_(const std::optional<DynamicTypeRamp>& optional) noexcept {
     return *optional;
   }
   

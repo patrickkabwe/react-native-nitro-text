@@ -15,6 +15,7 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var selectable: Bool? { get set }
   var allowFontScaling: Bool? { get set }
   var ellipsizeMode: EllipsizeMode? { get set }
+  var dynamicTypeRamp: DynamicTypeRamp? { get set }
   var onSelectableTextMeasured: ((_ height: Double) -> Void)? { get set }
   var text: String? { get set }
   var fontSize: Double? { get set }

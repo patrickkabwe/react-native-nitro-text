@@ -187,6 +187,23 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
+  public final var dynamicTypeRamp: bridge.std__optional_DynamicTypeRamp_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_DynamicTypeRamp_ in
+        if let __unwrappedValue = self.__implementation.dynamicTypeRamp {
+          return bridge.create_std__optional_DynamicTypeRamp_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.dynamicTypeRamp = newValue.value
+    }
+  }
+  
   public final var onSelectableTextMeasured: bridge.std__optional_std__function_void_double____height______ {
     @inline(__always)
     get {
