@@ -25,11 +25,11 @@ extension NitroTextImpl {
         // larger than the font's natural lineHeight, vertically center the
         // glyphs within the line by applying a baseline offset.
         if let rawLH = fragment.lineHeight, rawLH > 0 {
-            let metrics: UIFontMetrics = {
-                if let style = dynamicTypeTextStyle { return UIFontMetrics(forTextStyle: style) }
-                return .default
+            let scaledLH: CGFloat = {
+                guard allowFontScaling else { return CGFloat(rawLH) }
+                let factor = getScaleFactor()
+                return CGFloat(rawLH) * factor
             }()
-            let scaledLH = allowFontScaling ? metrics.scaledValue(for: CGFloat(rawLH)) : CGFloat(rawLH)
             let fontLineHeight = font.value.lineHeight
             if scaledLH >= fontLineHeight {
                 let baseline = (scaledLH - fontLineHeight) / 2.0

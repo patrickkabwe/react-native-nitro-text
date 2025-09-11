@@ -321,6 +321,12 @@ namespace margelo::nitro::nitrotext::views
                     }
                 }
 
+                // maxFontSizeMultiplier
+                if (props.maxFontSizeMultiplier.value.has_value())
+                {
+                    a.maxFontSizeMultiplier = props.maxFontSizeMultiplier.value.value();
+                }
+
                 return a;
             };
 
@@ -360,6 +366,16 @@ namespace margelo::nitro::nitrotext::views
                 {
                     paragraphAttributes.maximumNumberOfLines = n;
                 }
+            }
+
+            if (props.adjustsFontSizeToFit.value.has_value())
+            {
+                paragraphAttributes.adjustsFontSizeToFit = props.adjustsFontSizeToFit.value.value();
+            }
+            
+            if (props.minimumFontScale.value.has_value())
+            {
+                paragraphAttributes.minimumFontScale = props.minimumFontScale.value.value();
             }
 
             if (props.ellipsizeMode.value.has_value())

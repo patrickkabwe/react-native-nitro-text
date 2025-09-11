@@ -121,6 +121,27 @@ namespace margelo::nitro::nitrotext {
     inline void setDynamicTypeRamp(std::optional<DynamicTypeRamp> dynamicTypeRamp) noexcept override {
       _swiftPart.setDynamicTypeRamp(dynamicTypeRamp);
     }
+    inline std::optional<double> getMaxFontSizeMultiplier() noexcept override {
+      auto __result = _swiftPart.getMaxFontSizeMultiplier();
+      return __result;
+    }
+    inline void setMaxFontSizeMultiplier(std::optional<double> maxFontSizeMultiplier) noexcept override {
+      _swiftPart.setMaxFontSizeMultiplier(maxFontSizeMultiplier);
+    }
+    inline std::optional<bool> getAdjustsFontSizeToFit() noexcept override {
+      auto __result = _swiftPart.getAdjustsFontSizeToFit();
+      return __result;
+    }
+    inline void setAdjustsFontSizeToFit(std::optional<bool> adjustsFontSizeToFit) noexcept override {
+      _swiftPart.setAdjustsFontSizeToFit(adjustsFontSizeToFit);
+    }
+    inline std::optional<double> getMinimumFontScale() noexcept override {
+      auto __result = _swiftPart.getMinimumFontScale();
+      return __result;
+    }
+    inline void setMinimumFontScale(std::optional<double> minimumFontScale) noexcept override {
+      _swiftPart.setMinimumFontScale(minimumFontScale);
+    }
     inline std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() noexcept override {
       auto __result = _swiftPart.getOnSelectableTextMeasured();
       return __result;

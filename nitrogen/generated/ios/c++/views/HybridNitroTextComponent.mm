@@ -101,6 +101,21 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setDynamicTypeRamp(newViewProps.dynamicTypeRamp.value);
     newViewProps.dynamicTypeRamp.isDirty = false;
   }
+  // maxFontSizeMultiplier: optional
+  if (newViewProps.maxFontSizeMultiplier.isDirty) {
+    swiftPart.setMaxFontSizeMultiplier(newViewProps.maxFontSizeMultiplier.value);
+    newViewProps.maxFontSizeMultiplier.isDirty = false;
+  }
+  // adjustsFontSizeToFit: optional
+  if (newViewProps.adjustsFontSizeToFit.isDirty) {
+    swiftPart.setAdjustsFontSizeToFit(newViewProps.adjustsFontSizeToFit.value);
+    newViewProps.adjustsFontSizeToFit.isDirty = false;
+  }
+  // minimumFontScale: optional
+  if (newViewProps.minimumFontScale.isDirty) {
+    swiftPart.setMinimumFontScale(newViewProps.minimumFontScale.value);
+    newViewProps.minimumFontScale.isDirty = false;
+  }
   // onSelectableTextMeasured: optional
   if (newViewProps.onSelectableTextMeasured.isDirty) {
     swiftPart.setOnSelectableTextMeasured(newViewProps.onSelectableTextMeasured.value);

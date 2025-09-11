@@ -82,6 +82,12 @@ namespace margelo::nitro::nitrotext {
       virtual void setLineBreakStrategyIOS(std::optional<LineBreakStrategyIOS> lineBreakStrategyIOS) = 0;
       virtual std::optional<DynamicTypeRamp> getDynamicTypeRamp() = 0;
       virtual void setDynamicTypeRamp(std::optional<DynamicTypeRamp> dynamicTypeRamp) = 0;
+      virtual std::optional<double> getMaxFontSizeMultiplier() = 0;
+      virtual void setMaxFontSizeMultiplier(std::optional<double> maxFontSizeMultiplier) = 0;
+      virtual std::optional<bool> getAdjustsFontSizeToFit() = 0;
+      virtual void setAdjustsFontSizeToFit(std::optional<bool> adjustsFontSizeToFit) = 0;
+      virtual std::optional<double> getMinimumFontScale() = 0;
+      virtual void setMinimumFontScale(std::optional<double> minimumFontScale) = 0;
       virtual std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() = 0;
       virtual void setOnSelectableTextMeasured(const std::optional<std::function<void(double /* height */)>>& onSelectableTextMeasured) = 0;
       virtual std::optional<std::string> getText() = 0;

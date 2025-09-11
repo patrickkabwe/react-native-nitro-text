@@ -20,11 +20,11 @@ extension NitroTextImpl {
             if let current = defaultPointSize { return current }
             return 14.0
         }()
-        let metrics: UIFontMetrics = {
-            if let style = dynamicTypeTextStyle { return UIFontMetrics(forTextStyle: style) }
-            return .default
+        let finalPointSize: CGFloat = {
+            guard allowFontScaling else { return resolvedSize }
+            let m: CGFloat = getScaleFactor()
+            return resolvedSize * m
         }()
-        let finalPointSize: CGFloat = allowFontScaling ? metrics.scaledValue(for: resolvedSize) : resolvedSize
         let weightToken = fragment.fontWeight ?? FontWeight.normal
         let uiWeight = Self.uiFontWeight(for: weightToken)
         let isItalic = fragment.fontStyle == FontStyle.italic
@@ -49,6 +49,20 @@ extension NitroTextImpl {
         fontCache[key] = base
         return (base, isItalic)
     }
+    
+    func getScaleFactor() -> CGFloat {
+        let defaultFontSizeMultiplier: CGFloat = 1.0
+        let metrics: UIFontMetrics = {
+            if let style = dynamicTypeTextStyle { return UIFontMetrics(forTextStyle: style) }
+            return .default
+        }()
+        var factor: CGFloat = allowFontScaling ? metrics.scaledValue(for: defaultFontSizeMultiplier) : defaultFontSizeMultiplier
+        if let max = maxFontSizeMultiplier, max >= defaultFontSizeMultiplier {
+            factor = min(factor, CGFloat(max))
+        }
+        return factor
+    }
+    
     static func uiFontWeight(for weight: FontWeight) -> UIFont.Weight {
         switch weight {
         case .ultralight:

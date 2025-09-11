@@ -118,6 +118,23 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
     dynamicTypeRamp?: DynamicTypeRamp
 
     /**
+     * Caps the Dynamic Type scaling factor when `allowFontScaling` is true.
+     * >= 1 to enforce a maximum multiplier; omit/undefined means no cap.
+     */
+    maxFontSizeMultiplier?: number | null
+
+    /**
+     * iOS: Shrink text to fit within the container width.
+     */
+    adjustsFontSizeToFit?: boolean
+
+    /**
+     * iOS: The smallest scale allowed when shrinking.
+     * Range 0.01–1.0. Only used when `adjustsFontSizeToFit` is true.
+     */
+    minimumFontScale?: number
+
+    /**
      * The onSelectableTextMeasured callback. Used to measure the height of the text.
      */
     onSelectableTextMeasured?: (height: number) => void

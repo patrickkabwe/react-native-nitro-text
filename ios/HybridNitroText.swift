@@ -135,6 +135,28 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             applyFragmentsAndProps()
         }
     }
+
+    var maxFontSizeMultiplier: Double? {
+        didSet {
+            nitroTextImpl.setMaxFontSizeMultiplier(maxFontSizeMultiplier)
+            applyFragmentsAndProps()
+        }
+    }
+
+    var adjustsFontSizeToFit: Bool? {
+        didSet {
+            nitroTextImpl.setAdjustsFontSizeToFit(adjustsFontSizeToFit)
+            // For now, this flag influences measurement via ShadowNode; rendering is TBD.
+            applyFragmentsAndProps()
+        }
+    }
+
+    var minimumFontScale: Double? {
+        didSet {
+            nitroTextImpl.setMinimumFontScale(minimumFontScale)
+            applyFragmentsAndProps()
+        }
+    }
         
     // Merge per-fragment props with top-level fallbacks and apply (delegated to NitroTextImpl)
     private func applyFragmentsAndProps() {

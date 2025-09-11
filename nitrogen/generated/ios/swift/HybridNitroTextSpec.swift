@@ -17,6 +17,9 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var ellipsizeMode: EllipsizeMode? { get set }
   var lineBreakStrategyIOS: LineBreakStrategyIOS? { get set }
   var dynamicTypeRamp: DynamicTypeRamp? { get set }
+  var maxFontSizeMultiplier: Double? { get set }
+  var adjustsFontSizeToFit: Bool? { get set }
+  var minimumFontScale: Double? { get set }
   var onSelectableTextMeasured: ((_ height: Double) -> Void)? { get set }
   var text: String? { get set }
   var fontSize: Double? { get set }
