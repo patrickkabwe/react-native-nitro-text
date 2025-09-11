@@ -24,22 +24,7 @@ final class NitroTextImpl {
     func setNumberOfLines(_ value: Double?) {
         let n = Int(value ?? 0)
         nitroTextView.textContainer.maximumNumberOfLines = n
-        // Apply configured ellipsize mode when limiting lines; wrap otherwise.
-        nitroTextView.textContainer.lineBreakMode = (n > 0) ? currentEllipsize : .byWordWrapping
-        nitroTextView.setNeedsLayout()
-    }
-
-    func setEllipsizeMode(_ mode: EllipsizeMode?) {
-        switch mode {
-        case .some(.head): currentEllipsize = .byTruncatingHead
-        case .some(.middle): currentEllipsize = .byTruncatingMiddle
-        case .some(.tail): currentEllipsize = .byTruncatingTail
-        case .some(.clip): currentEllipsize = .byClipping
-        default: currentEllipsize = .byTruncatingTail
-        }
-        // Re-apply to container based on current numberOfLines
-        let n = nitroTextView.textContainer.maximumNumberOfLines
-        nitroTextView.textContainer.lineBreakMode = (n > 0) ? currentEllipsize : .byWordWrapping
+        nitroTextView.textContainer.lineBreakMode = (n > 0) ? .byTruncatingTail : .byWordWrapping
         nitroTextView.setNeedsLayout()
     }
 
@@ -84,85 +69,117 @@ final class NitroTextImpl {
             nitroTextView.attributedText = nil
             return
         }
+
         let result = NSMutableAttributedString()
         let defaultColor = nitroTextView.textColor ?? UIColor.label
+
         for fragment in fragments {
-            guard var text = fragment.text else { continue }
-            var attrs: [NSAttributedString.Key: Any] = [:]
-            
-            let resolvedSize: CGFloat = {
-                if let s = fragment.fontSize { return CGFloat(s) }
-                if let current = nitroTextView.font?.pointSize { return current }
-                return 14.0
-            }()
-            let weightString = fragment.fontWeight ?? FontWeight.normal
-            let isItalic = fragment.fontStyle == FontStyle.italic
-            let uiWeight = Self.fontWeightFromString(weightString)
-
-            var baseFont = UIFont.systemFont(ofSize: resolvedSize, weight: uiWeight)
-
-            if isItalic {
-                var traits = baseFont.fontDescriptor.symbolicTraits
-                traits.insert(.traitItalic)
-                if let italicDesc = baseFont.fontDescriptor.withSymbolicTraits(traits) {
-                    let traitsDict: [UIFontDescriptor.TraitKey: Any] = [
-                        .weight: uiWeight
-                    ]
-                    let finalDesc = italicDesc.addingAttributes([
-                        UIFontDescriptor.AttributeName.traits: traitsDict
-                    ])
-                    baseFont = UIFont(descriptor: finalDesc, size: resolvedSize)
-                }
-                attrs[.obliqueness] = 0.2
-            }
-            attrs[.font] = baseFont
-            
-            let para = NSMutableParagraphStyle()
-            if let lineHeight = fragment.lineHeight, lineHeight > 0 {
-                para.minimumLineHeight = lineHeight
-                para.maximumLineHeight = lineHeight
-            }
-            if let fa = fragment.textAlign {
-                switch fa {
-                case .center: para.alignment = .center
-                case .right: para.alignment = .right
-                case .justify: para.alignment = .justified
-                case .left: para.alignment = .left
-                case .auto: para.alignment = .natural
-                }
-            } else {
-                para.alignment = currentTextAlignment
-            }
-            // Mirror textContainer's truncation behavior in attributed paragraph style
-            let hasLineLimit = nitroTextView.textContainer.maximumNumberOfLines > 0
-            para.lineBreakMode = hasLineLimit ? currentEllipsize : .byWordWrapping
-            attrs[.paragraphStyle] = para
-            if let colorValue = fragment.fontColor, let color = ColorParser.parse(colorValue) {
-                attrs[.foregroundColor] = color
-            } else {
-                attrs[.foregroundColor] = defaultColor
-            }
-
-            let localTransform: TextTransform = {
-                if let ft = fragment.textTransform {
-                    switch ft {
-                    case .uppercase: return .uppercase
-                    case .lowercase: return .lowercase
-                    case .capitalize: return .capitalize
-                    case .none: return .none
-                    }
-                }
-                return currentTransform
-            }()
-            switch localTransform {
-            case .uppercase: text = text.uppercased()
-            case .lowercase: text = text.lowercased()
-            case .capitalize: text = text.capitalized
-            case .none: break
-            }
-            result.append(NSAttributedString(string: text, attributes: attrs))
+            guard let rawText = fragment.text else { continue }
+            let text = transform(rawText, with: fragment)
+            let attributes = makeAttributes(for: fragment, defaultColor: defaultColor)
+            result.append(NSAttributedString(string: text, attributes: attributes))
         }
+
         setText(result)
+    }
+
+    // MARK: - Attribute helpers
+
+    private func makeAttributes(
+        for fragment: Fragment,
+        defaultColor: UIColor
+    ) -> [NSAttributedString.Key: Any] {
+        var attrs: [NSAttributedString.Key: Any] = [:]
+
+        let font = makeFont(for: fragment)
+        attrs[.font] = font.value
+        if font.isItalic { attrs[.obliqueness] = 0.2 }
+
+        let para = makeParagraphStyle(for: fragment)
+        attrs[.paragraphStyle] = para
+
+        let color = resolveColor(for: fragment, defaultColor: defaultColor)
+        attrs[.foregroundColor] = color
+
+        return attrs
+    }
+
+    private func makeFont(for fragment: Fragment) -> (value: UIFont, isItalic: Bool) {
+        let resolvedSize: CGFloat = {
+            if let s = fragment.fontSize { return CGFloat(s) }
+            if let current = nitroTextView.font?.pointSize { return current }
+            return 14.0
+        }()
+        let weightToken = fragment.fontWeight ?? FontWeight.normal
+        let uiWeight = Self.fontWeightFromString(weightToken)
+
+        var base = UIFont.systemFont(ofSize: resolvedSize, weight: uiWeight)
+        let isItalic = fragment.fontStyle == FontStyle.italic
+        if isItalic {
+            var traits = base.fontDescriptor.symbolicTraits
+            traits.insert(.traitItalic)
+            if let italicDesc = base.fontDescriptor.withSymbolicTraits(traits) {
+                let traitsDict: [UIFontDescriptor.TraitKey: Any] = [.weight: uiWeight]
+                let finalDesc = italicDesc.addingAttributes([
+                    UIFontDescriptor.AttributeName.traits: traitsDict
+                ])
+                base = UIFont(descriptor: finalDesc, size: resolvedSize)
+            }
+        }
+        return (base, isItalic)
+    }
+
+    private func makeParagraphStyle(for fragment: Fragment) -> NSMutableParagraphStyle {
+        let para = NSMutableParagraphStyle()
+
+        if let lineHeight = fragment.lineHeight, lineHeight > 0 {
+            para.minimumLineHeight = lineHeight
+            para.maximumLineHeight = lineHeight
+        }
+
+        if let align = fragment.textAlign {
+            switch align {
+            case .center: para.alignment = .center
+            case .right: para.alignment = .right
+            case .justify: para.alignment = .justified
+            case .left: para.alignment = .left
+            case .auto: para.alignment = .natural
+            }
+        } else {
+            para.alignment = currentTextAlignment
+        }
+
+        let hasLineLimit = nitroTextView.textContainer.maximumNumberOfLines > 0
+        para.lineBreakMode = hasLineLimit ? .byTruncatingTail : .byWordWrapping
+        return para
+    }
+
+    private func resolveColor(for fragment: Fragment, defaultColor: UIColor) -> UIColor {
+        if let value = fragment.fontColor, let parsed = ColorParser.parse(value) {
+            return parsed
+        }
+        return defaultColor
+    }
+
+    private func transform(_ text: String, with fragment: Fragment) -> String {
+        let effective: TextTransform = {
+            if let ft = fragment.textTransform {
+                switch ft {
+                case .uppercase: return .uppercase
+                case .lowercase: return .lowercase
+                case .capitalize: return .capitalize
+                case .none: return .none
+                }
+            }
+            return currentTransform
+        }()
+
+        switch effective {
+        case .uppercase: return text.uppercased()
+        case .lowercase: return text.lowercased()
+        case .capitalize: return text.capitalized
+        case .none: return text
+        }
     }
 }
 
