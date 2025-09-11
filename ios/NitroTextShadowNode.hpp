@@ -54,19 +54,7 @@ namespace margelo::nitro::nitrotext::views
             const react::LayoutContext &layoutContext,
             const react::LayoutConstraints &layoutConstraints) const override
         {
-            // 1) Resolve definite width (Yoga passes min==max when width is known)
-            const float maxW = layoutConstraints.maximumSize.width;
-            const float minW = layoutConstraints.minimumSize.width;
-            const float width = (std::isfinite(maxW) && maxW > 0.f)   ? maxW
-                                : (std::isfinite(minW) && minW > 0.f) ? minW
-                                                                      : 0.f;
-
-            if (width <= 0.f)
-            {
-                return layoutConstraints.clamp({0.f, 0.f});
-            }
-
-            // 2) Build AttributedString with per-fragment attributes to mirror rendering
+            
             const auto &props = this->getConcreteProps();
 
             auto makeTextAttributes = [&](const std::optional<margelo::nitro::nitrotext::Fragment> &fragOpt)
@@ -118,10 +106,6 @@ namespace margelo::nitro::nitrotext::views
                         a.dynamicTypeRamp = RNDTR::LargeTitle;
                         break;
                     }
-                }
-                else
-                {
-                    a.dynamicTypeRamp = facebook::react::DynamicTypeRamp::Body;
                 }
 
                 // fontSize
@@ -327,10 +311,18 @@ namespace margelo::nitro::nitrotext::views
                     a.maxFontSizeMultiplier = props.maxFontSizeMultiplier.value.value();
                 }
 
+                // Layout direction (match RN ParagraphShadowNode)
+                a.layoutDirection = layoutConstraints.layoutDirection;
+
                 return a;
             };
 
             react::AttributedString attributedString;
+            // // Set base attributes like RN's ParagraphShadowNode
+            // {
+            //     auto base = makeTextAttributes(std::nullopt);
+            //     attributedString.setBaseTextAttributes(base);
+            // }
             if (props.fragments.value.has_value())
             {
                 const auto &frags = props.fragments.value.value();
@@ -372,7 +364,8 @@ namespace margelo::nitro::nitrotext::views
             {
                 paragraphAttributes.adjustsFontSizeToFit = props.adjustsFontSizeToFit.value.value();
             }
-            
+            // Keep minimumFontScale as-is; RCTTextLayoutManager primarily uses minimumFontSize,
+            // but leaving the scale here avoids over-adjusting and potential divergences.
             if (props.minimumFontScale.value.has_value())
             {
                 paragraphAttributes.minimumFontScale = props.minimumFontScale.value.value();
@@ -402,18 +395,14 @@ namespace margelo::nitro::nitrotext::views
                 }
             }
 
-            // 3) Ensure we have a TextLayoutManager (set in ComponentDescriptor::adopt)
+            // Ensure we have a TextLayoutManager (set in ComponentDescriptor::adopt)
             if (!textLayoutManager_)
             {
                 // Echo back the given width to avoid "invalid measurement" logs.
-                return layoutConstraints.clamp({width, 0.f});
+                return layoutConstraints.clamp({0.f, 0.f});
             }
 
-            // 4) Pin width and measure
-            react::LayoutConstraints pinned = layoutConstraints;
-            pinned.minimumSize.width = width;
-            pinned.maximumSize.width = width;
-
+            // Measure using given constraints (Yoga already accounts for padding/border).
             react::TextLayoutContext textLayoutContext{
                 .pointScaleFactor = layoutContext.pointScaleFactor,
                 .surfaceId = this->getSurfaceId(),
@@ -421,11 +410,9 @@ namespace margelo::nitro::nitrotext::views
 
             const auto measurement = textLayoutManager_->measure(
                 react::AttributedStringBox{attributedString}, paragraphAttributes,
-                textLayoutContext, pinned);
+                textLayoutContext, layoutConstraints);
 
-            // 5) Return (width, measured.height) and clamp to constraints
-            react::Size out{width, measurement.size.height};
-            return layoutConstraints.clamp(out);
+            return layoutConstraints.clamp(measurement.size);
         }
 
         react::Float baseline(const react::LayoutContext & /*layoutContext*/,

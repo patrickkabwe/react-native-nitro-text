@@ -41,6 +41,7 @@ final class NitroTextView: UITextView {
         backgroundColor = .clear
         textContainerInset = .zero
         textContainer.lineFragmentPadding = 0
+        layoutManager.usesFontLeading = false
         contentInset = .zero
         clipsToBounds = true
         
@@ -74,6 +75,7 @@ final class NitroTextView: UITextView {
     private static func makeTextKitStack() -> (NSTextStorage, NSLayoutManager, NSTextContainer) {
         let storage = NSTextStorage()
         let layout = NSLayoutManager()
+        layout.usesFontLeading = false
         let container = NSTextContainer(size: .zero)
         layout.addTextContainer(container)
         storage.addLayoutManager(layout)

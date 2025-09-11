@@ -146,7 +146,6 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
     var adjustsFontSizeToFit: Bool? {
         didSet {
             nitroTextImpl.setAdjustsFontSizeToFit(adjustsFontSizeToFit)
-            // For now, this flag influences measurement via ShadowNode; rendering is TBD.
             applyFragmentsAndProps()
         }
     }
