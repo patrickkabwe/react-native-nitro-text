@@ -37,8 +37,6 @@ export function flattenChildrenToFragments(
         frags.push({ text, ...base } as Fragment);
     };
 
-    console.log('children', children);
-
     React.Children.forEach(children, (child) => {
         if (child == null || child === false) return;
         if (typeof child === 'string' || typeof child === 'number') {
