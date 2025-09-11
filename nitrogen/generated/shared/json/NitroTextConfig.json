@@ -8,6 +8,7 @@
     "selectable": true,
     "allowFontScaling": true,
     "ellipsizeMode": true,
+    "lineBreakStrategyIOS": true,
     "dynamicTypeRamp": true,
     "onSelectableTextMeasured": true,
     "text": true,

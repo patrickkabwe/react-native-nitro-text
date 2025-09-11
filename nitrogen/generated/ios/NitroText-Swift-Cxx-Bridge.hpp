@@ -20,6 +20,8 @@ namespace margelo::nitro::nitrotext { enum class FontWeight; }
 namespace margelo::nitro::nitrotext { struct Fragment; }
 // Forward declaration of `HybridNitroTextSpec` to properly resolve imports.
 namespace margelo::nitro::nitrotext { class HybridNitroTextSpec; }
+// Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `TextAlign` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
@@ -36,6 +38,7 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "FontWeight.hpp"
 #include "Fragment.hpp"
 #include "HybridNitroTextSpec.hpp"
+#include "LineBreakStrategyIOS.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
 #include <functional>
@@ -193,6 +196,21 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline EllipsizeMode get_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<LineBreakStrategyIOS>
+  /**
+   * Specialized version of `std::optional<LineBreakStrategyIOS>`.
+   */
+  using std__optional_LineBreakStrategyIOS_ = std::optional<LineBreakStrategyIOS>;
+  inline std::optional<LineBreakStrategyIOS> create_std__optional_LineBreakStrategyIOS_(const LineBreakStrategyIOS& value) noexcept {
+    return std::optional<LineBreakStrategyIOS>(value);
+  }
+  inline bool has_value_std__optional_LineBreakStrategyIOS_(const std::optional<LineBreakStrategyIOS>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline LineBreakStrategyIOS get_std__optional_LineBreakStrategyIOS_(const std::optional<LineBreakStrategyIOS>& optional) noexcept {
     return *optional;
   }
   

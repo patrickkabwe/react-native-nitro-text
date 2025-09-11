@@ -15,9 +15,31 @@ final class NitroTextImpl {
     var fontCache: [FontKey: UIFont] = [:]
     var allowFontScaling: Bool = true
     var dynamicTypeTextStyle: UIFont.TextStyle? = nil
+    @available(iOS 14.0, *)
+    var currentLineBreakStrategy: NSParagraphStyle.LineBreakStrategy = .standard
     
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
+    }
+
+    func setLineBreakStrategyIOS(_ value: LineBreakStrategyIOS?) {
+        if #available(iOS 14.0, *) {
+            switch value {
+            case .some(.none):
+                currentLineBreakStrategy = []
+            case .some(.standard):
+                currentLineBreakStrategy = .standard
+            case .some(.hangulWord):
+                currentLineBreakStrategy = .hangulWordPriority
+            case .some(.pushOut):
+                currentLineBreakStrategy = .pushOut
+            default:
+                currentLineBreakStrategy = .standard
+            }
+            if let text = nitroTextView?.attributedText, text.length > 0 {
+                nitroTextView?.attributedText = text
+            }
+        }
     }
     
     func setSelectable(_ selectable: Bool?) {

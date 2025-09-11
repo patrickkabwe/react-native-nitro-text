@@ -91,6 +91,11 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setEllipsizeMode(newViewProps.ellipsizeMode.value);
     newViewProps.ellipsizeMode.isDirty = false;
   }
+  // lineBreakStrategyIOS: optional
+  if (newViewProps.lineBreakStrategyIOS.isDirty) {
+    swiftPart.setLineBreakStrategyIOS(newViewProps.lineBreakStrategyIOS.value);
+    newViewProps.lineBreakStrategyIOS.isDirty = false;
+  }
   // dynamicTypeRamp: optional
   if (newViewProps.dynamicTypeRamp.isDirty) {
     swiftPart.setDynamicTypeRamp(newViewProps.dynamicTypeRamp.value);

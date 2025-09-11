@@ -128,6 +128,13 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             applyFragmentsAndProps()
         }
     }
+
+    var lineBreakStrategyIOS: LineBreakStrategyIOS? {
+        didSet {
+            nitroTextImpl.setLineBreakStrategyIOS(lineBreakStrategyIOS)
+            applyFragmentsAndProps()
+        }
+    }
         
     // Merge per-fragment props with top-level fallbacks and apply (delegated to NitroTextImpl)
     private func applyFragmentsAndProps() {

@@ -23,6 +23,8 @@
 #include <optional>
 #include "EllipsizeMode.hpp"
 #include <optional>
+#include "LineBreakStrategyIOS.hpp"
+#include <optional>
 #include "DynamicTypeRamp.hpp"
 #include <optional>
 #include <functional>
@@ -73,6 +75,7 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<bool>> selectable;
     CachedProp<std::optional<bool>> allowFontScaling;
     CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
+    CachedProp<std::optional<LineBreakStrategyIOS>> lineBreakStrategyIOS;
     CachedProp<std::optional<DynamicTypeRamp>> dynamicTypeRamp;
     CachedProp<std::optional<std::function<void(double /* height */)>>> onSelectableTextMeasured;
     CachedProp<std::optional<std::string>> text;

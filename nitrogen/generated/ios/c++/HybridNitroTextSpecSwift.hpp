@@ -24,6 +24,8 @@ namespace margelo::nitro::nitrotext { enum class TextAlign; }
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
+// Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
 
@@ -36,6 +38,7 @@ namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
 #include "EllipsizeMode.hpp"
+#include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
 #include <functional>
 
@@ -103,6 +106,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) noexcept override {
       _swiftPart.setEllipsizeMode(ellipsizeMode);
+    }
+    inline std::optional<LineBreakStrategyIOS> getLineBreakStrategyIOS() noexcept override {
+      auto __result = _swiftPart.getLineBreakStrategyIOS();
+      return __result;
+    }
+    inline void setLineBreakStrategyIOS(std::optional<LineBreakStrategyIOS> lineBreakStrategyIOS) noexcept override {
+      _swiftPart.setLineBreakStrategyIOS(lineBreakStrategyIOS);
     }
     inline std::optional<DynamicTypeRamp> getDynamicTypeRamp() noexcept override {
       auto __result = _swiftPart.getDynamicTypeRamp();

@@ -7,6 +7,7 @@ import type {
 type TextAlign = 'auto' | 'left' | 'right' | 'center' | 'justify'
 type TextTransform = 'none' | 'uppercase' | 'lowercase' | 'capitalize'
 type EllipsizeMode = 'head' | 'middle' | 'tail' | 'clip'
+type LineBreakStrategyIOS = 'none' | 'standard' | 'hangul-word' | 'push-out'
 type DynamicTypeRamp =
   | 'caption2'
   | 'caption1'
@@ -99,6 +100,16 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
      * Defaults to 'tail' like RN Text.
      */
     ellipsizeMode?: EllipsizeMode
+
+    /**
+     * iOS-only line breaking strategy applied when wrapping lines.
+     * Mirrors React Native's `lineBreakStrategyIOS`.
+     * - 'standard' (default): Use Apple's standard strategies
+     * - 'hangul-word': Prioritize Hangul word boundaries
+     * - 'push-out': Push glyphs out to avoid breaks
+     * - 'none': Disable special strategies
+     */
+    lineBreakStrategyIOS?: LineBreakStrategyIOS
 
     /**
      * iOS Dynamic Type ramp. Selects the UIFontMetrics text style used for scaling.
