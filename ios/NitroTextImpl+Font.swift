@@ -8,6 +8,12 @@
 import UIKit
 
 extension NitroTextImpl {
+    struct FontKey: Hashable {
+        let size: CGFloat
+        let weightRaw: CGFloat
+        let italic: Bool
+    }
+
     func makeFont(for fragment: Fragment, defaultPointSize: CGFloat?) -> (value: UIFont, isItalic: Bool) {
         let resolvedSize: CGFloat = {
             if let s = fragment.fontSize { return CGFloat(s) }
@@ -16,9 +22,14 @@ extension NitroTextImpl {
         }()
         let weightToken = fragment.fontWeight ?? FontWeight.normal
         let uiWeight = Self.uiFontWeight(for: weightToken)
+        let isItalic = fragment.fontStyle == FontStyle.italic
+
+        let key = FontKey(size: resolvedSize, weightRaw: uiWeight.rawValue, italic: isItalic)
+        if let cached = fontCache[key] {
+            return (cached, isItalic)
+        }
 
         var base = UIFont.systemFont(ofSize: resolvedSize, weight: uiWeight)
-        let isItalic = fragment.fontStyle == FontStyle.italic
         if isItalic {
             var traits = base.fontDescriptor.symbolicTraits
             traits.insert(.traitItalic)
@@ -30,6 +41,7 @@ extension NitroTextImpl {
                 base = UIFont(descriptor: finalDesc, size: resolvedSize)
             }
         }
+        fontCache[key] = base
         return (base, isItalic)
     }
     static func uiFontWeight(for weight: FontWeight) -> UIFont.Weight {

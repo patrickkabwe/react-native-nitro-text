@@ -12,6 +12,8 @@ final class NitroTextImpl {
     var currentTextAlignment: NSTextAlignment = .natural
     var currentTransform: TextTransform = .none
     var currentEllipsize: NSLineBreakMode = .byTruncatingTail
+    // Small font cache to avoid repeatedly recreating identical UIFonts
+    var fontCache: [NitroTextImpl.FontKey: UIFont] = [:]
     
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
