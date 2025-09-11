@@ -13,6 +13,7 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   // Properties
   var fragments: [Fragment]? { get set }
   var selectable: Bool? { get set }
+  var ellipsizeMode: EllipsizeMode? { get set }
   var onSelectableTextMeasured: ((_ height: Double) -> Void)? { get set }
   var fontSize: Double? { get set }
   var fontWeight: FontWeight? { get set }
@@ -23,7 +24,6 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var numberOfLines: Double? { get set }
   var textAlign: TextAlign? { get set }
   var textTransform: TextTransform? { get set }
-  var ellipsizeMode: EllipsizeMode? { get set }
 
   // Methods
   

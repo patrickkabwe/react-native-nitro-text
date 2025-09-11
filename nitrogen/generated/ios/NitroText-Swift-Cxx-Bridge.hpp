@@ -8,6 +8,8 @@
 #pragma once
 
 // Forward declarations of C++ defined types
+// Forward declaration of `EllipsizeMode` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `FontStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class FontStyle; }
 // Forward declaration of `FontWeight` to properly resolve imports.
@@ -20,21 +22,19 @@ namespace margelo::nitro::nitrotext { class HybridNitroTextSpec; }
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
-// Forward declaration of `EllipsizeMode` to properly resolve imports.
-namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 
 // Forward declarations of Swift defined types
 // Forward declaration of `HybridNitroTextSpec_cxx` to properly resolve imports.
 namespace NitroText { class HybridNitroTextSpec_cxx; }
 
 // Include C++ defined types
+#include "EllipsizeMode.hpp"
 #include "FontStyle.hpp"
 #include "FontWeight.hpp"
 #include "Fragment.hpp"
 #include "HybridNitroTextSpec.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
-#include "EllipsizeMode.hpp"
 #include <functional>
 #include <memory>
 #include <optional>
@@ -137,21 +137,6 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return *optional;
   }
   
-  // pragma MARK: std::optional<EllipsizeMode>
-  /**
-   * Specialized version of `std::optional<EllipsizeMode>`.
-   */
-  using std__optional_EllipsizeMode_ = std::optional<EllipsizeMode>;
-  inline std::optional<EllipsizeMode> create_std__optional_EllipsizeMode_(const EllipsizeMode& value) noexcept {
-    return std::optional<EllipsizeMode>(value);
-  }
-  inline bool has_value_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
-    return optional.has_value();
-  }
-  inline EllipsizeMode get_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
-    return *optional;
-  }
-  
   // pragma MARK: std::vector<Fragment>
   /**
    * Specialized version of `std::vector<Fragment>`.
@@ -190,6 +175,21 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline bool get_std__optional_bool_(const std::optional<bool>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<EllipsizeMode>
+  /**
+   * Specialized version of `std::optional<EllipsizeMode>`.
+   */
+  using std__optional_EllipsizeMode_ = std::optional<EllipsizeMode>;
+  inline std::optional<EllipsizeMode> create_std__optional_EllipsizeMode_(const EllipsizeMode& value) noexcept {
+    return std::optional<EllipsizeMode>(value);
+  }
+  inline bool has_value_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline EllipsizeMode get_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
     return *optional;
   }
   

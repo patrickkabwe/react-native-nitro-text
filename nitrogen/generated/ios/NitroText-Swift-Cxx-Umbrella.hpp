@@ -8,6 +8,8 @@
 #pragma once
 
 // Forward declarations of C++ defined types
+// Forward declaration of `EllipsizeMode` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `FontStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class FontStyle; }
 // Forward declaration of `FontWeight` to properly resolve imports.
@@ -22,11 +24,11 @@ namespace margelo::nitro::nitrotext { enum class TextAlign; }
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
 
 // Include C++ defined types
+#include "EllipsizeMode.hpp"
 #include "FontStyle.hpp"
 #include "FontWeight.hpp"
 #include "Fragment.hpp"
 #include "HybridNitroTextSpec.hpp"
-#include "EllipsizeMode.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
 #include <functional>

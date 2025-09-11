@@ -6,6 +6,7 @@
   "validAttributes": {
     "fragments": true,
     "selectable": true,
+    "ellipsizeMode": true,
     "onSelectableTextMeasured": true,
     "fontSize": true,
     "fontWeight": true,
@@ -14,7 +15,6 @@
     "lineHeight": true,
     "text": true,
     "numberOfLines": true,
-    "ellipsizeMode": true,
     "textAlign": true,
     "textTransform": true,
     "hybridRef": true
