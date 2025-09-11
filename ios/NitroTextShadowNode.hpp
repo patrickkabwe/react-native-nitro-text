@@ -300,6 +300,27 @@ namespace margelo::nitro::nitrotext::views
                     applyTransform(props.textTransform.value.value());
                 }
 
+                if (props.lineBreakStrategyIOS.value.has_value())
+                {
+                    using RNLineBreakStrategy = facebook::react::LineBreakStrategy;
+                    using NitroLBS = margelo::nitro::nitrotext::LineBreakStrategyIOS;
+                    switch (props.lineBreakStrategyIOS.value.value())
+                    {
+                    case NitroLBS::NONE:
+                        a.lineBreakStrategy = RNLineBreakStrategy::None;
+                        break;
+                    case NitroLBS::STANDARD:
+                        a.lineBreakStrategy = RNLineBreakStrategy::Standard;
+                        break;
+                    case NitroLBS::HANGUL_WORD:
+                        a.lineBreakStrategy = RNLineBreakStrategy::HangulWordPriority;
+                        break;
+                    case NitroLBS::PUSH_OUT:
+                        a.lineBreakStrategy = RNLineBreakStrategy::PushOut;
+                        break;
+                    }
+                }
+
                 return a;
             };
 

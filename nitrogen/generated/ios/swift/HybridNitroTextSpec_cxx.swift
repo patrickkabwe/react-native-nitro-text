@@ -187,6 +187,23 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
+  public final var lineBreakStrategyIOS: bridge.std__optional_LineBreakStrategyIOS_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_LineBreakStrategyIOS_ in
+        if let __unwrappedValue = self.__implementation.lineBreakStrategyIOS {
+          return bridge.create_std__optional_LineBreakStrategyIOS_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.lineBreakStrategyIOS = newValue.value
+    }
+  }
+  
   public final var dynamicTypeRamp: bridge.std__optional_DynamicTypeRamp_ {
     @inline(__always)
     get {

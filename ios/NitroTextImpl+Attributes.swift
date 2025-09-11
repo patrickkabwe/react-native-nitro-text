@@ -75,6 +75,9 @@ extension NitroTextImpl {
         if let n = nitroTextView?.textContainer.maximumNumberOfLines {
             para.lineBreakMode = effectiveLineBreakMode(forLines: n)
         }
+        if #available(iOS 14.0, *), let _ = nitroTextView {
+            para.lineBreakStrategy = currentLineBreakStrategy
+        }
         return para
     }
 

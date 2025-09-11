@@ -17,6 +17,8 @@
 namespace margelo::nitro::nitrotext { struct Fragment; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
+// Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
 // Forward declaration of `FontWeight` to properly resolve imports.
@@ -32,6 +34,7 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include <vector>
 #include <optional>
 #include "EllipsizeMode.hpp"
+#include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
 #include <functional>
 #include <string>
@@ -75,6 +78,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setAllowFontScaling(std::optional<bool> allowFontScaling) = 0;
       virtual std::optional<EllipsizeMode> getEllipsizeMode() = 0;
       virtual void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) = 0;
+      virtual std::optional<LineBreakStrategyIOS> getLineBreakStrategyIOS() = 0;
+      virtual void setLineBreakStrategyIOS(std::optional<LineBreakStrategyIOS> lineBreakStrategyIOS) = 0;
       virtual std::optional<DynamicTypeRamp> getDynamicTypeRamp() = 0;
       virtual void setDynamicTypeRamp(std::optional<DynamicTypeRamp> dynamicTypeRamp) = 0;
       virtual std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() = 0;

@@ -22,6 +22,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("allowFontScaling", &HybridNitroTextSpec::setAllowFontScaling);
       prototype.registerHybridGetter("ellipsizeMode", &HybridNitroTextSpec::getEllipsizeMode);
       prototype.registerHybridSetter("ellipsizeMode", &HybridNitroTextSpec::setEllipsizeMode);
+      prototype.registerHybridGetter("lineBreakStrategyIOS", &HybridNitroTextSpec::getLineBreakStrategyIOS);
+      prototype.registerHybridSetter("lineBreakStrategyIOS", &HybridNitroTextSpec::setLineBreakStrategyIOS);
       prototype.registerHybridGetter("dynamicTypeRamp", &HybridNitroTextSpec::getDynamicTypeRamp);
       prototype.registerHybridSetter("dynamicTypeRamp", &HybridNitroTextSpec::setDynamicTypeRamp);
       prototype.registerHybridGetter("onSelectableTextMeasured", &HybridNitroTextSpec::getOnSelectableTextMeasured);

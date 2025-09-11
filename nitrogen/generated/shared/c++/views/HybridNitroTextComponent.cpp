@@ -65,6 +65,16 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.ellipsizeMode: ") + exc.what());
       }
     }()),
+    lineBreakStrategyIOS([&]() -> CachedProp<std::optional<LineBreakStrategyIOS>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("lineBreakStrategyIOS", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.lineBreakStrategyIOS;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<LineBreakStrategyIOS>>::fromRawValue(*runtime, value, sourceProps.lineBreakStrategyIOS);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.lineBreakStrategyIOS: ") + exc.what());
+      }
+    }()),
     dynamicTypeRamp([&]() -> CachedProp<std::optional<DynamicTypeRamp>> {
       try {
         const react::RawValue* rawValue = rawProps.at("dynamicTypeRamp", nullptr, nullptr);
@@ -202,6 +212,7 @@ namespace margelo::nitro::nitrotext::views {
     selectable(other.selectable),
     allowFontScaling(other.allowFontScaling),
     ellipsizeMode(other.ellipsizeMode),
+    lineBreakStrategyIOS(other.lineBreakStrategyIOS),
     dynamicTypeRamp(other.dynamicTypeRamp),
     onSelectableTextMeasured(other.onSelectableTextMeasured),
     text(other.text),
@@ -222,6 +233,7 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("selectable"): return true;
       case hashString("allowFontScaling"): return true;
       case hashString("ellipsizeMode"): return true;
+      case hashString("lineBreakStrategyIOS"): return true;
       case hashString("dynamicTypeRamp"): return true;
       case hashString("onSelectableTextMeasured"): return true;
       case hashString("text"): return true;
