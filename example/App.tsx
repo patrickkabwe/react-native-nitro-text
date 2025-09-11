@@ -59,7 +59,11 @@ export default function App() {
       {/* Layout Measurement */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Layout Measurement</NitroText>
-        <NitroText style={styles.measuredText} onLayout={handleLayout} onTextLayout={handleTextLayout}>
+        <NitroText
+          style={styles.measuredText}
+          onLayout={handleLayout}
+          onTextLayout={handleTextLayout}
+        >
           This text demonstrates layout measurement capabilities. The component
           can measure its dimensions and report back to JavaScript.
           {'\n\n'}
@@ -73,13 +77,30 @@ export default function App() {
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Line Limiting</NitroText>
         <NitroText style={styles.description}>Two lines maximum:</NitroText>
+
+        {/* BUG: This does not work correctly in NitroText. needs to be fixed. */}
         <NitroText style={styles.limitedText} numberOfLines={2}>
-          This is a very long text that would normally span multiple lines, but
-          we're limiting it to just two lines. The text will be truncated with
-          an ellipsis when it exceeds the specified number of lines. This is
-          useful for creating consistent layouts in lists or cards where you
-          need predictable text heights.
+          This is a very long text that would normally{' '}
+          <NitroText style={[styles.limitedText, { fontWeight: 'bold' }]}>
+            span multiple lines, but we're limiting it to just two lines. The
+            text will be truncated with an ellipsis when it exceeds the
+            specified number of lines. This is useful for creating consistent
+            layouts in lists or cards where you need predictable text heights.
+          </NitroText>
         </NitroText>
+
+        <Text style={[styles.description, { marginTop: 8 }]}>
+          RN Text (with tail ellipsize mode):
+        </Text>
+        <Text style={styles.limitedText} numberOfLines={2}>
+          This is a very long text that would normally{' '}
+          <Text style={styles.limitedText}>
+            span multiple lines, but we're limiting it to just two lines. The
+            text will be truncated with an ellipsis when it exceeds the
+            specified number of lines. This is useful for creating consistent
+            layouts in lists or cards where you need predictable text heights.
+          </Text>
+        </Text>
       </View>
 
       {/* Mixed Content */}

@@ -98,12 +98,14 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
     var numberOfLines: Double? {
         didSet {
             nitroTextImpl.setNumberOfLines(numberOfLines)
+            applyFragmentsAndProps()
         }
     }
     
     var ellipsizeMode: EllipsizeMode? {
         didSet {
             nitroTextImpl.setEllipsizeMode(ellipsizeMode)
+            applyFragmentsAndProps()
         }
     }
         
