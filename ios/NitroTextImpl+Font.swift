@@ -7,13 +7,13 @@
 
 import UIKit
 
-extension NitroTextImpl {
-    struct FontKey: Hashable {
-        let size: CGFloat
-        let weightRaw: CGFloat
-        let italic: Bool
-    }
+struct FontKey: Hashable {
+    let size: CGFloat
+    let weightRaw: CGFloat
+    let italic: Bool
+}
 
+extension NitroTextImpl {
     func makeFont(for fragment: Fragment, defaultPointSize: CGFloat?) -> (value: UIFont, isItalic: Bool) {
         let resolvedSize: CGFloat = {
             if let s = fragment.fontSize { return CGFloat(s) }
