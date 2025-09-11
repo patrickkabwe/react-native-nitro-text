@@ -28,8 +28,8 @@ namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
-#include "FontWeight.hpp"
 #include <string>
+#include "FontWeight.hpp"
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
@@ -108,6 +108,13 @@ namespace margelo::nitro::nitrotext {
     inline void setOnSelectableTextMeasured(const std::optional<std::function<void(double /* height */)>>& onSelectableTextMeasured) noexcept override {
       _swiftPart.setOnSelectableTextMeasured(onSelectableTextMeasured);
     }
+    inline std::optional<std::string> getText() noexcept override {
+      auto __result = _swiftPart.getText();
+      return __result;
+    }
+    inline void setText(const std::optional<std::string>& text) noexcept override {
+      _swiftPart.setText(text);
+    }
     inline std::optional<double> getFontSize() noexcept override {
       auto __result = _swiftPart.getFontSize();
       return __result;
@@ -143,12 +150,12 @@ namespace margelo::nitro::nitrotext {
     inline void setLineHeight(std::optional<double> lineHeight) noexcept override {
       _swiftPart.setLineHeight(lineHeight);
     }
-    inline std::optional<std::string> getText() noexcept override {
-      auto __result = _swiftPart.getText();
+    inline std::optional<double> getLetterSpacing() noexcept override {
+      auto __result = _swiftPart.getLetterSpacing();
       return __result;
     }
-    inline void setText(const std::optional<std::string>& text) noexcept override {
-      _swiftPart.setText(text);
+    inline void setLetterSpacing(std::optional<double> letterSpacing) noexcept override {
+      _swiftPart.setLetterSpacing(letterSpacing);
     }
     inline std::optional<double> getNumberOfLines() noexcept override {
       auto __result = _swiftPart.getNumberOfLines();

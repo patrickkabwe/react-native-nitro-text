@@ -219,6 +219,30 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
+  public final var text: bridge.std__optional_std__string_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = self.__implementation.text {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.text = { () -> String? in
+        if bridge.has_value_std__optional_std__string_(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__string_(newValue)
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }()
+    }
+  }
+  
   public final var fontSize: bridge.std__optional_double_ {
     @inline(__always)
     get {
@@ -311,12 +335,12 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
-  public final var text: bridge.std__optional_std__string_ {
+  public final var letterSpacing: bridge.std__optional_double_ {
     @inline(__always)
     get {
-      return { () -> bridge.std__optional_std__string_ in
-        if let __unwrappedValue = self.__implementation.text {
-          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+      return { () -> bridge.std__optional_double_ in
+        if let __unwrappedValue = self.__implementation.letterSpacing {
+          return bridge.create_std__optional_double_(__unwrappedValue)
         } else {
           return .init()
         }
@@ -324,14 +348,7 @@ open class HybridNitroTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.text = { () -> String? in
-        if bridge.has_value_std__optional_std__string_(newValue) {
-          let __unwrapped = bridge.get_std__optional_std__string_(newValue)
-          return String(__unwrapped)
-        } else {
-          return nil
-        }
-      }()
+      self.__implementation.letterSpacing = newValue.value
     }
   }
   

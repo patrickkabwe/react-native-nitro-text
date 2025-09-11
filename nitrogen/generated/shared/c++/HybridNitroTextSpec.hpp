@@ -31,8 +31,8 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include <optional>
 #include "EllipsizeMode.hpp"
 #include <functional>
-#include "FontWeight.hpp"
 #include <string>
+#include "FontWeight.hpp"
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
@@ -74,6 +74,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) = 0;
       virtual std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() = 0;
       virtual void setOnSelectableTextMeasured(const std::optional<std::function<void(double /* height */)>>& onSelectableTextMeasured) = 0;
+      virtual std::optional<std::string> getText() = 0;
+      virtual void setText(const std::optional<std::string>& text) = 0;
       virtual std::optional<double> getFontSize() = 0;
       virtual void setFontSize(std::optional<double> fontSize) = 0;
       virtual std::optional<FontWeight> getFontWeight() = 0;
@@ -84,8 +86,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setFontStyle(std::optional<FontStyle> fontStyle) = 0;
       virtual std::optional<double> getLineHeight() = 0;
       virtual void setLineHeight(std::optional<double> lineHeight) = 0;
-      virtual std::optional<std::string> getText() = 0;
-      virtual void setText(const std::optional<std::string>& text) = 0;
+      virtual std::optional<double> getLetterSpacing() = 0;
+      virtual void setLetterSpacing(std::optional<double> letterSpacing) = 0;
       virtual std::optional<double> getNumberOfLines() = 0;
       virtual void setNumberOfLines(std::optional<double> numberOfLines) = 0;
       virtual std::optional<TextAlign> getTextAlign() = 0;

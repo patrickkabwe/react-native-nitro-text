@@ -86,6 +86,7 @@ export const NitroText = (props: TextProps) => {
           fontWeight={top.fontWeight}
           fontStyle={top.fontStyle}
           lineHeight={top.lineHeight}
+          letterSpacing={top.letterSpacing}
         />
       </NitroTextNestingContext.Provider>
     )
@@ -101,6 +102,7 @@ export const NitroText = (props: TextProps) => {
         fontColor={color}
         fontWeight={top.fontWeight}
         fontStyle={top.fontStyle}
+        letterSpacing={top.letterSpacing}
         textAlign={textAlign}
         textTransform={textTransform}
       />

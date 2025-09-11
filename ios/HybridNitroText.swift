@@ -96,6 +96,12 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
         }
     }
     
+    var letterSpacing: Double? {
+        didSet {
+            applyFragmentsAndProps()
+        }
+    }
+    
     var text: String? {
         didSet {
             applyFragmentsAndProps()
@@ -122,6 +128,7 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             fontColor: fontColor,
             fontStyle: fontStyle,
             lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
             textAlign: textAlign,
             textTransform: textTransform
         )

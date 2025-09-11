@@ -24,6 +24,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("ellipsizeMode", &HybridNitroTextSpec::setEllipsizeMode);
       prototype.registerHybridGetter("onSelectableTextMeasured", &HybridNitroTextSpec::getOnSelectableTextMeasured);
       prototype.registerHybridSetter("onSelectableTextMeasured", &HybridNitroTextSpec::setOnSelectableTextMeasured);
+      prototype.registerHybridGetter("text", &HybridNitroTextSpec::getText);
+      prototype.registerHybridSetter("text", &HybridNitroTextSpec::setText);
       prototype.registerHybridGetter("fontSize", &HybridNitroTextSpec::getFontSize);
       prototype.registerHybridSetter("fontSize", &HybridNitroTextSpec::setFontSize);
       prototype.registerHybridGetter("fontWeight", &HybridNitroTextSpec::getFontWeight);
@@ -34,8 +36,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("fontStyle", &HybridNitroTextSpec::setFontStyle);
       prototype.registerHybridGetter("lineHeight", &HybridNitroTextSpec::getLineHeight);
       prototype.registerHybridSetter("lineHeight", &HybridNitroTextSpec::setLineHeight);
-      prototype.registerHybridGetter("text", &HybridNitroTextSpec::getText);
-      prototype.registerHybridSetter("text", &HybridNitroTextSpec::setText);
+      prototype.registerHybridGetter("letterSpacing", &HybridNitroTextSpec::getLetterSpacing);
+      prototype.registerHybridSetter("letterSpacing", &HybridNitroTextSpec::setLetterSpacing);
       prototype.registerHybridGetter("numberOfLines", &HybridNitroTextSpec::getNumberOfLines);
       prototype.registerHybridSetter("numberOfLines", &HybridNitroTextSpec::setNumberOfLines);
       prototype.registerHybridGetter("textAlign", &HybridNitroTextSpec::getTextAlign);

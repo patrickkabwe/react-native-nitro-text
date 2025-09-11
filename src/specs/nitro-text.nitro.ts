@@ -15,17 +15,25 @@ type FontStyle = 'normal' | 'italic' | 'oblique'
 
 export type Fragment = {
     /**
+     * The text of the text.
+     */
+    text?: string
+
+    /**
      * The font size of the text.
      */
     fontSize?: number
+
     /**
      * The font weight of the text.
      */
     fontWeight?: FontWeight
+
     /**
      * The font color of the text.
      */
     fontColor?: string
+
     /**
      * The font style of the text (italic, normal).
      */
@@ -37,9 +45,10 @@ export type Fragment = {
     lineHeight?: number
 
     /**
-     * The text of the text.
+     * Additional space between letters (kerning), in points.
+     * Matches React Native Text's `letterSpacing` on iOS.
      */
-    text?: string
+    letterSpacing?: number
 
     /**
      * The number of lines of the text.

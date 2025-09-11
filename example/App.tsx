@@ -405,6 +405,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     textAlign: 'center',
     marginBottom: 1,
+    letterSpacing: 10,
     // alignSelf: 'flex-start',
     // width: '100%',
     // height: '100%',

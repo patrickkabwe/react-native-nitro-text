@@ -14,6 +14,7 @@ extension NitroTextImpl {
         let fontColor: String?
         let fontStyle: FontStyle?
         let lineHeight: Double?
+        let letterSpacing: Double?
         let textAlign: TextAlign?
         let textTransform: TextTransform?
     }
@@ -23,12 +24,13 @@ extension NitroTextImpl {
         guard let fragments, !fragments.isEmpty else {
             if let t = text {
                 let single = Fragment(
+                    text: t,
                     fontSize: top.fontSize,
                     fontWeight: top.fontWeight,
                     fontColor: top.fontColor,
                     fontStyle: top.fontStyle,
                     lineHeight: top.lineHeight,
-                    text: t,
+                    letterSpacing: top.letterSpacing,
                     numberOfLines: nil,
                     textAlign: top.textAlign,
                     textTransform: top.textTransform
@@ -49,6 +51,7 @@ extension NitroTextImpl {
             if frag.fontWeight == nil, let v = top.fontWeight { frag.fontWeight = v }
             if frag.fontStyle == nil, let v = top.fontStyle { frag.fontStyle = v }
             if frag.lineHeight == nil, let v = top.lineHeight, v > 0 { frag.lineHeight = v }
+            if frag.letterSpacing == nil, let v = top.letterSpacing { frag.letterSpacing = v }
             if frag.fontColor == nil, let v = top.fontColor, !v.isEmpty { frag.fontColor = v }
             if frag.textAlign == nil, let v = top.textAlign { frag.textAlign = v }
             if frag.textTransform == nil, let v = top.textTransform { frag.textTransform = v }

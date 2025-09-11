@@ -25,6 +25,8 @@
 #include <optional>
 #include <functional>
 #include <optional>
+#include <string>
+#include <optional>
 #include <optional>
 #include "FontWeight.hpp"
 #include <optional>
@@ -33,7 +35,6 @@
 #include "FontStyle.hpp"
 #include <optional>
 #include <optional>
-#include <string>
 #include <optional>
 #include <optional>
 #include "TextAlign.hpp"
@@ -71,12 +72,13 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<bool>> allowFontScaling;
     CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
     CachedProp<std::optional<std::function<void(double /* height */)>>> onSelectableTextMeasured;
+    CachedProp<std::optional<std::string>> text;
     CachedProp<std::optional<double>> fontSize;
     CachedProp<std::optional<FontWeight>> fontWeight;
     CachedProp<std::optional<std::string>> fontColor;
     CachedProp<std::optional<FontStyle>> fontStyle;
     CachedProp<std::optional<double>> lineHeight;
-    CachedProp<std::optional<std::string>> text;
+    CachedProp<std::optional<double>> letterSpacing;
     CachedProp<std::optional<double>> numberOfLines;
     CachedProp<std::optional<TextAlign>> textAlign;
     CachedProp<std::optional<TextTransform>> textTransform;
