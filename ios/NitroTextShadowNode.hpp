@@ -222,7 +222,7 @@ namespace margelo::nitro::nitrotext::views
                     applyAlign(props.textAlign.value.value());
                 }
 
-                // Effective textTransform
+                // textTransform
                 auto applyTransform = [&](margelo::nitro::nitrotext::TextTransform t)
                 {
                     using RNTransform = facebook::react::TextTransform;
