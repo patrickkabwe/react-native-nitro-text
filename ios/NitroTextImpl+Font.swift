@@ -20,7 +20,6 @@ extension NitroTextImpl {
             if let current = defaultPointSize { return current }
             return 14.0
         }()
-        // Apply Dynamic Type scaling if enabled
         let finalPointSize: CGFloat = allowFontScaling ? UIFontMetrics.default.scaledValue(for: resolvedSize) : resolvedSize
         let weightToken = fragment.fontWeight ?? FontWeight.normal
         let uiWeight = Self.uiFontWeight(for: weightToken)
