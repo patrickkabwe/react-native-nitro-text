@@ -4,9 +4,8 @@
   "bubblingEventTypes": {},
   "directEventTypes": {},
   "validAttributes": {
-    "fragments": true,
     "selectable": true,
-    "ellipsizeMode": true,
+    "fragments": true,
     "onSelectableTextMeasured": true,
     "fontSize": true,
     "fontWeight": true,
@@ -17,6 +16,7 @@
     "numberOfLines": true,
     "textAlign": true,
     "textTransform": true,
+    "ellipsizeMode": true,
     "hybridRef": true
   }
 }

@@ -25,9 +25,9 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 
+#include <optional>
 #include "Fragment.hpp"
 #include <vector>
-#include <optional>
 #include "FontWeight.hpp"
 #include <string>
 #include "FontStyle.hpp"
@@ -73,13 +73,6 @@ namespace margelo::nitro::nitrotext {
 
   public:
     // Properties
-    inline std::optional<std::vector<Fragment>> getFragments() noexcept override {
-      auto __result = _swiftPart.getFragments();
-      return __result;
-    }
-    inline void setFragments(const std::optional<std::vector<Fragment>>& fragments) noexcept override {
-      _swiftPart.setFragments(fragments);
-    }
     inline std::optional<bool> getSelectable() noexcept override {
       auto __result = _swiftPart.getSelectable();
       return __result;
@@ -87,12 +80,12 @@ namespace margelo::nitro::nitrotext {
     inline void setSelectable(std::optional<bool> selectable) noexcept override {
       _swiftPart.setSelectable(selectable);
     }
-    inline std::optional<EllipsizeMode> getEllipsizeMode() noexcept override {
-      auto __result = _swiftPart.getEllipsizeMode();
+    inline std::optional<std::vector<Fragment>> getFragments() noexcept override {
+      auto __result = _swiftPart.getFragments();
       return __result;
     }
-    inline void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) noexcept override {
-      _swiftPart.setEllipsizeMode(ellipsizeMode);
+    inline void setFragments(const std::optional<std::vector<Fragment>>& fragments) noexcept override {
+      _swiftPart.setFragments(fragments);
     }
     inline std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() noexcept override {
       auto __result = _swiftPart.getOnSelectableTextMeasured();
@@ -163,6 +156,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setTextTransform(std::optional<TextTransform> textTransform) noexcept override {
       _swiftPart.setTextTransform(textTransform);
+    }
+    inline std::optional<EllipsizeMode> getEllipsizeMode() noexcept override {
+      auto __result = _swiftPart.getEllipsizeMode();
+      return __result;
+    }
+    inline void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) noexcept override {
+      _swiftPart.setEllipsizeMode(ellipsizeMode);
     }
 
   public:

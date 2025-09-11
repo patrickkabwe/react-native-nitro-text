@@ -18,7 +18,7 @@ public extension Fragment {
   /**
    * Create a new instance of `Fragment`.
    */
-  init(fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fontStyle: FontStyle?, lineHeight: Double?, text: String?, numberOfLines: Double?, textAlign: TextAlign?, textTransform: TextTransform?) {
+  init(fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fontStyle: FontStyle?, lineHeight: Double?, text: String?, numberOfLines: Double?, textAlign: TextAlign?, textTransform: TextTransform?, ellipsizeMode: EllipsizeMode?) {
     self.init({ () -> bridge.std__optional_double_ in
       if let __unwrappedValue = fontSize {
         return bridge.create_std__optional_double_(__unwrappedValue)
@@ -70,6 +70,12 @@ public extension Fragment {
     }(), { () -> bridge.std__optional_TextTransform_ in
       if let __unwrappedValue = textTransform {
         return bridge.create_std__optional_TextTransform_(__unwrappedValue)
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_EllipsizeMode_ in
+      if let __unwrappedValue = ellipsizeMode {
+        return bridge.create_std__optional_EllipsizeMode_(__unwrappedValue)
       } else {
         return .init()
       }
@@ -236,6 +242,23 @@ public extension Fragment {
       self.__textTransform = { () -> bridge.std__optional_TextTransform_ in
         if let __unwrappedValue = newValue {
           return bridge.create_std__optional_TextTransform_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+  }
+  
+  var ellipsizeMode: EllipsizeMode? {
+    @inline(__always)
+    get {
+      return self.__ellipsizeMode.value
+    }
+    @inline(__always)
+    set {
+      self.__ellipsizeMode = { () -> bridge.std__optional_EllipsizeMode_ in
+        if let __unwrappedValue = newValue {
+          return bridge.create_std__optional_EllipsizeMode_(__unwrappedValue)
         } else {
           return .init()
         }

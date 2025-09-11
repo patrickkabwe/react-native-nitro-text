@@ -14,12 +14,10 @@ namespace margelo::nitro::nitrotext {
     HybridObject::loadHybridMethods();
     // load custom methods/properties
     registerHybrids(this, [](Prototype& prototype) {
-      prototype.registerHybridGetter("fragments", &HybridNitroTextSpec::getFragments);
-      prototype.registerHybridSetter("fragments", &HybridNitroTextSpec::setFragments);
       prototype.registerHybridGetter("selectable", &HybridNitroTextSpec::getSelectable);
       prototype.registerHybridSetter("selectable", &HybridNitroTextSpec::setSelectable);
-      prototype.registerHybridGetter("ellipsizeMode", &HybridNitroTextSpec::getEllipsizeMode);
-      prototype.registerHybridSetter("ellipsizeMode", &HybridNitroTextSpec::setEllipsizeMode);
+      prototype.registerHybridGetter("fragments", &HybridNitroTextSpec::getFragments);
+      prototype.registerHybridSetter("fragments", &HybridNitroTextSpec::setFragments);
       prototype.registerHybridGetter("onSelectableTextMeasured", &HybridNitroTextSpec::getOnSelectableTextMeasured);
       prototype.registerHybridSetter("onSelectableTextMeasured", &HybridNitroTextSpec::setOnSelectableTextMeasured);
       prototype.registerHybridGetter("fontSize", &HybridNitroTextSpec::getFontSize);
@@ -40,6 +38,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("textAlign", &HybridNitroTextSpec::setTextAlign);
       prototype.registerHybridGetter("textTransform", &HybridNitroTextSpec::getTextTransform);
       prototype.registerHybridSetter("textTransform", &HybridNitroTextSpec::setTextTransform);
+      prototype.registerHybridGetter("ellipsizeMode", &HybridNitroTextSpec::getEllipsizeMode);
+      prototype.registerHybridSetter("ellipsizeMode", &HybridNitroTextSpec::setEllipsizeMode);
     });
   }
 

@@ -26,6 +26,8 @@ namespace margelo::nitro::nitrotext { enum class FontStyle; }
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
+// Forward declaration of `EllipsizeMode` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 
 #include <optional>
 #include "FontWeight.hpp"
@@ -33,6 +35,7 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
+#include "EllipsizeMode.hpp"
 
 namespace margelo::nitro::nitrotext {
 
@@ -50,10 +53,11 @@ namespace margelo::nitro::nitrotext {
     std::optional<double> numberOfLines     SWIFT_PRIVATE;
     std::optional<TextAlign> textAlign     SWIFT_PRIVATE;
     std::optional<TextTransform> textTransform     SWIFT_PRIVATE;
+    std::optional<EllipsizeMode> ellipsizeMode     SWIFT_PRIVATE;
 
   public:
     Fragment() = default;
-    explicit Fragment(std::optional<double> fontSize, std::optional<FontWeight> fontWeight, std::optional<std::string> fontColor, std::optional<FontStyle> fontStyle, std::optional<double> lineHeight, std::optional<std::string> text, std::optional<double> numberOfLines, std::optional<TextAlign> textAlign, std::optional<TextTransform> textTransform): fontSize(fontSize), fontWeight(fontWeight), fontColor(fontColor), fontStyle(fontStyle), lineHeight(lineHeight), text(text), numberOfLines(numberOfLines), textAlign(textAlign), textTransform(textTransform) {}
+    explicit Fragment(std::optional<double> fontSize, std::optional<FontWeight> fontWeight, std::optional<std::string> fontColor, std::optional<FontStyle> fontStyle, std::optional<double> lineHeight, std::optional<std::string> text, std::optional<double> numberOfLines, std::optional<TextAlign> textAlign, std::optional<TextTransform> textTransform, std::optional<EllipsizeMode> ellipsizeMode): fontSize(fontSize), fontWeight(fontWeight), fontColor(fontColor), fontStyle(fontStyle), lineHeight(lineHeight), text(text), numberOfLines(numberOfLines), textAlign(textAlign), textTransform(textTransform), ellipsizeMode(ellipsizeMode) {}
   };
 
 } // namespace margelo::nitro::nitrotext
@@ -74,7 +78,8 @@ namespace margelo::nitro {
         JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, "text")),
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, "numberOfLines")),
         JSIConverter<std::optional<margelo::nitro::nitrotext::TextAlign>>::fromJSI(runtime, obj.getProperty(runtime, "textAlign")),
-        JSIConverter<std::optional<margelo::nitro::nitrotext::TextTransform>>::fromJSI(runtime, obj.getProperty(runtime, "textTransform"))
+        JSIConverter<std::optional<margelo::nitro::nitrotext::TextTransform>>::fromJSI(runtime, obj.getProperty(runtime, "textTransform")),
+        JSIConverter<std::optional<margelo::nitro::nitrotext::EllipsizeMode>>::fromJSI(runtime, obj.getProperty(runtime, "ellipsizeMode"))
       );
     }
     static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::nitrotext::Fragment& arg) {
@@ -88,6 +93,7 @@ namespace margelo::nitro {
       obj.setProperty(runtime, "numberOfLines", JSIConverter<std::optional<double>>::toJSI(runtime, arg.numberOfLines));
       obj.setProperty(runtime, "textAlign", JSIConverter<std::optional<margelo::nitro::nitrotext::TextAlign>>::toJSI(runtime, arg.textAlign));
       obj.setProperty(runtime, "textTransform", JSIConverter<std::optional<margelo::nitro::nitrotext::TextTransform>>::toJSI(runtime, arg.textTransform));
+      obj.setProperty(runtime, "ellipsizeMode", JSIConverter<std::optional<margelo::nitro::nitrotext::EllipsizeMode>>::toJSI(runtime, arg.ellipsizeMode));
       return obj;
     }
     static inline bool canConvert(jsi::Runtime& runtime, const jsi::Value& value) {
@@ -104,6 +110,7 @@ namespace margelo::nitro {
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, "numberOfLines"))) return false;
       if (!JSIConverter<std::optional<margelo::nitro::nitrotext::TextAlign>>::canConvert(runtime, obj.getProperty(runtime, "textAlign"))) return false;
       if (!JSIConverter<std::optional<margelo::nitro::nitrotext::TextTransform>>::canConvert(runtime, obj.getProperty(runtime, "textTransform"))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::nitrotext::EllipsizeMode>>::canConvert(runtime, obj.getProperty(runtime, "ellipsizeMode"))) return false;
       return true;
     }
   };

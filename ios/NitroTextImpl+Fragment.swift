@@ -16,6 +16,8 @@ extension NitroTextImpl {
         let lineHeight: Double?
         let textAlign: TextAlign?
         let textTransform: TextTransform?
+        let numberOfLines: Double?
+        let ellipsizeMode: EllipsizeMode?
     }
 
     func apply(fragments: [Fragment]?, text: String?, top: FragmentTopDefaults) {
@@ -31,7 +33,8 @@ extension NitroTextImpl {
                     text: t,
                     numberOfLines: nil,
                     textAlign: top.textAlign,
-                    textTransform: top.textTransform
+                    textTransform: top.textTransform,
+                    ellipsizeMode: top.ellipsizeMode,
                 )
                 setFragments([single])
             } else {
@@ -52,6 +55,8 @@ extension NitroTextImpl {
             if frag.fontColor == nil, let v = top.fontColor, !v.isEmpty { frag.fontColor = v }
             if frag.textAlign == nil, let v = top.textAlign { frag.textAlign = v }
             if frag.textTransform == nil, let v = top.textTransform { frag.textTransform = v }
+            if frag.numberOfLines == nil, let v = top.numberOfLines { frag.numberOfLines = v }
+            if frag.ellipsizeMode == nil, let v = top.ellipsizeMode { frag.ellipsizeMode = v }
             merged.append(frag)
         }
         setFragments(merged)

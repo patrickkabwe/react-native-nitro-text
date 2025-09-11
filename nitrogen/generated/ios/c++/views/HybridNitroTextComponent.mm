@@ -71,20 +71,15 @@ using namespace margelo::nitro::nitrotext::views;
   // 2. Update each prop individually
   swiftPart.beforeUpdate();
 
-  // fragments: optional
-  if (newViewProps.fragments.isDirty) {
-    swiftPart.setFragments(newViewProps.fragments.value);
-    newViewProps.fragments.isDirty = false;
-  }
   // selectable: optional
   if (newViewProps.selectable.isDirty) {
     swiftPart.setSelectable(newViewProps.selectable.value);
     newViewProps.selectable.isDirty = false;
   }
-  // ellipsizeMode: optional
-  if (newViewProps.ellipsizeMode.isDirty) {
-    swiftPart.setEllipsizeMode(newViewProps.ellipsizeMode.value);
-    newViewProps.ellipsizeMode.isDirty = false;
+  // fragments: optional
+  if (newViewProps.fragments.isDirty) {
+    swiftPart.setFragments(newViewProps.fragments.value);
+    newViewProps.fragments.isDirty = false;
   }
   // onSelectableTextMeasured: optional
   if (newViewProps.onSelectableTextMeasured.isDirty) {
@@ -135,6 +130,11 @@ using namespace margelo::nitro::nitrotext::views;
   if (newViewProps.textTransform.isDirty) {
     swiftPart.setTextTransform(newViewProps.textTransform.value);
     newViewProps.textTransform.isDirty = false;
+  }
+  // ellipsizeMode: optional
+  if (newViewProps.ellipsizeMode.isDirty) {
+    swiftPart.setEllipsizeMode(newViewProps.ellipsizeMode.value);
+    newViewProps.ellipsizeMode.isDirty = false;
   }
 
   swiftPart.afterUpdate();

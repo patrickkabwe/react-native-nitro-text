@@ -54,24 +54,24 @@ export type Fragment = {
      * Applies text transform to the content.
      */
     textTransform?: TextTransform
-}
-
-export interface NitroTextProps extends HybridViewProps, Fragment {
-    /**
-     * The fragments of the text. 
-     */
-    fragments?: Fragment[]
-
-    /**
-     * Selectable text.
-     */
-    selectable?: boolean
 
     /**
      * Controls where to truncate text when numberOfLines is set.
      * Defaults to 'tail' like RN Text.
      */
     ellipsizeMode?: EllipsizeMode
+}
+
+export interface NitroTextProps extends HybridViewProps, Fragment {
+    /**
+     * Selectable text.
+    */
+    selectable?: boolean
+
+    /**
+     * The fragments of the text. 
+     */
+    fragments?: Fragment[]
 
     /**
      * The onSelectableTextMeasured callback. Used to measure the height of the text.

@@ -29,11 +29,15 @@ export function flattenChildrenToFragments(
     parentStyle?: TextStyle
 ): Fragment[] {
     const frags: Fragment[] = [];
+    const isElementLike = (node: any): node is { props?: any } =>
+      node != null && typeof node === 'object' && 'props' in node && (node as any).props != null;
     const push = (text: string, _?: TextStyle) => {
         if (!text) return;
         const base = styleToFragment(parentStyle);
         frags.push({ text, ...base } as Fragment);
     };
+
+    console.log('children', children);
 
     React.Children.forEach(children, (child) => {
         if (child == null || child === false) return;
@@ -41,10 +45,15 @@ export function flattenChildrenToFragments(
             push(String(child), parentStyle);
             return;
         }
-        if (React.isValidElement(child)) {
-            const { children: nested, style: childStyle } = child.props as any;
+        // React 19 introduces "transitional" elements that may not be recognized
+        // by React.isValidElement in older utilities – duck-type element-like nodes.
+        if (React.isValidElement(child) || isElementLike(child)) {
+            const props = (child).props ?? {};
+            const nested = props.children;
+            const childStyle = props.style;
             const mergedStyle = [parentStyle, childStyle];
             frags.push(...flattenChildrenToFragments(nested, mergedStyle as any));
+            return;
         }
     });
 

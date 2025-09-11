@@ -15,8 +15,6 @@
 
 // Forward declaration of `Fragment` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct Fragment; }
-// Forward declaration of `EllipsizeMode` to properly resolve imports.
-namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `FontWeight` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class FontWeight; }
 // Forward declaration of `FontStyle` to properly resolve imports.
@@ -25,17 +23,19 @@ namespace margelo::nitro::nitrotext { enum class FontStyle; }
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
+// Forward declaration of `EllipsizeMode` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 
+#include <optional>
 #include "Fragment.hpp"
 #include <vector>
-#include <optional>
-#include "EllipsizeMode.hpp"
 #include <functional>
 #include "FontWeight.hpp"
 #include <string>
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
+#include "EllipsizeMode.hpp"
 
 namespace margelo::nitro::nitrotext {
 
@@ -64,12 +64,10 @@ namespace margelo::nitro::nitrotext {
 
     public:
       // Properties
-      virtual std::optional<std::vector<Fragment>> getFragments() = 0;
-      virtual void setFragments(const std::optional<std::vector<Fragment>>& fragments) = 0;
       virtual std::optional<bool> getSelectable() = 0;
       virtual void setSelectable(std::optional<bool> selectable) = 0;
-      virtual std::optional<EllipsizeMode> getEllipsizeMode() = 0;
-      virtual void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) = 0;
+      virtual std::optional<std::vector<Fragment>> getFragments() = 0;
+      virtual void setFragments(const std::optional<std::vector<Fragment>>& fragments) = 0;
       virtual std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() = 0;
       virtual void setOnSelectableTextMeasured(const std::optional<std::function<void(double /* height */)>>& onSelectableTextMeasured) = 0;
       virtual std::optional<double> getFontSize() = 0;
@@ -90,6 +88,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setTextAlign(std::optional<TextAlign> textAlign) = 0;
       virtual std::optional<TextTransform> getTextTransform() = 0;
       virtual void setTextTransform(std::optional<TextTransform> textTransform) = 0;
+      virtual std::optional<EllipsizeMode> getEllipsizeMode() = 0;
+      virtual void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) = 0;
 
     public:
       // Methods

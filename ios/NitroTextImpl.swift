@@ -36,7 +36,6 @@ final class NitroTextImpl {
         case .some(.clip): currentEllipsize = .byClipping
         default: currentEllipsize = .byTruncatingTail
         }
-        // Re-apply to container based on current numberOfLines
         guard let n = nitroTextView?.textContainer.maximumNumberOfLines else { return }
         nitroTextView?.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
     }
@@ -44,7 +43,6 @@ final class NitroTextImpl {
     func effectiveLineBreakMode(forLines n: Int) -> NSLineBreakMode {
         guard n > 0 else { return .byWordWrapping }
         if n == 1 { return currentEllipsize }
-        // For multi-line, iOS only reliably supports tail truncation or clipping.
         switch currentEllipsize {
         case .byClipping:
             return .byWordWrapping

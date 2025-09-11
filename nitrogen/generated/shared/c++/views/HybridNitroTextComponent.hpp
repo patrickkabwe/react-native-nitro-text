@@ -16,11 +16,9 @@
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
 #include <react/renderer/components/view/ViewProps.h>
 
+#include <optional>
 #include "Fragment.hpp"
 #include <vector>
-#include <optional>
-#include <optional>
-#include "EllipsizeMode.hpp"
 #include <optional>
 #include <functional>
 #include <optional>
@@ -38,6 +36,8 @@
 #include "TextAlign.hpp"
 #include <optional>
 #include "TextTransform.hpp"
+#include <optional>
+#include "EllipsizeMode.hpp"
 #include <optional>
 #include <memory>
 #include "HybridNitroTextSpec.hpp"
@@ -65,9 +65,8 @@ namespace margelo::nitro::nitrotext::views {
                          const react::RawProps& rawProps);
 
   public:
-    CachedProp<std::optional<std::vector<Fragment>>> fragments;
     CachedProp<std::optional<bool>> selectable;
-    CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
+    CachedProp<std::optional<std::vector<Fragment>>> fragments;
     CachedProp<std::optional<std::function<void(double /* height */)>>> onSelectableTextMeasured;
     CachedProp<std::optional<double>> fontSize;
     CachedProp<std::optional<FontWeight>> fontWeight;
@@ -78,6 +77,7 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<double>> numberOfLines;
     CachedProp<std::optional<TextAlign>> textAlign;
     CachedProp<std::optional<TextTransform>> textTransform;
+    CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
     CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridNitroTextSpec>& /* ref */)>>> hybridRef;
 
   private:

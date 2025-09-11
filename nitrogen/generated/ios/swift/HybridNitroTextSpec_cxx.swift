@@ -106,6 +106,23 @@ open class HybridNitroTextSpec_cxx {
   }
 
   // Properties
+  public final var selectable: bridge.std__optional_bool_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_bool_ in
+        if let __unwrappedValue = self.__implementation.selectable {
+          return bridge.create_std__optional_bool_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.selectable = newValue.value
+    }
+  }
+  
   public final var fragments: bridge.std__optional_std__vector_Fragment__ {
     @inline(__always)
     get {
@@ -133,40 +150,6 @@ open class HybridNitroTextSpec_cxx {
           return nil
         }
       }()
-    }
-  }
-  
-  public final var selectable: bridge.std__optional_bool_ {
-    @inline(__always)
-    get {
-      return { () -> bridge.std__optional_bool_ in
-        if let __unwrappedValue = self.__implementation.selectable {
-          return bridge.create_std__optional_bool_(__unwrappedValue)
-        } else {
-          return .init()
-        }
-      }()
-    }
-    @inline(__always)
-    set {
-      self.__implementation.selectable = newValue.value
-    }
-  }
-  
-  public final var ellipsizeMode: bridge.std__optional_EllipsizeMode_ {
-    @inline(__always)
-    get {
-      return { () -> bridge.std__optional_EllipsizeMode_ in
-        if let __unwrappedValue = self.__implementation.ellipsizeMode {
-          return bridge.create_std__optional_EllipsizeMode_(__unwrappedValue)
-        } else {
-          return .init()
-        }
-      }()
-    }
-    @inline(__always)
-    set {
-      self.__implementation.ellipsizeMode = newValue.value
     }
   }
   
@@ -366,6 +349,23 @@ open class HybridNitroTextSpec_cxx {
     @inline(__always)
     set {
       self.__implementation.textTransform = newValue.value
+    }
+  }
+  
+  public final var ellipsizeMode: bridge.std__optional_EllipsizeMode_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_EllipsizeMode_ in
+        if let __unwrappedValue = self.__implementation.ellipsizeMode {
+          return bridge.create_std__optional_EllipsizeMode_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.ellipsizeMode = newValue.value
     }
   }
 

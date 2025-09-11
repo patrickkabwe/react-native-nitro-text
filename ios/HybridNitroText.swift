@@ -116,7 +116,9 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             fontStyle: fontStyle,
             lineHeight: lineHeight,
             textAlign: textAlign,
-            textTransform: textTransform
+            textTransform: textTransform,
+            numberOfLines: numberOfLines,
+            ellipsizeMode: ellipsizeMode
         )
         nitroTextImpl.apply(fragments: fragments, text: text, top: top)
     }

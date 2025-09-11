@@ -47,6 +47,21 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
  */
 namespace margelo::nitro::nitrotext::bridge::swift {
 
+  // pragma MARK: std::optional<bool>
+  /**
+   * Specialized version of `std::optional<bool>`.
+   */
+  using std__optional_bool_ = std::optional<bool>;
+  inline std::optional<bool> create_std__optional_bool_(const bool& value) noexcept {
+    return std::optional<bool>(value);
+  }
+  inline bool has_value_std__optional_bool_(const std::optional<bool>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline bool get_std__optional_bool_(const std::optional<bool>& optional) noexcept {
+    return *optional;
+  }
+  
   // pragma MARK: std::optional<double>
   /**
    * Specialized version of `std::optional<double>`.
@@ -137,6 +152,21 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return *optional;
   }
   
+  // pragma MARK: std::optional<EllipsizeMode>
+  /**
+   * Specialized version of `std::optional<EllipsizeMode>`.
+   */
+  using std__optional_EllipsizeMode_ = std::optional<EllipsizeMode>;
+  inline std::optional<EllipsizeMode> create_std__optional_EllipsizeMode_(const EllipsizeMode& value) noexcept {
+    return std::optional<EllipsizeMode>(value);
+  }
+  inline bool has_value_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline EllipsizeMode get_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
+    return *optional;
+  }
+  
   // pragma MARK: std::vector<Fragment>
   /**
    * Specialized version of `std::vector<Fragment>`.
@@ -160,36 +190,6 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline std::vector<Fragment> get_std__optional_std__vector_Fragment__(const std::optional<std::vector<Fragment>>& optional) noexcept {
-    return *optional;
-  }
-  
-  // pragma MARK: std::optional<bool>
-  /**
-   * Specialized version of `std::optional<bool>`.
-   */
-  using std__optional_bool_ = std::optional<bool>;
-  inline std::optional<bool> create_std__optional_bool_(const bool& value) noexcept {
-    return std::optional<bool>(value);
-  }
-  inline bool has_value_std__optional_bool_(const std::optional<bool>& optional) noexcept {
-    return optional.has_value();
-  }
-  inline bool get_std__optional_bool_(const std::optional<bool>& optional) noexcept {
-    return *optional;
-  }
-  
-  // pragma MARK: std::optional<EllipsizeMode>
-  /**
-   * Specialized version of `std::optional<EllipsizeMode>`.
-   */
-  using std__optional_EllipsizeMode_ = std::optional<EllipsizeMode>;
-  inline std::optional<EllipsizeMode> create_std__optional_EllipsizeMode_(const EllipsizeMode& value) noexcept {
-    return std::optional<EllipsizeMode>(value);
-  }
-  inline bool has_value_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
-    return optional.has_value();
-  }
-  inline EllipsizeMode get_std__optional_EllipsizeMode_(const std::optional<EllipsizeMode>& optional) noexcept {
     return *optional;
   }
   
