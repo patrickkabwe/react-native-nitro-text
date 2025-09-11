@@ -50,9 +50,9 @@ final class NitroTextImpl {
         // - clip: keep wrapping and clip after the Nth line (word wrapping)
         switch currentEllipsize {
         case .byClipping:
-            return .byWordWrapping
+            return .byClipping
         default:
-            return .byTruncatingTail
+            return .byTruncatingMiddle
         }
     }
 
