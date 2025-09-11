@@ -36,6 +36,14 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
         }
     }
     
+    var allowFontScaling: Bool? {
+        didSet {
+            nitroTextImpl.setAllowFontScaling(allowFontScaling)
+            // Re-apply to update fonts/line-heights with new scaling
+            applyFragmentsAndProps()
+        }
+    }
+    
     var onSelectableTextMeasured: ((Double) -> Void)? {
         didSet {
             if onSelectableTextMeasured == nil {

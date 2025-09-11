@@ -20,16 +20,18 @@ extension NitroTextImpl {
             if let current = defaultPointSize { return current }
             return 14.0
         }()
+        // Apply Dynamic Type scaling if enabled
+        let finalPointSize: CGFloat = allowFontScaling ? UIFontMetrics.default.scaledValue(for: resolvedSize) : resolvedSize
         let weightToken = fragment.fontWeight ?? FontWeight.normal
         let uiWeight = Self.uiFontWeight(for: weightToken)
         let isItalic = fragment.fontStyle == FontStyle.italic
 
-        let key = FontKey(size: resolvedSize, weightRaw: uiWeight.rawValue, italic: isItalic)
+        let key = FontKey(size: finalPointSize, weightRaw: uiWeight.rawValue, italic: isItalic)
         if let cached = fontCache[key] {
             return (cached, isItalic)
         }
 
-        var base = UIFont.systemFont(ofSize: resolvedSize, weight: uiWeight)
+        var base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
         if isItalic {
             var traits = base.fontDescriptor.symbolicTraits
             traits.insert(.traitItalic)
@@ -38,7 +40,7 @@ extension NitroTextImpl {
                 let finalDesc = italicDesc.addingAttributes([
                     UIFontDescriptor.AttributeName.traits: traitsDict
                 ])
-                base = UIFont(descriptor: finalDesc, size: resolvedSize)
+                base = UIFont(descriptor: finalDesc, size: finalPointSize)
             }
         }
         fontCache[key] = base

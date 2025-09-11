@@ -6,6 +6,7 @@
   "validAttributes": {
     "fragments": true,
     "selectable": true,
+    "allowFontScaling": true,
     "ellipsizeMode": true,
     "onSelectableTextMeasured": true,
     "fontSize": true,

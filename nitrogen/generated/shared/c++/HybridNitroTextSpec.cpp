@@ -18,6 +18,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("fragments", &HybridNitroTextSpec::setFragments);
       prototype.registerHybridGetter("selectable", &HybridNitroTextSpec::getSelectable);
       prototype.registerHybridSetter("selectable", &HybridNitroTextSpec::setSelectable);
+      prototype.registerHybridGetter("allowFontScaling", &HybridNitroTextSpec::getAllowFontScaling);
+      prototype.registerHybridSetter("allowFontScaling", &HybridNitroTextSpec::setAllowFontScaling);
       prototype.registerHybridGetter("ellipsizeMode", &HybridNitroTextSpec::getEllipsizeMode);
       prototype.registerHybridSetter("ellipsizeMode", &HybridNitroTextSpec::setEllipsizeMode);
       prototype.registerHybridGetter("onSelectableTextMeasured", &HybridNitroTextSpec::getOnSelectableTextMeasured);

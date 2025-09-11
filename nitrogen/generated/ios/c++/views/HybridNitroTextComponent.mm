@@ -81,6 +81,11 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setSelectable(newViewProps.selectable.value);
     newViewProps.selectable.isDirty = false;
   }
+  // allowFontScaling: optional
+  if (newViewProps.allowFontScaling.isDirty) {
+    swiftPart.setAllowFontScaling(newViewProps.allowFontScaling.value);
+    newViewProps.allowFontScaling.isDirty = false;
+  }
   // ellipsizeMode: optional
   if (newViewProps.ellipsizeMode.isDirty) {
     swiftPart.setEllipsizeMode(newViewProps.ellipsizeMode.value);

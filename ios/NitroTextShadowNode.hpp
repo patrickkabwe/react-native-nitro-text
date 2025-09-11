@@ -88,6 +88,12 @@ namespace margelo::nitro::nitrotext::views
 
             react::TextAttributes textAttributes =
                 react::TextAttributes::defaultTextAttributes();
+            // Apply font scaling context and allowFontScaling prop (defaults to true)
+            textAttributes.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
+            if (props.allowFontScaling.value.has_value())
+            {
+                textAttributes.allowFontScaling = props.allowFontScaling.value.value();
+            }
             if (props.fontSize.value.has_value())
             {
                 textAttributes.fontSize = props.fontSize.value.value();

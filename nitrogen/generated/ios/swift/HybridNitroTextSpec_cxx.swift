@@ -153,6 +153,23 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
+  public final var allowFontScaling: bridge.std__optional_bool_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_bool_ in
+        if let __unwrappedValue = self.__implementation.allowFontScaling {
+          return bridge.create_std__optional_bool_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.allowFontScaling = newValue.value
+    }
+  }
+  
   public final var ellipsizeMode: bridge.std__optional_EllipsizeMode_ {
     @inline(__always)
     get {

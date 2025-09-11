@@ -68,6 +68,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setFragments(const std::optional<std::vector<Fragment>>& fragments) = 0;
       virtual std::optional<bool> getSelectable() = 0;
       virtual void setSelectable(std::optional<bool> selectable) = 0;
+      virtual std::optional<bool> getAllowFontScaling() = 0;
+      virtual void setAllowFontScaling(std::optional<bool> allowFontScaling) = 0;
       virtual std::optional<EllipsizeMode> getEllipsizeMode() = 0;
       virtual void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) = 0;
       virtual std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() = 0;

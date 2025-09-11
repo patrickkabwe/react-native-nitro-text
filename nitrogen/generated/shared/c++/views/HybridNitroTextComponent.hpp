@@ -20,6 +20,7 @@
 #include <vector>
 #include <optional>
 #include <optional>
+#include <optional>
 #include "EllipsizeMode.hpp"
 #include <optional>
 #include <functional>
@@ -67,6 +68,7 @@ namespace margelo::nitro::nitrotext::views {
   public:
     CachedProp<std::optional<std::vector<Fragment>>> fragments;
     CachedProp<std::optional<bool>> selectable;
+    CachedProp<std::optional<bool>> allowFontScaling;
     CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
     CachedProp<std::optional<std::function<void(double /* height */)>>> onSelectableTextMeasured;
     CachedProp<std::optional<double>> fontSize;

@@ -31,8 +31,9 @@ extension NitroTextImpl {
         let para = NSMutableParagraphStyle()
 
         if let lineHeight = fragment.lineHeight, lineHeight > 0 {
-            para.minimumLineHeight = lineHeight
-            para.maximumLineHeight = lineHeight
+            let lh = allowFontScaling ? UIFontMetrics.default.scaledValue(for: CGFloat(lineHeight)) : CGFloat(lineHeight)
+            para.minimumLineHeight = lh
+            para.maximumLineHeight = lh
         }
 
         if let align = fragment.textAlign {
@@ -81,4 +82,3 @@ extension NitroTextImpl {
         }
     }
 }
-
