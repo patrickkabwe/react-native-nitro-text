@@ -121,7 +121,7 @@ final class NitroTextImpl {
     ) -> [NSAttributedString.Key: Any] {
         var attrs: [NSAttributedString.Key: Any] = [:]
 
-        let font = makeFont(for: fragment)
+        let font = makeFont(for: fragment, defaultPointSize: nitroTextView?.font?.pointSize)
         attrs[.font] = font.value
         if font.isItalic { attrs[.obliqueness] = 0.2 }
 
@@ -134,30 +134,7 @@ final class NitroTextImpl {
         return attrs
     }
 
-    private func makeFont(for fragment: Fragment) -> (value: UIFont, isItalic: Bool) {
-        let resolvedSize: CGFloat = {
-            if let s = fragment.fontSize { return CGFloat(s) }
-            if let current = nitroTextView?.font?.pointSize { return current }
-            return 14.0
-        }()
-        let weightToken = fragment.fontWeight ?? FontWeight.normal
-        let uiWeight = Self.fontWeightFromString(weightToken)
-
-        var base = UIFont.systemFont(ofSize: resolvedSize, weight: uiWeight)
-        let isItalic = fragment.fontStyle == FontStyle.italic
-        if isItalic {
-            var traits = base.fontDescriptor.symbolicTraits
-            traits.insert(.traitItalic)
-            if let italicDesc = base.fontDescriptor.withSymbolicTraits(traits) {
-                let traitsDict: [UIFontDescriptor.TraitKey: Any] = [.weight: uiWeight]
-                let finalDesc = italicDesc.addingAttributes([
-                    UIFontDescriptor.AttributeName.traits: traitsDict
-                ])
-                base = UIFont(descriptor: finalDesc, size: resolvedSize)
-            }
-        }
-        return (base, isItalic)
-    }
+    // makeFont moved to NitroTextImpl+Font.swift
 
     private func makeParagraphStyle(for fragment: Fragment) -> NSMutableParagraphStyle {
         let para = NSMutableParagraphStyle()
