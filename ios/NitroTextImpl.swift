@@ -24,8 +24,32 @@ final class NitroTextImpl {
     func setNumberOfLines(_ value: Double?) {
         let n = Int(value ?? 0)
         nitroTextView.textContainer.maximumNumberOfLines = n
-        nitroTextView.textContainer.lineBreakMode = (n > 0) ? .byTruncatingTail : .byWordWrapping
+        nitroTextView.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
         nitroTextView.setNeedsLayout()
+    }
+
+    func setEllipsizeMode(_ mode: EllipsizeMode?) {
+        switch mode {
+        case .some(.head): currentEllipsize = .byTruncatingHead
+        case .some(.middle): currentEllipsize = .byTruncatingMiddle
+        case .some(.tail): currentEllipsize = .byTruncatingTail
+        case .some(.clip): currentEllipsize = .byClipping
+        default: currentEllipsize = .byTruncatingTail
+        }
+        // Re-apply to container based on current numberOfLines
+        let n = nitroTextView.textContainer.maximumNumberOfLines
+        nitroTextView.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
+        nitroTextView.setNeedsLayout()
+    }
+
+    private func effectiveLineBreakMode(forLines n: Int) -> NSLineBreakMode {
+        guard n > 0 else { return .byWordWrapping }
+        if n == 1 { return currentEllipsize }
+        // For multi-line, UIKit reliably supports tail truncation or clipping.
+        switch currentEllipsize {
+        case .byClipping: return .byClipping
+        default: return .byTruncatingTail
+        }
     }
 
     func setText(_ attributedText: NSAttributedString) {
@@ -149,8 +173,8 @@ final class NitroTextImpl {
             para.alignment = currentTextAlignment
         }
 
-        let hasLineLimit = nitroTextView.textContainer.maximumNumberOfLines > 0
-        para.lineBreakMode = hasLineLimit ? .byTruncatingTail : .byWordWrapping
+        let n = nitroTextView.textContainer.maximumNumberOfLines
+        para.lineBreakMode = effectiveLineBreakMode(forLines: n)
         return para
     }
 
