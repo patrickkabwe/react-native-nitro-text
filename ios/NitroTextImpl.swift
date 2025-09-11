@@ -17,6 +17,9 @@ final class NitroTextImpl {
     var dynamicTypeTextStyle: UIFont.TextStyle? = nil
     @available(iOS 14.0, *)
     var currentLineBreakStrategy: NSParagraphStyle.LineBreakStrategy = .standard
+    var maxFontSizeMultiplier: Double? = nil
+    var adjustsFontSizeToFit: Bool? = nil
+    var minimumFontScale: Double? = nil
     
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
@@ -86,6 +89,18 @@ final class NitroTextImpl {
         nitroTextView?.textContainer.maximumNumberOfLines = n
         nitroTextView?.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
     }
+
+    func setMaxFontSizeMultiplier(_ value: Double?) {
+        maxFontSizeMultiplier = value
+        fontCache.removeAll(keepingCapacity: true)
+        if let current = nitroTextView?.attributedText, current.length > 0 {
+            nitroTextView?.attributedText = current
+            nitroTextView?.setNeedsLayout()
+        }
+    }
+
+    func setAdjustsFontSizeToFit(_ value: Bool?) { adjustsFontSizeToFit = value }
+    func setMinimumFontScale(_ value: Double?) { minimumFontScale = value }
 
     func setEllipsizeMode(_ mode: EllipsizeMode?) {
         switch mode {

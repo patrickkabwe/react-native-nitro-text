@@ -25,11 +25,16 @@ extension NitroTextImpl {
         // larger than the font's natural lineHeight, vertically center the
         // glyphs within the line by applying a baseline offset.
         if let rawLH = fragment.lineHeight, rawLH > 0 {
-            let metrics: UIFontMetrics = {
-                if let style = dynamicTypeTextStyle { return UIFontMetrics(forTextStyle: style) }
-                return .default
+            let scaledLH: CGFloat = {
+                guard allowFontScaling else { return CGFloat(rawLH) }
+                // Use the same multiplier RN uses for the current run
+                let baseSize: CGFloat = {
+                    if let fs = fragment.fontSize { return CGFloat(fs) }
+                    return nitroTextView?.font?.pointSize ?? CGFloat(14.0)
+                }()
+                let factor = effectiveScaleFactor(requestedSize: baseSize)
+                return CGFloat(rawLH) * factor
             }()
-            let scaledLH = allowFontScaling ? metrics.scaledValue(for: CGFloat(rawLH)) : CGFloat(rawLH)
             let fontLineHeight = font.value.lineHeight
             if scaledLH >= fontLineHeight {
                 let baseline = (scaledLH - fontLineHeight) / 2.0
@@ -51,11 +56,12 @@ extension NitroTextImpl {
         let para = NSMutableParagraphStyle()
 
         if let lineHeight = fragment.lineHeight, lineHeight > 0 {
-            let metrics: UIFontMetrics = {
-                if let style = dynamicTypeTextStyle { return UIFontMetrics(forTextStyle: style) }
-                return .default
+            let baseSize: CGFloat = {
+                if let fs = fragment.fontSize { return CGFloat(fs) }
+                return nitroTextView?.font?.pointSize ?? CGFloat(14.0)
             }()
-            let lh = allowFontScaling ? metrics.scaledValue(for: CGFloat(lineHeight)) : CGFloat(lineHeight)
+            let m = allowFontScaling ? effectiveScaleFactor(requestedSize: baseSize) : 1.0
+            let lh = CGFloat(lineHeight) * m
             para.minimumLineHeight = lh
             para.maximumLineHeight = lh
         }

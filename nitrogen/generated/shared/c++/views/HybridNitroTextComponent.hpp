@@ -27,6 +27,9 @@
 #include <optional>
 #include "DynamicTypeRamp.hpp"
 #include <optional>
+#include <optional>
+#include <optional>
+#include <optional>
 #include <functional>
 #include <optional>
 #include <string>
@@ -77,6 +80,9 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
     CachedProp<std::optional<LineBreakStrategyIOS>> lineBreakStrategyIOS;
     CachedProp<std::optional<DynamicTypeRamp>> dynamicTypeRamp;
+    CachedProp<std::optional<double>> maxFontSizeMultiplier;
+    CachedProp<std::optional<bool>> adjustsFontSizeToFit;
+    CachedProp<std::optional<double>> minimumFontScale;
     CachedProp<std::optional<std::function<void(double /* height */)>>> onSelectableTextMeasured;
     CachedProp<std::optional<std::string>> text;
     CachedProp<std::optional<double>> fontSize;

@@ -85,6 +85,36 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.dynamicTypeRamp: ") + exc.what());
       }
     }()),
+    maxFontSizeMultiplier([&]() -> CachedProp<std::optional<double>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("maxFontSizeMultiplier", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.maxFontSizeMultiplier;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<double>>::fromRawValue(*runtime, value, sourceProps.maxFontSizeMultiplier);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.maxFontSizeMultiplier: ") + exc.what());
+      }
+    }()),
+    adjustsFontSizeToFit([&]() -> CachedProp<std::optional<bool>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("adjustsFontSizeToFit", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.adjustsFontSizeToFit;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<bool>>::fromRawValue(*runtime, value, sourceProps.adjustsFontSizeToFit);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.adjustsFontSizeToFit: ") + exc.what());
+      }
+    }()),
+    minimumFontScale([&]() -> CachedProp<std::optional<double>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("minimumFontScale", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.minimumFontScale;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<double>>::fromRawValue(*runtime, value, sourceProps.minimumFontScale);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.minimumFontScale: ") + exc.what());
+      }
+    }()),
     onSelectableTextMeasured([&]() -> CachedProp<std::optional<std::function<void(double /* height */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("onSelectableTextMeasured", nullptr, nullptr);
@@ -214,6 +244,9 @@ namespace margelo::nitro::nitrotext::views {
     ellipsizeMode(other.ellipsizeMode),
     lineBreakStrategyIOS(other.lineBreakStrategyIOS),
     dynamicTypeRamp(other.dynamicTypeRamp),
+    maxFontSizeMultiplier(other.maxFontSizeMultiplier),
+    adjustsFontSizeToFit(other.adjustsFontSizeToFit),
+    minimumFontScale(other.minimumFontScale),
     onSelectableTextMeasured(other.onSelectableTextMeasured),
     text(other.text),
     fontSize(other.fontSize),
@@ -235,6 +268,9 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("ellipsizeMode"): return true;
       case hashString("lineBreakStrategyIOS"): return true;
       case hashString("dynamicTypeRamp"): return true;
+      case hashString("maxFontSizeMultiplier"): return true;
+      case hashString("adjustsFontSizeToFit"): return true;
+      case hashString("minimumFontScale"): return true;
       case hashString("onSelectableTextMeasured"): return true;
       case hashString("text"): return true;
       case hashString("fontSize"): return true;

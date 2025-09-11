@@ -26,6 +26,12 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("lineBreakStrategyIOS", &HybridNitroTextSpec::setLineBreakStrategyIOS);
       prototype.registerHybridGetter("dynamicTypeRamp", &HybridNitroTextSpec::getDynamicTypeRamp);
       prototype.registerHybridSetter("dynamicTypeRamp", &HybridNitroTextSpec::setDynamicTypeRamp);
+      prototype.registerHybridGetter("maxFontSizeMultiplier", &HybridNitroTextSpec::getMaxFontSizeMultiplier);
+      prototype.registerHybridSetter("maxFontSizeMultiplier", &HybridNitroTextSpec::setMaxFontSizeMultiplier);
+      prototype.registerHybridGetter("adjustsFontSizeToFit", &HybridNitroTextSpec::getAdjustsFontSizeToFit);
+      prototype.registerHybridSetter("adjustsFontSizeToFit", &HybridNitroTextSpec::setAdjustsFontSizeToFit);
+      prototype.registerHybridGetter("minimumFontScale", &HybridNitroTextSpec::getMinimumFontScale);
+      prototype.registerHybridSetter("minimumFontScale", &HybridNitroTextSpec::setMinimumFontScale);
       prototype.registerHybridGetter("onSelectableTextMeasured", &HybridNitroTextSpec::getOnSelectableTextMeasured);
       prototype.registerHybridSetter("onSelectableTextMeasured", &HybridNitroTextSpec::setOnSelectableTextMeasured);
       prototype.registerHybridGetter("text", &HybridNitroTextSpec::getText);

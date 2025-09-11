@@ -221,6 +221,57 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
+  public final var maxFontSizeMultiplier: bridge.std__optional_double_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_double_ in
+        if let __unwrappedValue = self.__implementation.maxFontSizeMultiplier {
+          return bridge.create_std__optional_double_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.maxFontSizeMultiplier = newValue.value
+    }
+  }
+  
+  public final var adjustsFontSizeToFit: bridge.std__optional_bool_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_bool_ in
+        if let __unwrappedValue = self.__implementation.adjustsFontSizeToFit {
+          return bridge.create_std__optional_bool_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.adjustsFontSizeToFit = newValue.value
+    }
+  }
+  
+  public final var minimumFontScale: bridge.std__optional_double_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_double_ in
+        if let __unwrappedValue = self.__implementation.minimumFontScale {
+          return bridge.create_std__optional_double_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.minimumFontScale = newValue.value
+    }
+  }
+  
   public final var onSelectableTextMeasured: bridge.std__optional_std__function_void_double____height______ {
     @inline(__always)
     get {

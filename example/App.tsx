@@ -73,6 +73,22 @@ export default function App() {
         </NitroText>
       </View>
 
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Layout Measurement</Text>
+        <Text
+          style={styles.measuredText}
+          onLayout={handleLayout}
+          onTextLayout={handleTextLayout}
+        >
+          This text demonstrates layout measurement capabilities. The component
+          can measure its dimensions and report back to JavaScript.
+          {'\n\n'}
+          <Text style={styles.infoText}>
+            {layoutInfo || 'Measuring...'}
+          </Text>
+        </Text>
+      </View>
+
       {/* Line Limiting */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Line Limiting</NitroText>
@@ -168,10 +184,10 @@ export default function App() {
       {/* Footer */}
       {/* Bug when applying alignItems: 'center' NitroText disappears */}
       <View style={[styles.section, styles.footer]}>
-        <NitroText style={styles.footerText} lineBreakStrategyIOS="hangul-word">
+        <NitroText style={styles.footerText} lineBreakStrategyIOS="hangul-word" maxFontSizeMultiplier={1.5}>
           Built with ❤️
         </NitroText>
-        <Text style={styles.footerText} lineBreakStrategyIOS="hangul-word">
+        <Text style={styles.footerText} lineBreakStrategyIOS="hangul-word" maxFontSizeMultiplier={1.5}>
           Built with ❤️
         </Text>
       </View>
