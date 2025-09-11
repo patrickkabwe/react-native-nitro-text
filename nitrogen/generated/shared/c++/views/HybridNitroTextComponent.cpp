@@ -65,6 +65,16 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.ellipsizeMode: ") + exc.what());
       }
     }()),
+    dynamicTypeRamp([&]() -> CachedProp<std::optional<DynamicTypeRamp>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("dynamicTypeRamp", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.dynamicTypeRamp;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<DynamicTypeRamp>>::fromRawValue(*runtime, value, sourceProps.dynamicTypeRamp);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.dynamicTypeRamp: ") + exc.what());
+      }
+    }()),
     onSelectableTextMeasured([&]() -> CachedProp<std::optional<std::function<void(double /* height */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("onSelectableTextMeasured", nullptr, nullptr);
@@ -192,6 +202,7 @@ namespace margelo::nitro::nitrotext::views {
     selectable(other.selectable),
     allowFontScaling(other.allowFontScaling),
     ellipsizeMode(other.ellipsizeMode),
+    dynamicTypeRamp(other.dynamicTypeRamp),
     onSelectableTextMeasured(other.onSelectableTextMeasured),
     text(other.text),
     fontSize(other.fontSize),
@@ -211,6 +222,7 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("selectable"): return true;
       case hashString("allowFontScaling"): return true;
       case hashString("ellipsizeMode"): return true;
+      case hashString("dynamicTypeRamp"): return true;
       case hashString("onSelectableTextMeasured"): return true;
       case hashString("text"): return true;
       case hashString("fontSize"): return true;

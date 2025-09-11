@@ -91,6 +91,11 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setEllipsizeMode(newViewProps.ellipsizeMode.value);
     newViewProps.ellipsizeMode.isDirty = false;
   }
+  // dynamicTypeRamp: optional
+  if (newViewProps.dynamicTypeRamp.isDirty) {
+    swiftPart.setDynamicTypeRamp(newViewProps.dynamicTypeRamp.value);
+    newViewProps.dynamicTypeRamp.isDirty = false;
+  }
   // onSelectableTextMeasured: optional
   if (newViewProps.onSelectableTextMeasured.isDirty) {
     swiftPart.setOnSelectableTextMeasured(newViewProps.onSelectableTextMeasured.value);

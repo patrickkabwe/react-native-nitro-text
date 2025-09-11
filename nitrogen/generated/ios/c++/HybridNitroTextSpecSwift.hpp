@@ -24,6 +24,8 @@ namespace margelo::nitro::nitrotext { enum class TextAlign; }
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
+// Forward declaration of `DynamicTypeRamp` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
 
 #include "Fragment.hpp"
 #include <vector>
@@ -34,6 +36,7 @@ namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
 #include "EllipsizeMode.hpp"
+#include "DynamicTypeRamp.hpp"
 #include <functional>
 
 #include "NitroText-Swift-Cxx-Umbrella.hpp"
@@ -100,6 +103,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) noexcept override {
       _swiftPart.setEllipsizeMode(ellipsizeMode);
+    }
+    inline std::optional<DynamicTypeRamp> getDynamicTypeRamp() noexcept override {
+      auto __result = _swiftPart.getDynamicTypeRamp();
+      return __result;
+    }
+    inline void setDynamicTypeRamp(std::optional<DynamicTypeRamp> dynamicTypeRamp) noexcept override {
+      _swiftPart.setDynamicTypeRamp(dynamicTypeRamp);
     }
     inline std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() noexcept override {
       auto __result = _swiftPart.getOnSelectableTextMeasured();

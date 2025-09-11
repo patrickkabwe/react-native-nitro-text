@@ -7,6 +7,18 @@ import type {
 type TextAlign = 'auto' | 'left' | 'right' | 'center' | 'justify'
 type TextTransform = 'none' | 'uppercase' | 'lowercase' | 'capitalize'
 type EllipsizeMode = 'head' | 'middle' | 'tail' | 'clip'
+type DynamicTypeRamp =
+  | 'caption2'
+  | 'caption1'
+  | 'footnote'
+  | 'subheadline'
+  | 'callout'
+  | 'body'
+  | 'headline'
+  | 'title3'
+  | 'title2'
+  | 'title1'
+  | 'largeTitle'
 
 // '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'  - Nitro does not support these
 type FontWeight = 'normal' | 'bold' | 'ultralight' | 'thin' | 'light' | 'medium' | 'regular' | 'semibold' | 'condensedBold' | 'condensed' | 'heavy' | 'black'
@@ -87,6 +99,12 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
      * Defaults to 'tail' like RN Text.
      */
     ellipsizeMode?: EllipsizeMode
+
+    /**
+     * iOS Dynamic Type ramp. Selects the UIFontMetrics text style used for scaling.
+     * Matches React Native's Text `dynamicTypeRamp`. Defaults to body
+     */
+    dynamicTypeRamp?: DynamicTypeRamp
 
     /**
      * The onSelectableTextMeasured callback. Used to measure the height of the text.

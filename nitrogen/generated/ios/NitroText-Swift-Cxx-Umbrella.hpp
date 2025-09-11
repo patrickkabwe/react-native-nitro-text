@@ -8,6 +8,8 @@
 #pragma once
 
 // Forward declarations of C++ defined types
+// Forward declaration of `DynamicTypeRamp` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `FontStyle` to properly resolve imports.
@@ -24,6 +26,7 @@ namespace margelo::nitro::nitrotext { enum class TextAlign; }
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
 
 // Include C++ defined types
+#include "DynamicTypeRamp.hpp"
 #include "EllipsizeMode.hpp"
 #include "FontStyle.hpp"
 #include "FontWeight.hpp"

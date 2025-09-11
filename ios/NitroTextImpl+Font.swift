@@ -20,7 +20,11 @@ extension NitroTextImpl {
             if let current = defaultPointSize { return current }
             return 14.0
         }()
-        let finalPointSize: CGFloat = allowFontScaling ? UIFontMetrics.default.scaledValue(for: resolvedSize) : resolvedSize
+        let metrics: UIFontMetrics = {
+            if let style = dynamicTypeTextStyle { return UIFontMetrics(forTextStyle: style) }
+            return .default
+        }()
+        let finalPointSize: CGFloat = allowFontScaling ? metrics.scaledValue(for: resolvedSize) : resolvedSize
         let weightToken = fragment.fontWeight ?? FontWeight.normal
         let uiWeight = Self.uiFontWeight(for: weightToken)
         let isItalic = fragment.fontStyle == FontStyle.italic
