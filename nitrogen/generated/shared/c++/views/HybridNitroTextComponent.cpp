@@ -45,6 +45,16 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.selectable: ") + exc.what());
       }
     }()),
+    ellipsizeMode([&]() -> CachedProp<std::optional<EllipsizeMode>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("ellipsizeMode", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.ellipsizeMode;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<EllipsizeMode>>::fromRawValue(*runtime, value, sourceProps.ellipsizeMode);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.ellipsizeMode: ") + exc.what());
+      }
+    }()),
     onSelectableTextMeasured([&]() -> CachedProp<std::optional<std::function<void(double /* height */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("onSelectableTextMeasured", nullptr, nullptr);
@@ -160,6 +170,7 @@ namespace margelo::nitro::nitrotext::views {
     react::ViewProps(),
     fragments(other.fragments),
     selectable(other.selectable),
+    ellipsizeMode(other.ellipsizeMode),
     onSelectableTextMeasured(other.onSelectableTextMeasured),
     fontSize(other.fontSize),
     fontWeight(other.fontWeight),
@@ -176,6 +187,7 @@ namespace margelo::nitro::nitrotext::views {
     switch (hashString(propName)) {
       case hashString("fragments"): return true;
       case hashString("selectable"): return true;
+      case hashString("ellipsizeMode"): return true;
       case hashString("onSelectableTextMeasured"): return true;
       case hashString("fontSize"): return true;
       case hashString("fontWeight"): return true;

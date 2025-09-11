@@ -22,6 +22,8 @@ namespace margelo::nitro::nitrotext { enum class FontStyle; }
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
+// Forward declaration of `EllipsizeMode` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 
 #include "Fragment.hpp"
 #include <vector>
@@ -31,6 +33,7 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
+#include "EllipsizeMode.hpp"
 #include <functional>
 
 #include "NitroText-Swift-Cxx-Umbrella.hpp"
@@ -83,6 +86,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setSelectable(std::optional<bool> selectable) noexcept override {
       _swiftPart.setSelectable(selectable);
+    }
+    inline std::optional<EllipsizeMode> getEllipsizeMode() noexcept override {
+      auto __result = _swiftPart.getEllipsizeMode();
+      return __result;
+    }
+    inline void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) noexcept override {
+      _swiftPart.setEllipsizeMode(ellipsizeMode);
     }
     inline std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() noexcept override {
       auto __result = _swiftPart.getOnSelectableTextMeasured();

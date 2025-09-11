@@ -15,6 +15,8 @@
 
 // Forward declaration of `Fragment` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct Fragment; }
+// Forward declaration of `EllipsizeMode` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `FontWeight` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class FontWeight; }
 // Forward declaration of `FontStyle` to properly resolve imports.
@@ -27,6 +29,7 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
+#include "EllipsizeMode.hpp"
 #include <functional>
 #include "FontWeight.hpp"
 #include <string>
@@ -65,6 +68,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setFragments(const std::optional<std::vector<Fragment>>& fragments) = 0;
       virtual std::optional<bool> getSelectable() = 0;
       virtual void setSelectable(std::optional<bool> selectable) = 0;
+      virtual std::optional<EllipsizeMode> getEllipsizeMode() = 0;
+      virtual void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) = 0;
       virtual std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() = 0;
       virtual void setOnSelectableTextMeasured(const std::optional<std::function<void(double /* height */)>>& onSelectableTextMeasured) = 0;
       virtual std::optional<double> getFontSize() = 0;

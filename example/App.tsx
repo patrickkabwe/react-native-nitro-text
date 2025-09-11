@@ -10,6 +10,12 @@ export default function App() {
     setLayoutInfo(`Layout: ${Math.round(width)}×${Math.round(height)}px`);
   };
 
+  const handleTextLayout = (event: any) => {
+    const { lines } = event.nativeEvent;
+    console.log('lines', lines);
+    // setLayoutInfo(`Lines: ${lines.length}`);
+  };
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Header Section */}
@@ -53,7 +59,7 @@ export default function App() {
       {/* Layout Measurement */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Layout Measurement</NitroText>
-        <NitroText style={styles.measuredText} onLayout={handleLayout}>
+        <NitroText style={styles.measuredText} onLayout={handleLayout} onTextLayout={handleTextLayout}>
           This text demonstrates layout measurement capabilities. The component
           can measure its dimensions and report back to JavaScript.
           {'\n\n'}
