@@ -14,13 +14,17 @@ struct FontKey: Hashable {
 }
 
 extension NitroTextImpl {
-    func makeFont(for fragment: Fragment, defaultPointSize: CGFloat?) -> (value: UIFont, isItalic: Bool) {
+    func makeFont(for fragment: Fragment, defaultPointSize: CGFloat?) -> (
+        value: UIFont, isItalic: Bool
+    ) {
         let resolvedSize: CGFloat = {
             if let s = fragment.fontSize { return CGFloat(s) }
-            if let current = defaultPointSize { return current }
+            if let current = defaultPointSize, current > 0 { return current }
             return 14.0
         }()
-        let finalPointSize: CGFloat = allowFontScaling ? (resolvedSize * effectiveScaleFactor(requestedSize: resolvedSize)) : resolvedSize
+        let finalPointSize: CGFloat =
+            allowFontScaling
+            ? (resolvedSize * getScaleFactor(requestedSize: resolvedSize)) : resolvedSize
         let weightToken = fragment.fontWeight ?? FontWeight.normal
         let uiWeight = Self.uiFontWeight(for: weightToken)
         let isItalic = fragment.fontStyle == FontStyle.italic
@@ -45,8 +49,8 @@ extension NitroTextImpl {
         fontCache[key] = base
         return (base, isItalic)
     }
-    
-    func effectiveScaleFactor(requestedSize: CGFloat) -> CGFloat {
+
+    func getScaleFactor(requestedSize: CGFloat) -> CGFloat {
         guard allowFontScaling else { return 1.0 }
         var multiplier: CGFloat
         if let style = dynamicTypeTextStyle {
@@ -99,7 +103,7 @@ extension NitroTextImpl {
         default: return 1.0
         }
     }
-    
+
     static func uiFontWeight(for weight: FontWeight) -> UIFont.Weight {
         switch weight {
         case .ultralight:

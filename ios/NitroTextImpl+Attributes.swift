@@ -21,6 +21,15 @@ extension NitroTextImpl {
         let para = makeParagraphStyle(for: fragment)
         attrs[.paragraphStyle] = para
 
+        if let rawLH = fragment.lineHeight, rawLH > 0 {
+            let basePointSize = nitroTextView?.font?.pointSize ?? 14.0
+            let fontScaleMultiplier = allowFontScaling ? getScaleFactor(requestedSize: basePointSize) : 1.0
+            let targetLH = CGFloat(rawLH) * fontScaleMultiplier
+            let containerLineHeight = (nitroTextView?.font ?? font.value).lineHeight
+            if targetLH > containerLineHeight {
+                attrs[.baselineOffset] = ((targetLH - containerLineHeight) / 2.0)
+            }
+        }
 
         let color = resolveColor(for: fragment, defaultColor: defaultColor)
         attrs[.foregroundColor] = color
@@ -66,8 +75,8 @@ extension NitroTextImpl {
                 if let fs = fragment.fontSize { return CGFloat(fs) }
                 return nitroTextView?.font?.pointSize ?? CGFloat(14.0)
             }()
-            let m = allowFontScaling ? effectiveScaleFactor(requestedSize: baseSize) : 1.0
-            let lh = CGFloat(lineHeight) * m
+            let fontScaleMultiplier = allowFontScaling ? getScaleFactor(requestedSize: baseSize) : 1.0
+            let lh = CGFloat(lineHeight) * fontScaleMultiplier
             para.minimumLineHeight = lh
             para.maximumLineHeight = lh
         }

@@ -15,7 +15,7 @@ final class NitroTextView: UITextView {
     var tkStorage: NSTextStorage?
     var tkLayoutManager: NSLayoutManager?
     weak var nitroTextDelegate: NitroTextViewDelegate?
-        
+
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         if let provided = textContainer {
             super.init(frame: frame, textContainer: provided)
@@ -27,12 +27,12 @@ final class NitroTextView: UITextView {
         }
         setupView()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
     }
-    
+
     private func setupView() {
         isEditable = false
         isSelectable = true
@@ -44,10 +44,10 @@ final class NitroTextView: UITextView {
         layoutManager.usesFontLeading = false
         contentInset = .zero
         clipsToBounds = true
-        
+
         delaysContentTouches = false
         panGestureRecognizer.cancelsTouchesInView = false
-        
+
         if #available(iOS 11.0, *) { textDragInteraction?.isEnabled = true }
     }
 
@@ -55,7 +55,7 @@ final class NitroTextView: UITextView {
         let inset = textContainerInset
         let availableWidth = max(0, width - inset.left - inset.right)
         textContainer.size = CGSize(width: availableWidth, height: CGFloat.greatestFiniteMagnitude)
-                
+
         let usedHeight: CGFloat = {
             if let lm = tkLayoutManager {
                 let range = lm.glyphRange(for: textContainer)
@@ -65,13 +65,14 @@ final class NitroTextView: UITextView {
             } else {
                 let range = layoutManager.glyphRange(for: textContainer)
                 let used = layoutManager.usedRect(for: textContainer).height
-                let bound = layoutManager.boundingRect(forGlyphRange: range, in: textContainer).height
+                let bound = layoutManager.boundingRect(forGlyphRange: range, in: textContainer)
+                    .height
                 return max(used, bound)
             }
         }()
         return ceil(usedHeight + inset.top + inset.bottom)
     }
-    
+
     private static func makeTextKitStack() -> (NSTextStorage, NSLayoutManager, NSTextContainer) {
         let storage = NSTextStorage()
         let layout = NSLayoutManager()
@@ -81,7 +82,7 @@ final class NitroTextView: UITextView {
         storage.addLayoutManager(layout)
         return (storage, layout, container)
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         let width = self.bounds.width

@@ -8,7 +8,7 @@
 import UIKit
 
 final class NitroTextImpl {
-    weak var nitroTextView : NitroTextView?
+    weak var nitroTextView: NitroTextView?
     var currentTextAlignment: NSTextAlignment = .natural
     var currentTransform: TextTransform = .none
     var currentEllipsize: NSLineBreakMode = .byTruncatingTail
@@ -20,7 +20,7 @@ final class NitroTextImpl {
     var maxFontSizeMultiplier: Double? = nil
     var adjustsFontSizeToFit: Bool? = nil
     var minimumFontScale: Double? = nil
-    
+
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
     }
@@ -44,11 +44,11 @@ final class NitroTextImpl {
             }
         }
     }
-    
+
     func setSelectable(_ selectable: Bool?) {
         nitroTextView?.isSelectable = selectable ?? true
     }
-    
+
     func setAllowFontScaling(_ value: Bool?) {
         allowFontScaling = value ?? true
         nitroTextView?.adjustsFontForContentSizeCategory = allowFontScaling
@@ -56,7 +56,15 @@ final class NitroTextImpl {
             nitroTextView?.attributedText = text
         }
     }
-    
+
+    func setFontSize(_ value: Double?) {
+        if let value = value {
+            nitroTextView?.font = UIFont.systemFont(ofSize: CGFloat(value))
+        } else {
+            nitroTextView?.font = UIFont.systemFont(ofSize: 14)
+        }
+    }
+
     func setDynamicTypeRamp(_ value: DynamicTypeRamp?) {
         let style: UIFont.TextStyle? = {
             switch value {
@@ -83,7 +91,7 @@ final class NitroTextImpl {
             }
         }
     }
-    
+
     func setNumberOfLines(_ value: Double?) {
         let n = Int(value ?? 0)
         nitroTextView?.textContainer.maximumNumberOfLines = n
@@ -138,7 +146,7 @@ final class NitroTextImpl {
             nitroTextView?.attributedText = attributedText
         }
     }
-    
+
     func setPlainText(_ value: String?) {
         let attributed = NSAttributedString(string: value ?? "")
         setText(attributed)
@@ -163,7 +171,7 @@ final class NitroTextImpl {
         default: currentTransform = .none
         }
     }
-    
+
     func setFragments(_ fragments: [Fragment]?) {
         guard let fragments = fragments, !fragments.isEmpty else {
             nitroTextView?.attributedText = nil
