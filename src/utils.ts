@@ -29,21 +29,17 @@ export function styleToFragment(style: StyleProp<TextStyle> | undefined): Partia
     };
 }
 
-function hasBackground(style: TextStyle): boolean {
-    return !!(StyleSheet.flatten(style) || {}).backgroundColor;
-}
-
-function hasBorder(style: TextStyle): boolean {
-    return !!(StyleSheet.flatten(style) || {}).borderColor || !!(StyleSheet.flatten(style) || {}).borderWidth;
-}
 
 function getFragmentConfig(style: TextStyle): {
     shouldApplyBackground: boolean;
     shouldApplyBorder: boolean;
 } {
+    const flat = StyleSheet.flatten(style) || {};
+    const hasBackground = !!flat.backgroundColor;
+    const hasBorder = !!flat.borderColor || !!flat.borderWidth;
     return {
-        shouldApplyBackground: hasBackground(style),
-        shouldApplyBorder: hasBorder(style),
+        shouldApplyBackground: hasBackground,
+        shouldApplyBorder: hasBorder,
     };
 }
 
@@ -71,13 +67,12 @@ export function flattenChildrenToFragments(
         if (React.isValidElement(child)) {
             const { children: nested, style: childStyle } = child.props as any;
             const mergedStyle = [parentStyle, childStyle];
-            const ownsBackground = hasBackground(childStyle);
-            const ownsBorder = hasBorder(childStyle);
+
             frags.push(
                 ...flattenChildrenToFragments(
                     nested,
                     mergedStyle as any,
-                    { shouldApplyBackground: ownsBackground, shouldApplyBorder: ownsBorder }
+                    getFragmentConfig(childStyle)
                 )
             );
         }
