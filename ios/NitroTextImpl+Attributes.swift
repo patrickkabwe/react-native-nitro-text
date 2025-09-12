@@ -21,26 +21,6 @@ extension NitroTextImpl {
         let para = makeParagraphStyle(for: fragment)
         attrs[.paragraphStyle] = para
 
-        // Match RN iOS behavior: When a custom lineHeight is provided and is
-        // larger than the font's natural lineHeight, vertically center the
-        // glyphs within the line by applying a baseline offset.
-        if let rawLH = fragment.lineHeight, rawLH > 0 {
-            let scaledLH: CGFloat = {
-                guard allowFontScaling else { return CGFloat(rawLH) }
-                // Use the same multiplier RN uses for the current run
-                let baseSize: CGFloat = {
-                    if let fs = fragment.fontSize { return CGFloat(fs) }
-                    return nitroTextView?.font?.pointSize ?? CGFloat(14.0)
-                }()
-                let factor = effectiveScaleFactor(requestedSize: baseSize)
-                return CGFloat(rawLH) * factor
-            }()
-            let fontLineHeight = font.value.lineHeight
-            if scaledLH >= fontLineHeight {
-                let baseline = (scaledLH - fontLineHeight) / 2.0
-                attrs[.baselineOffset] = baseline
-            }
-        }
 
         let color = resolveColor(for: fragment, defaultColor: defaultColor)
         attrs[.foregroundColor] = color
