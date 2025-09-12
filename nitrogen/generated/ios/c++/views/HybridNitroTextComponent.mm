@@ -141,6 +141,11 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setFontColor(newViewProps.fontColor.value);
     newViewProps.fontColor.isDirty = false;
   }
+  // fragmentBackgroundColor: optional
+  if (newViewProps.fragmentBackgroundColor.isDirty) {
+    swiftPart.setFragmentBackgroundColor(newViewProps.fragmentBackgroundColor.value);
+    newViewProps.fragmentBackgroundColor.isDirty = false;
+  }
   // fontStyle: optional
   if (newViewProps.fontStyle.isDirty) {
     swiftPart.setFontStyle(newViewProps.fontStyle.value);
@@ -170,6 +175,21 @@ using namespace margelo::nitro::nitrotext::views;
   if (newViewProps.textTransform.isDirty) {
     swiftPart.setTextTransform(newViewProps.textTransform.value);
     newViewProps.textTransform.isDirty = false;
+  }
+  // textDecorationLine: optional
+  if (newViewProps.textDecorationLine.isDirty) {
+    swiftPart.setTextDecorationLine(newViewProps.textDecorationLine.value);
+    newViewProps.textDecorationLine.isDirty = false;
+  }
+  // textDecorationColor: optional
+  if (newViewProps.textDecorationColor.isDirty) {
+    swiftPart.setTextDecorationColor(newViewProps.textDecorationColor.value);
+    newViewProps.textDecorationColor.isDirty = false;
+  }
+  // textDecorationStyle: optional
+  if (newViewProps.textDecorationStyle.isDirty) {
+    swiftPart.setTextDecorationStyle(newViewProps.textDecorationStyle.value);
+    newViewProps.textDecorationStyle.isDirty = false;
   }
 
   swiftPart.afterUpdate();

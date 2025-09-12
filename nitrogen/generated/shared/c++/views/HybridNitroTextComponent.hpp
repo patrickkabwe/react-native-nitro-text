@@ -39,6 +39,8 @@
 #include <optional>
 #include <string>
 #include <optional>
+#include <string>
+#include <optional>
 #include "FontStyle.hpp"
 #include <optional>
 #include <optional>
@@ -47,6 +49,12 @@
 #include "TextAlign.hpp"
 #include <optional>
 #include "TextTransform.hpp"
+#include <optional>
+#include "TextDecorationLine.hpp"
+#include <optional>
+#include <string>
+#include <optional>
+#include "TextDecorationStyle.hpp"
 #include <optional>
 #include <memory>
 #include "HybridNitroTextSpec.hpp"
@@ -88,12 +96,16 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<double>> fontSize;
     CachedProp<std::optional<FontWeight>> fontWeight;
     CachedProp<std::optional<std::string>> fontColor;
+    CachedProp<std::optional<std::string>> fragmentBackgroundColor;
     CachedProp<std::optional<FontStyle>> fontStyle;
     CachedProp<std::optional<double>> lineHeight;
     CachedProp<std::optional<double>> letterSpacing;
     CachedProp<std::optional<double>> numberOfLines;
     CachedProp<std::optional<TextAlign>> textAlign;
     CachedProp<std::optional<TextTransform>> textTransform;
+    CachedProp<std::optional<TextDecorationLine>> textDecorationLine;
+    CachedProp<std::optional<std::string>> textDecorationColor;
+    CachedProp<std::optional<TextDecorationStyle>> textDecorationStyle;
     CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridNitroTextSpec>& /* ref */)>>> hybridRef;
 
   private:

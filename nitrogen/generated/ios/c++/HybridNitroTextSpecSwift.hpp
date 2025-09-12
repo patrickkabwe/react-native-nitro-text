@@ -22,6 +22,10 @@ namespace margelo::nitro::nitrotext { enum class FontStyle; }
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
+// Forward declaration of `TextDecorationLine` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
+// Forward declaration of `TextDecorationStyle` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
@@ -37,6 +41,8 @@ namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
+#include "TextDecorationLine.hpp"
+#include "TextDecorationStyle.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
@@ -177,6 +183,13 @@ namespace margelo::nitro::nitrotext {
     inline void setFontColor(const std::optional<std::string>& fontColor) noexcept override {
       _swiftPart.setFontColor(fontColor);
     }
+    inline std::optional<std::string> getFragmentBackgroundColor() noexcept override {
+      auto __result = _swiftPart.getFragmentBackgroundColor();
+      return __result;
+    }
+    inline void setFragmentBackgroundColor(const std::optional<std::string>& fragmentBackgroundColor) noexcept override {
+      _swiftPart.setFragmentBackgroundColor(fragmentBackgroundColor);
+    }
     inline std::optional<FontStyle> getFontStyle() noexcept override {
       auto __result = _swiftPart.getFontStyle();
       return __result;
@@ -218,6 +231,27 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setTextTransform(std::optional<TextTransform> textTransform) noexcept override {
       _swiftPart.setTextTransform(textTransform);
+    }
+    inline std::optional<TextDecorationLine> getTextDecorationLine() noexcept override {
+      auto __result = _swiftPart.getTextDecorationLine();
+      return __result;
+    }
+    inline void setTextDecorationLine(std::optional<TextDecorationLine> textDecorationLine) noexcept override {
+      _swiftPart.setTextDecorationLine(textDecorationLine);
+    }
+    inline std::optional<std::string> getTextDecorationColor() noexcept override {
+      auto __result = _swiftPart.getTextDecorationColor();
+      return __result;
+    }
+    inline void setTextDecorationColor(const std::optional<std::string>& textDecorationColor) noexcept override {
+      _swiftPart.setTextDecorationColor(textDecorationColor);
+    }
+    inline std::optional<TextDecorationStyle> getTextDecorationStyle() noexcept override {
+      auto __result = _swiftPart.getTextDecorationStyle();
+      return __result;
+    }
+    inline void setTextDecorationStyle(std::optional<TextDecorationStyle> textDecorationStyle) noexcept override {
+      _swiftPart.setTextDecorationStyle(textDecorationStyle);
     }
 
   public:

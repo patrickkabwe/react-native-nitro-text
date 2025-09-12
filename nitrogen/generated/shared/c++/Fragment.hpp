@@ -26,6 +26,10 @@ namespace margelo::nitro::nitrotext { enum class FontStyle; }
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
+// Forward declaration of `TextDecorationLine` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
+// Forward declaration of `TextDecorationStyle` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 
 #include <string>
 #include <optional>
@@ -33,6 +37,8 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
+#include "TextDecorationLine.hpp"
+#include "TextDecorationStyle.hpp"
 
 namespace margelo::nitro::nitrotext {
 
@@ -45,16 +51,20 @@ namespace margelo::nitro::nitrotext {
     std::optional<double> fontSize     SWIFT_PRIVATE;
     std::optional<FontWeight> fontWeight     SWIFT_PRIVATE;
     std::optional<std::string> fontColor     SWIFT_PRIVATE;
+    std::optional<std::string> fragmentBackgroundColor     SWIFT_PRIVATE;
     std::optional<FontStyle> fontStyle     SWIFT_PRIVATE;
     std::optional<double> lineHeight     SWIFT_PRIVATE;
     std::optional<double> letterSpacing     SWIFT_PRIVATE;
     std::optional<double> numberOfLines     SWIFT_PRIVATE;
     std::optional<TextAlign> textAlign     SWIFT_PRIVATE;
     std::optional<TextTransform> textTransform     SWIFT_PRIVATE;
+    std::optional<TextDecorationLine> textDecorationLine     SWIFT_PRIVATE;
+    std::optional<std::string> textDecorationColor     SWIFT_PRIVATE;
+    std::optional<TextDecorationStyle> textDecorationStyle     SWIFT_PRIVATE;
 
   public:
     Fragment() = default;
-    explicit Fragment(std::optional<std::string> text, std::optional<double> fontSize, std::optional<FontWeight> fontWeight, std::optional<std::string> fontColor, std::optional<FontStyle> fontStyle, std::optional<double> lineHeight, std::optional<double> letterSpacing, std::optional<double> numberOfLines, std::optional<TextAlign> textAlign, std::optional<TextTransform> textTransform): text(text), fontSize(fontSize), fontWeight(fontWeight), fontColor(fontColor), fontStyle(fontStyle), lineHeight(lineHeight), letterSpacing(letterSpacing), numberOfLines(numberOfLines), textAlign(textAlign), textTransform(textTransform) {}
+    explicit Fragment(std::optional<std::string> text, std::optional<double> fontSize, std::optional<FontWeight> fontWeight, std::optional<std::string> fontColor, std::optional<std::string> fragmentBackgroundColor, std::optional<FontStyle> fontStyle, std::optional<double> lineHeight, std::optional<double> letterSpacing, std::optional<double> numberOfLines, std::optional<TextAlign> textAlign, std::optional<TextTransform> textTransform, std::optional<TextDecorationLine> textDecorationLine, std::optional<std::string> textDecorationColor, std::optional<TextDecorationStyle> textDecorationStyle): text(text), fontSize(fontSize), fontWeight(fontWeight), fontColor(fontColor), fragmentBackgroundColor(fragmentBackgroundColor), fontStyle(fontStyle), lineHeight(lineHeight), letterSpacing(letterSpacing), numberOfLines(numberOfLines), textAlign(textAlign), textTransform(textTransform), textDecorationLine(textDecorationLine), textDecorationColor(textDecorationColor), textDecorationStyle(textDecorationStyle) {}
   };
 
 } // namespace margelo::nitro::nitrotext
@@ -71,12 +81,16 @@ namespace margelo::nitro {
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, "fontSize")),
         JSIConverter<std::optional<margelo::nitro::nitrotext::FontWeight>>::fromJSI(runtime, obj.getProperty(runtime, "fontWeight")),
         JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, "fontColor")),
+        JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, "fragmentBackgroundColor")),
         JSIConverter<std::optional<margelo::nitro::nitrotext::FontStyle>>::fromJSI(runtime, obj.getProperty(runtime, "fontStyle")),
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, "lineHeight")),
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, "letterSpacing")),
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, "numberOfLines")),
         JSIConverter<std::optional<margelo::nitro::nitrotext::TextAlign>>::fromJSI(runtime, obj.getProperty(runtime, "textAlign")),
-        JSIConverter<std::optional<margelo::nitro::nitrotext::TextTransform>>::fromJSI(runtime, obj.getProperty(runtime, "textTransform"))
+        JSIConverter<std::optional<margelo::nitro::nitrotext::TextTransform>>::fromJSI(runtime, obj.getProperty(runtime, "textTransform")),
+        JSIConverter<std::optional<margelo::nitro::nitrotext::TextDecorationLine>>::fromJSI(runtime, obj.getProperty(runtime, "textDecorationLine")),
+        JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, "textDecorationColor")),
+        JSIConverter<std::optional<margelo::nitro::nitrotext::TextDecorationStyle>>::fromJSI(runtime, obj.getProperty(runtime, "textDecorationStyle"))
       );
     }
     static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::nitrotext::Fragment& arg) {
@@ -85,12 +99,16 @@ namespace margelo::nitro {
       obj.setProperty(runtime, "fontSize", JSIConverter<std::optional<double>>::toJSI(runtime, arg.fontSize));
       obj.setProperty(runtime, "fontWeight", JSIConverter<std::optional<margelo::nitro::nitrotext::FontWeight>>::toJSI(runtime, arg.fontWeight));
       obj.setProperty(runtime, "fontColor", JSIConverter<std::optional<std::string>>::toJSI(runtime, arg.fontColor));
+      obj.setProperty(runtime, "fragmentBackgroundColor", JSIConverter<std::optional<std::string>>::toJSI(runtime, arg.fragmentBackgroundColor));
       obj.setProperty(runtime, "fontStyle", JSIConverter<std::optional<margelo::nitro::nitrotext::FontStyle>>::toJSI(runtime, arg.fontStyle));
       obj.setProperty(runtime, "lineHeight", JSIConverter<std::optional<double>>::toJSI(runtime, arg.lineHeight));
       obj.setProperty(runtime, "letterSpacing", JSIConverter<std::optional<double>>::toJSI(runtime, arg.letterSpacing));
       obj.setProperty(runtime, "numberOfLines", JSIConverter<std::optional<double>>::toJSI(runtime, arg.numberOfLines));
       obj.setProperty(runtime, "textAlign", JSIConverter<std::optional<margelo::nitro::nitrotext::TextAlign>>::toJSI(runtime, arg.textAlign));
       obj.setProperty(runtime, "textTransform", JSIConverter<std::optional<margelo::nitro::nitrotext::TextTransform>>::toJSI(runtime, arg.textTransform));
+      obj.setProperty(runtime, "textDecorationLine", JSIConverter<std::optional<margelo::nitro::nitrotext::TextDecorationLine>>::toJSI(runtime, arg.textDecorationLine));
+      obj.setProperty(runtime, "textDecorationColor", JSIConverter<std::optional<std::string>>::toJSI(runtime, arg.textDecorationColor));
+      obj.setProperty(runtime, "textDecorationStyle", JSIConverter<std::optional<margelo::nitro::nitrotext::TextDecorationStyle>>::toJSI(runtime, arg.textDecorationStyle));
       return obj;
     }
     static inline bool canConvert(jsi::Runtime& runtime, const jsi::Value& value) {
@@ -102,12 +120,16 @@ namespace margelo::nitro {
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, "fontSize"))) return false;
       if (!JSIConverter<std::optional<margelo::nitro::nitrotext::FontWeight>>::canConvert(runtime, obj.getProperty(runtime, "fontWeight"))) return false;
       if (!JSIConverter<std::optional<std::string>>::canConvert(runtime, obj.getProperty(runtime, "fontColor"))) return false;
+      if (!JSIConverter<std::optional<std::string>>::canConvert(runtime, obj.getProperty(runtime, "fragmentBackgroundColor"))) return false;
       if (!JSIConverter<std::optional<margelo::nitro::nitrotext::FontStyle>>::canConvert(runtime, obj.getProperty(runtime, "fontStyle"))) return false;
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, "lineHeight"))) return false;
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, "letterSpacing"))) return false;
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, "numberOfLines"))) return false;
       if (!JSIConverter<std::optional<margelo::nitro::nitrotext::TextAlign>>::canConvert(runtime, obj.getProperty(runtime, "textAlign"))) return false;
       if (!JSIConverter<std::optional<margelo::nitro::nitrotext::TextTransform>>::canConvert(runtime, obj.getProperty(runtime, "textTransform"))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::nitrotext::TextDecorationLine>>::canConvert(runtime, obj.getProperty(runtime, "textDecorationLine"))) return false;
+      if (!JSIConverter<std::optional<std::string>>::canConvert(runtime, obj.getProperty(runtime, "textDecorationColor"))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::nitrotext::TextDecorationStyle>>::canConvert(runtime, obj.getProperty(runtime, "textDecorationStyle"))) return false;
       return true;
     }
   };

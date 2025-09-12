@@ -15,24 +15,50 @@ export function styleToFragment(style: StyleProp<TextStyle> | undefined): Partia
     const s = StyleSheet.flatten(style) || {};
     return {
         fontColor: s.color as string | undefined,
+        fragmentBackgroundColor: s.backgroundColor as string | undefined,
         fontSize: s.fontSize,
         fontWeight: normalizeWeight(s.fontWeight),
         fontStyle: s.fontStyle,
         lineHeight: s.lineHeight,
-        letterSpacing: s.letterSpacing as number | undefined,
-        textAlign: s.textAlign as any,
-        textTransform: s.textTransform as any,
+        letterSpacing: s.letterSpacing,
+        textAlign: s.textAlign,
+        textTransform: s.textTransform,
+        textDecorationLine: s.textDecorationLine,
+        textDecorationColor: s.textDecorationColor as string | undefined,
+        textDecorationStyle: s.textDecorationStyle,
+    };
+}
+
+function hasBackground(style: TextStyle): boolean {
+    return !!(StyleSheet.flatten(style) || {}).backgroundColor;
+}
+
+function hasBorder(style: TextStyle): boolean {
+    return !!(StyleSheet.flatten(style) || {}).borderColor || !!(StyleSheet.flatten(style) || {}).borderWidth;
+}
+
+function getFragmentConfig(style: TextStyle): {
+    shouldApplyBackground: boolean;
+    shouldApplyBorder: boolean;
+} {
+    return {
+        shouldApplyBackground: hasBackground(style),
+        shouldApplyBorder: hasBorder(style),
     };
 }
 
 export function flattenChildrenToFragments(
     children: React.ReactNode,
-    parentStyle?: TextStyle
+    parentStyle?: TextStyle,
+    fragmentConfig?: ReturnType<typeof getFragmentConfig>
 ): Fragment[] {
     const frags: Fragment[] = [];
-    const push = (text: string, _?: TextStyle) => {
+    const push = (text: string, style?: TextStyle) => {
         if (!text) return;
-        const base = styleToFragment(parentStyle);
+        const base = styleToFragment(style);
+        if (!fragmentConfig?.shouldApplyBackground && base.fragmentBackgroundColor) {
+            delete base.fragmentBackgroundColor;
+        }
         frags.push({ text, ...base } as Fragment);
     };
 
@@ -45,21 +71,38 @@ export function flattenChildrenToFragments(
         if (React.isValidElement(child)) {
             const { children: nested, style: childStyle } = child.props as any;
             const mergedStyle = [parentStyle, childStyle];
-            frags.push(...flattenChildrenToFragments(nested, mergedStyle as any));
+            const ownsBackground = hasBackground(childStyle);
+            const ownsBorder = hasBorder(childStyle);
+            frags.push(
+                ...flattenChildrenToFragments(
+                    nested,
+                    mergedStyle as any,
+                    { shouldApplyBackground: ownsBackground, shouldApplyBorder: ownsBorder }
+                )
+            );
         }
     });
 
     return frags;
 }
 
-export function createStyleFromPropsStyle(style: StyleProp<TextStyle>): {
+
+type StyleFromPropsStyle = {
     color: string | undefined;
     textAlign: TextStyle['textAlign'] | undefined;
     textTransform: TextStyle['textTransform'] | undefined;
-} {
+    textDecorationLine: TextStyle['textDecorationLine'] | undefined;
+    textDecorationColor: string | undefined;
+    textDecorationStyle: TextStyle['textDecorationStyle'] | undefined;
+}
+
+export function createStyleFromPropsStyle(style: StyleProp<TextStyle>): StyleFromPropsStyle {
     const flat = StyleSheet.flatten(style) || {};
     const colorProp = flat.color as string | undefined;
     const textAlign = flat.textAlign as TextStyle['textAlign'] | undefined;
     const textTransform = flat.textTransform as TextStyle['textTransform'] | undefined;
-    return { color: colorProp, textAlign, textTransform };
+    const textDecorationLine = flat.textDecorationLine as TextStyle['textDecorationLine'] | undefined;
+    const textDecorationColor = flat.textDecorationColor as string | undefined;
+    const textDecorationStyle = flat.textDecorationStyle as TextStyle['textDecorationStyle'] | undefined;
+    return { color: colorProp, textAlign, textTransform, textDecorationLine, textDecorationColor, textDecorationStyle };
 }

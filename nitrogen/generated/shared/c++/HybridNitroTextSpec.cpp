@@ -42,6 +42,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("fontWeight", &HybridNitroTextSpec::setFontWeight);
       prototype.registerHybridGetter("fontColor", &HybridNitroTextSpec::getFontColor);
       prototype.registerHybridSetter("fontColor", &HybridNitroTextSpec::setFontColor);
+      prototype.registerHybridGetter("fragmentBackgroundColor", &HybridNitroTextSpec::getFragmentBackgroundColor);
+      prototype.registerHybridSetter("fragmentBackgroundColor", &HybridNitroTextSpec::setFragmentBackgroundColor);
       prototype.registerHybridGetter("fontStyle", &HybridNitroTextSpec::getFontStyle);
       prototype.registerHybridSetter("fontStyle", &HybridNitroTextSpec::setFontStyle);
       prototype.registerHybridGetter("lineHeight", &HybridNitroTextSpec::getLineHeight);
@@ -54,6 +56,12 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("textAlign", &HybridNitroTextSpec::setTextAlign);
       prototype.registerHybridGetter("textTransform", &HybridNitroTextSpec::getTextTransform);
       prototype.registerHybridSetter("textTransform", &HybridNitroTextSpec::setTextTransform);
+      prototype.registerHybridGetter("textDecorationLine", &HybridNitroTextSpec::getTextDecorationLine);
+      prototype.registerHybridSetter("textDecorationLine", &HybridNitroTextSpec::setTextDecorationLine);
+      prototype.registerHybridGetter("textDecorationColor", &HybridNitroTextSpec::getTextDecorationColor);
+      prototype.registerHybridSetter("textDecorationColor", &HybridNitroTextSpec::setTextDecorationColor);
+      prototype.registerHybridGetter("textDecorationStyle", &HybridNitroTextSpec::getTextDecorationStyle);
+      prototype.registerHybridSetter("textDecorationStyle", &HybridNitroTextSpec::setTextDecorationStyle);
     });
   }
 

@@ -87,7 +87,7 @@ final class NitroTextImpl {
     func setNumberOfLines(_ value: Double?) {
         let n = Int(value ?? 0)
         nitroTextView?.textContainer.maximumNumberOfLines = n
-        nitroTextView?.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
+        nitroTextView?.textContainer.lineBreakMode = getLineBreakMode(forLines: n)
     }
 
     func setMaxFontSizeMultiplier(_ value: Double?) {
@@ -111,10 +111,10 @@ final class NitroTextImpl {
         default: currentEllipsize = .byTruncatingTail
         }
         guard let n = nitroTextView?.textContainer.maximumNumberOfLines else { return }
-        nitroTextView?.textContainer.lineBreakMode = effectiveLineBreakMode(forLines: n)
+        nitroTextView?.textContainer.lineBreakMode = getLineBreakMode(forLines: n)
     }
 
-    func effectiveLineBreakMode(forLines n: Int) -> NSLineBreakMode {
+    func getLineBreakMode(forLines n: Int) -> NSLineBreakMode {
         guard n > 0 else { return .byWordWrapping }
         if n == 1 { return currentEllipsize }
         switch currentEllipsize {

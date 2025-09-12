@@ -12,7 +12,7 @@ export default function App() {
 
   const handleTextLayout = (event: any) => {
     const { lines } = event.nativeEvent;
-    console.log('lines', lines);
+    // console.log('lines', lines);
     // setLayoutInfo(`Lines: ${lines.length}`);
   };
 
@@ -55,6 +55,22 @@ export default function App() {
           paragraph.
         </NitroText>
       </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Rich Text Formatting</Text>
+        <Text style={styles.richText}>
+          Welcome to the world of <Text style={styles.bold}>bold text</Text>,{' '}
+          <Text style={styles.italic}>beautiful italics</Text>, and{' '}
+          <Text style={styles.highlight}>highlighted content</Text>.{'\n\n'}
+          You can combine multiple styles:{' '}
+          <Text style={[styles.bold, styles.underline, styles.colorful]}>
+            Bold, underlined, and colorful!
+          </Text>
+          {'\n\n'}
+          Different font sizes work seamlessly:{' '}
+          <Text style={styles.large}>Large text</Text> mixed with{' '}
+          <Text style={styles.small}>small text</Text> in the same paragraph.
+        </Text>
+      </View>
 
       {/* Layout Measurement */}
       <View style={styles.section}>
@@ -83,9 +99,7 @@ export default function App() {
           This text demonstrates layout measurement capabilities. The component
           can measure its dimensions and report back to JavaScript.
           {'\n\n'}
-          <Text style={styles.infoText}>
-            {layoutInfo || 'Measuring...'}
-          </Text>
+          <Text style={styles.infoText}>{layoutInfo || 'Measuring...'}</Text>
         </Text>
       </View>
 
@@ -184,10 +198,18 @@ export default function App() {
       {/* Footer */}
       {/* Bug when applying alignItems: 'center' NitroText disappears */}
       <View style={[styles.section, styles.footer]}>
-        <NitroText style={styles.footerText} lineBreakStrategyIOS="hangul-word" maxFontSizeMultiplier={1.5}>
+        <NitroText
+          style={styles.footerText}
+          lineBreakStrategyIOS="hangul-word"
+          maxFontSizeMultiplier={1.5}
+        >
           Built with ❤️
         </NitroText>
-        <Text style={styles.footerText} lineBreakStrategyIOS="hangul-word" maxFontSizeMultiplier={1.5}>
+        <Text
+          style={styles.footerText}
+          lineBreakStrategyIOS="hangul-word"
+          maxFontSizeMultiplier={1.5}
+        >
           Built with ❤️
         </Text>
       </View>
@@ -274,7 +296,9 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   underline: {
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline line-through',
+    textDecorationStyle: 'dashed',
+    textDecorationColor: '#000000',
     textAlign: 'auto',
   },
   colorful: {
@@ -308,7 +332,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 4,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#1976d2',
   },
 
   // Line limiting

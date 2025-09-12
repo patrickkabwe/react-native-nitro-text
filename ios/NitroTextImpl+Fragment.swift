@@ -17,6 +17,9 @@ extension NitroTextImpl {
         let letterSpacing: Double?
         let textAlign: TextAlign?
         let textTransform: TextTransform?
+        let textDecorationLine: TextDecorationLine?
+        let textDecorationColor: String?
+        let textDecorationStyle: TextDecorationStyle?
     }
 
     func apply(fragments: [Fragment]?, text: String?, top: FragmentTopDefaults) {
@@ -28,12 +31,16 @@ extension NitroTextImpl {
                     fontSize: top.fontSize,
                     fontWeight: top.fontWeight,
                     fontColor: top.fontColor,
+                    fragmentBackgroundColor: nil,
                     fontStyle: top.fontStyle,
                     lineHeight: top.lineHeight,
                     letterSpacing: top.letterSpacing,
                     numberOfLines: nil,
                     textAlign: top.textAlign,
-                    textTransform: top.textTransform
+                    textTransform: top.textTransform,
+                    textDecorationLine: top.textDecorationLine,
+                    textDecorationColor: top.textDecorationColor,
+                    textDecorationStyle: top.textDecorationStyle
                 )
                 setFragments([single])
             } else {
@@ -55,6 +62,9 @@ extension NitroTextImpl {
             if frag.fontColor == nil, let v = top.fontColor, !v.isEmpty { frag.fontColor = v }
             if frag.textAlign == nil, let v = top.textAlign { frag.textAlign = v }
             if frag.textTransform == nil, let v = top.textTransform { frag.textTransform = v }
+            if frag.textDecorationLine == nil, let v = top.textDecorationLine { frag.textDecorationLine = v }
+            if frag.textDecorationColor == nil, let v = top.textDecorationColor, !v.isEmpty { frag.textDecorationColor = v }
+            if frag.textDecorationStyle == nil, let v = top.textDecorationStyle { frag.textDecorationStyle = v }
             merged.append(frag)
         }
         setFragments(merged)

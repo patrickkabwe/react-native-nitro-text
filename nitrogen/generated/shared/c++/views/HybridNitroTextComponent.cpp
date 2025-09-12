@@ -165,6 +165,16 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.fontColor: ") + exc.what());
       }
     }()),
+    fragmentBackgroundColor([&]() -> CachedProp<std::optional<std::string>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("fragmentBackgroundColor", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.fragmentBackgroundColor;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::string>>::fromRawValue(*runtime, value, sourceProps.fragmentBackgroundColor);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.fragmentBackgroundColor: ") + exc.what());
+      }
+    }()),
     fontStyle([&]() -> CachedProp<std::optional<FontStyle>> {
       try {
         const react::RawValue* rawValue = rawProps.at("fontStyle", nullptr, nullptr);
@@ -225,6 +235,36 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.textTransform: ") + exc.what());
       }
     }()),
+    textDecorationLine([&]() -> CachedProp<std::optional<TextDecorationLine>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("textDecorationLine", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.textDecorationLine;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<TextDecorationLine>>::fromRawValue(*runtime, value, sourceProps.textDecorationLine);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.textDecorationLine: ") + exc.what());
+      }
+    }()),
+    textDecorationColor([&]() -> CachedProp<std::optional<std::string>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("textDecorationColor", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.textDecorationColor;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::string>>::fromRawValue(*runtime, value, sourceProps.textDecorationColor);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.textDecorationColor: ") + exc.what());
+      }
+    }()),
+    textDecorationStyle([&]() -> CachedProp<std::optional<TextDecorationStyle>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("textDecorationStyle", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.textDecorationStyle;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<TextDecorationStyle>>::fromRawValue(*runtime, value, sourceProps.textDecorationStyle);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.textDecorationStyle: ") + exc.what());
+      }
+    }()),
     hybridRef([&]() -> CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridNitroTextSpec>& /* ref */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("hybridRef", nullptr, nullptr);
@@ -252,12 +292,16 @@ namespace margelo::nitro::nitrotext::views {
     fontSize(other.fontSize),
     fontWeight(other.fontWeight),
     fontColor(other.fontColor),
+    fragmentBackgroundColor(other.fragmentBackgroundColor),
     fontStyle(other.fontStyle),
     lineHeight(other.lineHeight),
     letterSpacing(other.letterSpacing),
     numberOfLines(other.numberOfLines),
     textAlign(other.textAlign),
     textTransform(other.textTransform),
+    textDecorationLine(other.textDecorationLine),
+    textDecorationColor(other.textDecorationColor),
+    textDecorationStyle(other.textDecorationStyle),
     hybridRef(other.hybridRef) { }
 
   bool HybridNitroTextProps::filterObjectKeys(const std::string& propName) {
@@ -276,12 +320,16 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("fontSize"): return true;
       case hashString("fontWeight"): return true;
       case hashString("fontColor"): return true;
+      case hashString("fragmentBackgroundColor"): return true;
       case hashString("fontStyle"): return true;
       case hashString("lineHeight"): return true;
       case hashString("letterSpacing"): return true;
       case hashString("numberOfLines"): return true;
       case hashString("textAlign"): return true;
       case hashString("textTransform"): return true;
+      case hashString("textDecorationLine"): return true;
+      case hashString("textDecorationColor"): return true;
+      case hashString("textDecorationStyle"): return true;
       case hashString("hybridRef"): return true;
       default: return false;
     }

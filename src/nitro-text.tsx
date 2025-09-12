@@ -1,5 +1,10 @@
 import React, { createContext } from 'react'
-import { Text, type TextProps } from 'react-native'
+import {
+  Text,
+  type TextProps,
+  unstable_TextAncestorContext,
+} from 'react-native'
+
 import { getHostComponent, type HybridRef } from 'react-native-nitro-modules'
 import NitroTextConfig from '../nitrogen/generated/shared/json/NitroTextConfig.json'
 import type {
@@ -22,21 +27,9 @@ const NitroTextView = getHostComponent<NitroTextProps, NitroTextMethods>(
 
 const NitroTextNestingContext = createContext<boolean>(false)
 
-// Hoist RN Text ancestor context lookup out of render to avoid repeated requires
-let RNTextAncestorContext: React.Context<any> | null = null
-
-try {
-  const mod: any = (require as any)('react-native/Libraries/Text/TextAncestor')
-  RNTextAncestorContext = (mod && (mod.Context || mod.default || mod)) ?? null
-} catch {}
-
 export const NitroText = (props: TextProps) => {
-  const isNested = React.useContext(NitroTextNestingContext)
-  // Detect if we are nested inside a native RN <Text> to avoid rendering a view
-  const isInsideRNText =
-    RNTextAncestorContext && (RNTextAncestorContext as any).Provider
-      ? React.useContext(RNTextAncestorContext as any)
-      : false
+  const isInsideRNText = React.useContext(unstable_TextAncestorContext)
+  //   const isNested = React.useContext(NitroTextNestingContext)
   const { children, style, selectable = true, ...rest } = props
 
   // Fast path: avoid fragment building when children is a simple string/number
@@ -62,12 +55,14 @@ export const NitroText = (props: TextProps) => {
     )
   }
 
-  // If nested inside NitroText, let the parent flatten styles/text.
-  if (isNested) {
-    return <>{children}</>
-  }
-
-  const { color, textAlign, textTransform } = createStyleFromPropsStyle(style)
+  const {
+    color,
+    textAlign,
+    textTransform,
+    textDecorationLine,
+    textDecorationColor,
+    textDecorationStyle,
+  } = createStyleFromPropsStyle(style)
 
   const top = styleToFragment(style || undefined)
 
@@ -87,6 +82,9 @@ export const NitroText = (props: TextProps) => {
           fontStyle={top.fontStyle}
           lineHeight={top.lineHeight}
           letterSpacing={top.letterSpacing}
+          textDecorationLine={textDecorationLine}
+          textDecorationColor={textDecorationColor}
+          textDecorationStyle={textDecorationStyle}
         />
       </NitroTextNestingContext.Provider>
     )
@@ -105,6 +103,9 @@ export const NitroText = (props: TextProps) => {
         letterSpacing={top.letterSpacing}
         textAlign={textAlign}
         textTransform={textTransform}
+        textDecorationLine={textDecorationLine}
+        textDecorationColor={textDecorationColor}
+        textDecorationStyle={textDecorationStyle}
       />
     </NitroTextNestingContext.Provider>
   )

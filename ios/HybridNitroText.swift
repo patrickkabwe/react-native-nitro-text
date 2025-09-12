@@ -72,6 +72,12 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
         }
     }
     
+    var fragmentBackgroundColor: String? {
+        didSet {
+            applyFragmentsAndProps()
+        }
+    }
+    
     var fontStyle: FontStyle? {
         didSet {
             applyFragmentsAndProps()
@@ -88,6 +94,24 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
     var textTransform: TextTransform? {
         didSet {
             nitroTextImpl.setTextTransform(textTransform)
+            applyFragmentsAndProps()
+        }
+    }
+    
+    var textDecorationLine: TextDecorationLine? {
+        didSet {
+            applyFragmentsAndProps()
+        }
+    }
+    
+    var textDecorationColor: String? {
+        didSet {
+            applyFragmentsAndProps()
+        }
+    }
+    
+    var textDecorationStyle: TextDecorationStyle? {
+        didSet {
             applyFragmentsAndProps()
         }
     }
@@ -167,7 +191,10 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             lineHeight: lineHeight,
             letterSpacing: letterSpacing,
             textAlign: textAlign,
-            textTransform: textTransform
+            textTransform: textTransform,
+            textDecorationLine: textDecorationLine,
+            textDecorationColor: textDecorationColor,
+            textDecorationStyle: textDecorationStyle
         )
         nitroTextImpl.apply(fragments: fragments, text: text, top: top)
     }

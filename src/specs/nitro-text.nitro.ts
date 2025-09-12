@@ -9,22 +9,24 @@ type TextTransform = 'none' | 'uppercase' | 'lowercase' | 'capitalize'
 type EllipsizeMode = 'head' | 'middle' | 'tail' | 'clip'
 type LineBreakStrategyIOS = 'none' | 'standard' | 'hangul-word' | 'push-out'
 type DynamicTypeRamp =
-  | 'caption2'
-  | 'caption1'
-  | 'footnote'
-  | 'subheadline'
-  | 'callout'
-  | 'body'
-  | 'headline'
-  | 'title3'
-  | 'title2'
-  | 'title1'
-  | 'largeTitle'
+    | 'caption2'
+    | 'caption1'
+    | 'footnote'
+    | 'subheadline'
+    | 'callout'
+    | 'body'
+    | 'headline'
+    | 'title3'
+    | 'title2'
+    | 'title1'
+    | 'largeTitle'
 
 // '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'  - Nitro does not support these
 type FontWeight = 'normal' | 'bold' | 'ultralight' | 'thin' | 'light' | 'medium' | 'regular' | 'semibold' | 'condensedBold' | 'condensed' | 'heavy' | 'black'
 type FontStyle = 'normal' | 'italic' | 'oblique'
 
+type TextDecorationLine = 'none' | 'underline' | 'line-through' | 'underline line-through'
+type TextDecorationStyle = 'solid' | 'double' | 'dotted' | 'dashed'
 
 export type Fragment = {
     /**
@@ -46,6 +48,13 @@ export type Fragment = {
      * The font color of the text.
      */
     fontColor?: string
+
+    /**
+     * Background highlight behind this text fragment.
+     * Mirrors React Native Text's `backgroundColor` when applied to nested runs.
+     * Named differently to avoid clashing with view style `backgroundColor`.
+     */
+    fragmentBackgroundColor?: string
 
     /**
      * The font style of the text (italic, normal).
@@ -76,6 +85,22 @@ export type Fragment = {
      * Applies text transform to the content.
      */
     textTransform?: TextTransform
+
+    /**
+     * Text decoration for underline/strikethrough.
+     * Mirrors RN Text's `textDecorationLine`.
+     */
+    textDecorationLine?: TextDecorationLine
+
+    /**
+     * Text decoration color.
+     */
+    textDecorationColor?: string
+
+    /**
+     * Text decoration style (solid, double, dotted, dashed).
+     */
+    textDecorationStyle?: TextDecorationStyle
 }
 
 export interface NitroTextProps extends HybridViewProps, Fragment {

@@ -18,12 +18,16 @@
     "fontSize": true,
     "fontWeight": true,
     "fontColor": true,
+    "fragmentBackgroundColor": true,
     "fontStyle": true,
     "lineHeight": true,
     "letterSpacing": true,
     "numberOfLines": true,
     "textAlign": true,
     "textTransform": true,
+    "textDecorationLine": true,
+    "textDecorationColor": true,
+    "textDecorationStyle": true,
     "hybridRef": true
   }
 }
