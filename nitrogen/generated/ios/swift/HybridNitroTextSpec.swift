@@ -25,12 +25,16 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var fontSize: Double? { get set }
   var fontWeight: FontWeight? { get set }
   var fontColor: String? { get set }
+  var fragmentBackgroundColor: String? { get set }
   var fontStyle: FontStyle? { get set }
   var lineHeight: Double? { get set }
   var letterSpacing: Double? { get set }
   var numberOfLines: Double? { get set }
   var textAlign: TextAlign? { get set }
   var textTransform: TextTransform? { get set }
+  var textDecorationLine: TextDecorationLine? { get set }
+  var textDecorationColor: String? { get set }
+  var textDecorationStyle: TextDecorationStyle? { get set }
 
   // Methods
   

@@ -21,32 +21,47 @@ extension NitroTextImpl {
         let para = makeParagraphStyle(for: fragment)
         attrs[.paragraphStyle] = para
 
-        // Match RN iOS behavior: When a custom lineHeight is provided and is
-        // larger than the font's natural lineHeight, vertically center the
-        // glyphs within the line by applying a baseline offset.
         if let rawLH = fragment.lineHeight, rawLH > 0 {
-            let scaledLH: CGFloat = {
-                guard allowFontScaling else { return CGFloat(rawLH) }
-                // Use the same multiplier RN uses for the current run
-                let baseSize: CGFloat = {
-                    if let fs = fragment.fontSize { return CGFloat(fs) }
-                    return nitroTextView?.font?.pointSize ?? CGFloat(14.0)
-                }()
-                let factor = effectiveScaleFactor(requestedSize: baseSize)
-                return CGFloat(rawLH) * factor
-            }()
-            let fontLineHeight = font.value.lineHeight
-            if scaledLH >= fontLineHeight {
-                let baseline = (scaledLH - fontLineHeight) / 2.0
-                attrs[.baselineOffset] = baseline
+            let basePointSize = nitroTextView?.font?.pointSize ?? 14.0
+            let fontScaleMultiplier = allowFontScaling ? getScaleFactor(requestedSize: basePointSize) : 1.0
+            let targetLH = CGFloat(rawLH) * fontScaleMultiplier
+            let containerLineHeight = (nitroTextView?.font ?? font.value).lineHeight
+            if targetLH > containerLineHeight {
+                attrs[.baselineOffset] = ((targetLH - containerLineHeight) / 2.0)
             }
         }
 
         let color = resolveColor(for: fragment, defaultColor: defaultColor)
         attrs[.foregroundColor] = color
 
+        // Background highlight per-fragment (to match RN Text backgroundColor on runs)
+        if let bgColorString = fragment.fragmentBackgroundColor, let bgParsed = ColorParser.parse(bgColorString) {
+            attrs[.backgroundColor] = bgParsed
+        }
+
         if let spacing = fragment.letterSpacing {
             attrs[.kern] = spacing
+        }
+
+        // Underline / Strikethrough from textDecorationLine
+        if let deco = fragment.textDecorationLine {
+            switch deco {
+            case .underline:
+                attrs[.underlineStyle] = nsUnderlineStyle(from: fragment.textDecorationStyle)
+            case .lineThrough:
+                attrs[.strikethroughStyle] = nsUnderlineStyle(from: fragment.textDecorationStyle)
+            case .underlineLineThrough:
+                attrs[.underlineStyle] = nsUnderlineStyle(from: fragment.textDecorationStyle)
+                attrs[.strikethroughStyle] = nsUnderlineStyle(from: fragment.textDecorationStyle)
+            case .none:
+                break
+            }
+        }
+
+        // Decoration color (applies to underline/strikethrough if present)
+        if let decoColor = fragment.textDecorationColor, let parsed = ColorParser.parse(decoColor) {
+            attrs[.underlineColor] = parsed
+            attrs[.strikethroughColor] = parsed
         }
 
         return attrs
@@ -60,8 +75,8 @@ extension NitroTextImpl {
                 if let fs = fragment.fontSize { return CGFloat(fs) }
                 return nitroTextView?.font?.pointSize ?? CGFloat(14.0)
             }()
-            let m = allowFontScaling ? effectiveScaleFactor(requestedSize: baseSize) : 1.0
-            let lh = CGFloat(lineHeight) * m
+            let fontScaleMultiplier = allowFontScaling ? getScaleFactor(requestedSize: baseSize) : 1.0
+            let lh = CGFloat(lineHeight) * fontScaleMultiplier
             para.minimumLineHeight = lh
             para.maximumLineHeight = lh
         }
@@ -79,7 +94,7 @@ extension NitroTextImpl {
         }
 
         if let n = nitroTextView?.textContainer.maximumNumberOfLines {
-            para.lineBreakMode = effectiveLineBreakMode(forLines: n)
+            para.lineBreakMode = getLineBreakMode(forLines: n)
         }
         if #available(iOS 14.0, *), let _ = nitroTextView {
             para.lineBreakStrategy = currentLineBreakStrategy
@@ -92,6 +107,20 @@ extension NitroTextImpl {
             return parsed
         }
         return defaultColor
+    }
+
+    private func nsUnderlineStyle(from style: TextDecorationStyle?) -> Int {
+        guard let style else { return NSUnderlineStyle.single.rawValue }
+        switch style {
+        case .solid:
+            return NSUnderlineStyle.single.rawValue
+        case .double:
+            return NSUnderlineStyle.double.rawValue
+        case .dotted:
+            return NSUnderlineStyle.patternDot.rawValue | NSUnderlineStyle.single.rawValue
+        case .dashed:
+            return NSUnderlineStyle.patternDash.rawValue | NSUnderlineStyle.single.rawValue
+        }
     }
 
     func transform(_ text: String, with fragment: Fragment) -> String {

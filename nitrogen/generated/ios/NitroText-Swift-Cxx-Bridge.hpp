@@ -24,6 +24,10 @@ namespace margelo::nitro::nitrotext { class HybridNitroTextSpec; }
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `TextAlign` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
+// Forward declaration of `TextDecorationLine` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
+// Forward declaration of `TextDecorationStyle` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
 
@@ -40,6 +44,8 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "HybridNitroTextSpec.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "TextAlign.hpp"
+#include "TextDecorationLine.hpp"
+#include "TextDecorationStyle.hpp"
 #include "TextTransform.hpp"
 #include <functional>
 #include <memory>
@@ -140,6 +146,36 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline TextTransform get_std__optional_TextTransform_(const std::optional<TextTransform>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<TextDecorationLine>
+  /**
+   * Specialized version of `std::optional<TextDecorationLine>`.
+   */
+  using std__optional_TextDecorationLine_ = std::optional<TextDecorationLine>;
+  inline std::optional<TextDecorationLine> create_std__optional_TextDecorationLine_(const TextDecorationLine& value) noexcept {
+    return std::optional<TextDecorationLine>(value);
+  }
+  inline bool has_value_std__optional_TextDecorationLine_(const std::optional<TextDecorationLine>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline TextDecorationLine get_std__optional_TextDecorationLine_(const std::optional<TextDecorationLine>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<TextDecorationStyle>
+  /**
+   * Specialized version of `std::optional<TextDecorationStyle>`.
+   */
+  using std__optional_TextDecorationStyle_ = std::optional<TextDecorationStyle>;
+  inline std::optional<TextDecorationStyle> create_std__optional_TextDecorationStyle_(const TextDecorationStyle& value) noexcept {
+    return std::optional<TextDecorationStyle>(value);
+  }
+  inline bool has_value_std__optional_TextDecorationStyle_(const std::optional<TextDecorationStyle>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline TextDecorationStyle get_std__optional_TextDecorationStyle_(const std::optional<TextDecorationStyle>& optional) noexcept {
     return *optional;
   }
   

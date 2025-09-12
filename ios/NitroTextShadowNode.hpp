@@ -59,7 +59,13 @@ namespace margelo::nitro::nitrotext::views
 
             auto makeTextAttributes = [&](const std::optional<margelo::nitro::nitrotext::Fragment> &fragOpt)
             {
-                react::TextAttributes a = react::TextAttributes::defaultTextAttributes();
+                auto a = react::TextAttributes::defaultTextAttributes();
+                
+                // backgroundColor
+//                if (props.fragmentBackgroundColor.value.has_value())
+//                {
+//                    a.backgroundColor = props.fragmentBackgroundColor.value.value();
+//                }
 
                 // allowFontScaling
                 bool allowFontScaling = props.allowFontScaling.value.value_or(true);

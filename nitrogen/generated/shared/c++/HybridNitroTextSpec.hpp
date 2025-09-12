@@ -29,6 +29,10 @@ namespace margelo::nitro::nitrotext { enum class FontStyle; }
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
+// Forward declaration of `TextDecorationLine` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
+// Forward declaration of `TextDecorationStyle` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 
 #include "Fragment.hpp"
 #include <vector>
@@ -42,6 +46,8 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "FontStyle.hpp"
 #include "TextAlign.hpp"
 #include "TextTransform.hpp"
+#include "TextDecorationLine.hpp"
+#include "TextDecorationStyle.hpp"
 
 namespace margelo::nitro::nitrotext {
 
@@ -98,6 +104,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setFontWeight(std::optional<FontWeight> fontWeight) = 0;
       virtual std::optional<std::string> getFontColor() = 0;
       virtual void setFontColor(const std::optional<std::string>& fontColor) = 0;
+      virtual std::optional<std::string> getFragmentBackgroundColor() = 0;
+      virtual void setFragmentBackgroundColor(const std::optional<std::string>& fragmentBackgroundColor) = 0;
       virtual std::optional<FontStyle> getFontStyle() = 0;
       virtual void setFontStyle(std::optional<FontStyle> fontStyle) = 0;
       virtual std::optional<double> getLineHeight() = 0;
@@ -110,6 +118,12 @@ namespace margelo::nitro::nitrotext {
       virtual void setTextAlign(std::optional<TextAlign> textAlign) = 0;
       virtual std::optional<TextTransform> getTextTransform() = 0;
       virtual void setTextTransform(std::optional<TextTransform> textTransform) = 0;
+      virtual std::optional<TextDecorationLine> getTextDecorationLine() = 0;
+      virtual void setTextDecorationLine(std::optional<TextDecorationLine> textDecorationLine) = 0;
+      virtual std::optional<std::string> getTextDecorationColor() = 0;
+      virtual void setTextDecorationColor(const std::optional<std::string>& textDecorationColor) = 0;
+      virtual std::optional<TextDecorationStyle> getTextDecorationStyle() = 0;
+      virtual void setTextDecorationStyle(std::optional<TextDecorationStyle> textDecorationStyle) = 0;
 
     public:
       // Methods

@@ -8,41 +8,41 @@
 import Foundation
 import UIKit
 
-class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
+class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
     private let textView = NitroTextView()
     var view: UIView { textView }
     let nitroTextImpl: NitroTextImpl
-    
+
     override init() {
         self.nitroTextImpl = NitroTextImpl(textView)
         super.init()
     }
-    
+
     func onNitroTextMeasured(height: Double) {
         onSelectableTextMeasured?(height)
     }
-    
+
     // Props
-    
+
     var fragments: [Fragment]? {
         didSet {
             applyFragmentsAndProps()
         }
     }
-    
+
     var selectable: Bool? {
         didSet {
             nitroTextImpl.setSelectable(selectable)
         }
     }
-    
+
     var allowFontScaling: Bool? {
         didSet {
             nitroTextImpl.setAllowFontScaling(allowFontScaling)
             applyFragmentsAndProps()
         }
     }
-    
+
     var onSelectableTextMeasured: ((Double) -> Void)? {
         didSet {
             if onSelectableTextMeasured == nil {
@@ -52,26 +52,33 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             textView.nitroTextDelegate = self
         }
     }
-    
+
     var fontSize: Double? {
         didSet {
+            nitroTextImpl.setFontSize(fontSize)
             applyFragmentsAndProps()
         }
     }
-    
+
     var fontWeight: FontWeight? {
         didSet {
             applyFragmentsAndProps()
         }
     }
-    
+
     var fontColor: String? {
         didSet {
             textView.textColor = ColorParser.parse(fontColor)
             applyFragmentsAndProps()
         }
     }
-    
+
+    var fragmentBackgroundColor: String? {
+        didSet {
+            applyFragmentsAndProps()
+        }
+    }
+
     var fontStyle: FontStyle? {
         didSet {
             applyFragmentsAndProps()
@@ -91,37 +98,55 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             applyFragmentsAndProps()
         }
     }
-    
+
+    var textDecorationLine: TextDecorationLine? {
+        didSet {
+            applyFragmentsAndProps()
+        }
+    }
+
+    var textDecorationColor: String? {
+        didSet {
+            applyFragmentsAndProps()
+        }
+    }
+
+    var textDecorationStyle: TextDecorationStyle? {
+        didSet {
+            applyFragmentsAndProps()
+        }
+    }
+
     var lineHeight: Double? {
         didSet {
             applyFragmentsAndProps()
         }
     }
-    
+
     var letterSpacing: Double? {
         didSet {
             applyFragmentsAndProps()
         }
     }
-    
+
     var text: String? {
         didSet {
             applyFragmentsAndProps()
         }
     }
-    
+
     var numberOfLines: Double? {
         didSet {
             nitroTextImpl.setNumberOfLines(numberOfLines)
         }
     }
-    
+
     var ellipsizeMode: EllipsizeMode? {
         didSet {
             nitroTextImpl.setEllipsizeMode(ellipsizeMode)
         }
     }
-    
+
     var dynamicTypeRamp: DynamicTypeRamp? {
         didSet {
             nitroTextImpl.setDynamicTypeRamp(dynamicTypeRamp)
@@ -156,7 +181,7 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             applyFragmentsAndProps()
         }
     }
-        
+
     // Merge per-fragment props with top-level fallbacks and apply (delegated to NitroTextImpl)
     private func applyFragmentsAndProps() {
         let top = NitroTextImpl.FragmentTopDefaults(
@@ -167,11 +192,14 @@ class HybridNitroText : HybridNitroTextSpec, NitroTextViewDelegate {
             lineHeight: lineHeight,
             letterSpacing: letterSpacing,
             textAlign: textAlign,
-            textTransform: textTransform
+            textTransform: textTransform,
+            textDecorationLine: textDecorationLine,
+            textDecorationColor: textDecorationColor,
+            textDecorationStyle: textDecorationStyle
         )
         nitroTextImpl.apply(fragments: fragments, text: text, top: top)
     }
-    
+
     func afterUpdate() {
         textView.setNeedsLayout()
     }

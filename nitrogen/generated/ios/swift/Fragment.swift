@@ -18,7 +18,7 @@ public extension Fragment {
   /**
    * Create a new instance of `Fragment`.
    */
-  init(text: String?, fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fontStyle: FontStyle?, lineHeight: Double?, letterSpacing: Double?, numberOfLines: Double?, textAlign: TextAlign?, textTransform: TextTransform?) {
+  init(text: String?, fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fragmentBackgroundColor: String?, fontStyle: FontStyle?, lineHeight: Double?, letterSpacing: Double?, numberOfLines: Double?, textAlign: TextAlign?, textTransform: TextTransform?, textDecorationLine: TextDecorationLine?, textDecorationColor: String?, textDecorationStyle: TextDecorationStyle?) {
     self.init({ () -> bridge.std__optional_std__string_ in
       if let __unwrappedValue = text {
         return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
@@ -39,6 +39,12 @@ public extension Fragment {
       }
     }(), { () -> bridge.std__optional_std__string_ in
       if let __unwrappedValue = fontColor {
+        return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_std__string_ in
+      if let __unwrappedValue = fragmentBackgroundColor {
         return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
       } else {
         return .init()
@@ -76,6 +82,24 @@ public extension Fragment {
     }(), { () -> bridge.std__optional_TextTransform_ in
       if let __unwrappedValue = textTransform {
         return bridge.create_std__optional_TextTransform_(__unwrappedValue)
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_TextDecorationLine_ in
+      if let __unwrappedValue = textDecorationLine {
+        return bridge.create_std__optional_TextDecorationLine_(__unwrappedValue)
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_std__string_ in
+      if let __unwrappedValue = textDecorationColor {
+        return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_TextDecorationStyle_ in
+      if let __unwrappedValue = textDecorationStyle {
+        return bridge.create_std__optional_TextDecorationStyle_(__unwrappedValue)
       } else {
         return .init()
       }
@@ -155,6 +179,30 @@ public extension Fragment {
     @inline(__always)
     set {
       self.__fontColor = { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = newValue {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+        } else {
+          return .init()
+        }
+      }()
+    }
+  }
+  
+  var fragmentBackgroundColor: String? {
+    @inline(__always)
+    get {
+      return { () -> String? in
+        if bridge.has_value_std__optional_std__string_(self.__fragmentBackgroundColor) {
+          let __unwrapped = bridge.get_std__optional_std__string_(self.__fragmentBackgroundColor)
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__fragmentBackgroundColor = { () -> bridge.std__optional_std__string_ in
         if let __unwrappedValue = newValue {
           return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
         } else {
@@ -259,6 +307,64 @@ public extension Fragment {
       self.__textTransform = { () -> bridge.std__optional_TextTransform_ in
         if let __unwrappedValue = newValue {
           return bridge.create_std__optional_TextTransform_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+  }
+  
+  var textDecorationLine: TextDecorationLine? {
+    @inline(__always)
+    get {
+      return self.__textDecorationLine.value
+    }
+    @inline(__always)
+    set {
+      self.__textDecorationLine = { () -> bridge.std__optional_TextDecorationLine_ in
+        if let __unwrappedValue = newValue {
+          return bridge.create_std__optional_TextDecorationLine_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+  }
+  
+  var textDecorationColor: String? {
+    @inline(__always)
+    get {
+      return { () -> String? in
+        if bridge.has_value_std__optional_std__string_(self.__textDecorationColor) {
+          let __unwrapped = bridge.get_std__optional_std__string_(self.__textDecorationColor)
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__textDecorationColor = { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = newValue {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+        } else {
+          return .init()
+        }
+      }()
+    }
+  }
+  
+  var textDecorationStyle: TextDecorationStyle? {
+    @inline(__always)
+    get {
+      return self.__textDecorationStyle.value
+    }
+    @inline(__always)
+    set {
+      self.__textDecorationStyle = { () -> bridge.std__optional_TextDecorationStyle_ in
+        if let __unwrappedValue = newValue {
+          return bridge.create_std__optional_TextDecorationStyle_(__unwrappedValue)
         } else {
           return .init()
         }
