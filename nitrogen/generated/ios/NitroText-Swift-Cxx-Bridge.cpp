@@ -13,11 +13,19 @@
 
 namespace margelo::nitro::nitrotext::bridge::swift {
 
-  // pragma MARK: std::function<void(double /* height */)>
-  Func_void_double create_Func_void_double(void* _Nonnull swiftClosureWrapper) noexcept {
-    auto swiftClosure = NitroText::Func_void_double::fromUnsafe(swiftClosureWrapper);
-    return [swiftClosure = std::move(swiftClosure)](double height) mutable -> void {
-      swiftClosure.call(height);
+  // pragma MARK: std::function<void(const TextLayoutEvent& /* layout */)>
+  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* _Nonnull swiftClosureWrapper) noexcept {
+    auto swiftClosure = NitroText::Func_void_TextLayoutEvent::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](const TextLayoutEvent& layout) mutable -> void {
+      swiftClosure.call(layout);
+    };
+  }
+  
+  // pragma MARK: std::function<void()>
+  Func_void create_Func_void(void* _Nonnull swiftClosureWrapper) noexcept {
+    auto swiftClosure = NitroText::Func_void::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)]() mutable -> void {
+      swiftClosure.call();
     };
   }
   

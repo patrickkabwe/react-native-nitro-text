@@ -13,6 +13,7 @@ extension NitroTextImpl {
         let fontWeight: FontWeight?
         let fontColor: String?
         let fontStyle: FontStyle?
+        let fontFamily: String?
         let lineHeight: Double?
         let letterSpacing: Double?
         let textAlign: TextAlign?
@@ -20,6 +21,7 @@ extension NitroTextImpl {
         let textDecorationLine: TextDecorationLine?
         let textDecorationColor: String?
         let textDecorationStyle: TextDecorationStyle?
+        let selectionColor: String?
     }
 
     func apply(fragments: [Fragment]?, text: String?, top: FragmentTopDefaults) {
@@ -28,11 +30,13 @@ extension NitroTextImpl {
             if let t = text {
                 let single = Fragment(
                     text: t,
+                    selectionColor: top.selectionColor,
                     fontSize: top.fontSize,
                     fontWeight: top.fontWeight,
                     fontColor: top.fontColor,
                     fragmentBackgroundColor: nil,
                     fontStyle: top.fontStyle,
+                    fontFamily: top.fontFamily,
                     lineHeight: top.lineHeight,
                     letterSpacing: top.letterSpacing,
                     numberOfLines: nil,
@@ -57,9 +61,11 @@ extension NitroTextImpl {
             if frag.fontSize == nil, let v = top.fontSize { frag.fontSize = v }
             if frag.fontWeight == nil, let v = top.fontWeight { frag.fontWeight = v }
             if frag.fontStyle == nil, let v = top.fontStyle { frag.fontStyle = v }
+            if frag.fontFamily == nil, let v = top.fontFamily, !v.isEmpty { frag.fontFamily = v }
             if frag.lineHeight == nil, let v = top.lineHeight, v > 0 { frag.lineHeight = v }
             if frag.letterSpacing == nil, let v = top.letterSpacing { frag.letterSpacing = v }
             if frag.fontColor == nil, let v = top.fontColor, !v.isEmpty { frag.fontColor = v }
+            if frag.selectionColor == nil, let v = top.selectionColor, !v.isEmpty { frag.selectionColor = v }
             if frag.textAlign == nil, let v = top.textAlign { frag.textAlign = v }
             if frag.textTransform == nil, let v = top.textTransform { frag.textTransform = v }
             if frag.textDecorationLine == nil, let v = top.textDecorationLine { frag.textDecorationLine = v }

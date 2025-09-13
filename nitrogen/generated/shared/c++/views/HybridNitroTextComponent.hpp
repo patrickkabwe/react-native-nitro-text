@@ -30,7 +30,16 @@
 #include <optional>
 #include <optional>
 #include <optional>
+#include "TextLayoutEvent.hpp"
 #include <functional>
+#include <optional>
+#include <functional>
+#include <optional>
+#include <functional>
+#include <optional>
+#include <functional>
+#include <optional>
+#include <string>
 #include <optional>
 #include <string>
 #include <optional>
@@ -42,6 +51,8 @@
 #include <string>
 #include <optional>
 #include "FontStyle.hpp"
+#include <optional>
+#include <string>
 #include <optional>
 #include <optional>
 #include <optional>
@@ -91,13 +102,18 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<double>> maxFontSizeMultiplier;
     CachedProp<std::optional<bool>> adjustsFontSizeToFit;
     CachedProp<std::optional<double>> minimumFontScale;
-    CachedProp<std::optional<std::function<void(double /* height */)>>> onSelectableTextMeasured;
+    CachedProp<std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>> onTextLayout;
+    CachedProp<std::optional<std::function<void()>>> onPress;
+    CachedProp<std::optional<std::function<void()>>> onPressIn;
+    CachedProp<std::optional<std::function<void()>>> onPressOut;
     CachedProp<std::optional<std::string>> text;
+    CachedProp<std::optional<std::string>> selectionColor;
     CachedProp<std::optional<double>> fontSize;
     CachedProp<std::optional<FontWeight>> fontWeight;
     CachedProp<std::optional<std::string>> fontColor;
     CachedProp<std::optional<std::string>> fragmentBackgroundColor;
     CachedProp<std::optional<FontStyle>> fontStyle;
+    CachedProp<std::optional<std::string>> fontFamily;
     CachedProp<std::optional<double>> lineHeight;
     CachedProp<std::optional<double>> letterSpacing;
     CachedProp<std::optional<double>> numberOfLines;

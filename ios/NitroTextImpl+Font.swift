@@ -11,6 +11,7 @@ struct FontKey: Hashable {
     let size: CGFloat
     let weightRaw: CGFloat
     let italic: Bool
+    let family: String?
 }
 
 extension NitroTextImpl {
@@ -28,14 +29,72 @@ extension NitroTextImpl {
         let weightToken = fragment.fontWeight ?? FontWeight.normal
         let uiWeight = Self.uiFontWeight(for: weightToken)
         let isItalic = fragment.fontStyle == FontStyle.italic
-
-        let key = FontKey(size: finalPointSize, weightRaw: uiWeight.rawValue, italic: isItalic)
+        let requestedFamily = fragment.fontFamily ?? currentFontFamily
+        
+        let key = FontKey(size: finalPointSize, weightRaw: uiWeight.rawValue, italic: isItalic, family: requestedFamily)
         if let cached = fontCache[key] {
             return (cached, isItalic)
         }
 
-        var base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
-        if isItalic {
+        var base: UIFont
+        if let family = requestedFamily, !family.isEmpty {
+            let f = family.lowercased()
+            switch f {
+            case "system-ui", "ui-sans-serif":
+                // Default SF system font
+                base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
+            case "ui-serif":
+                let sys = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
+                if #available(iOS 13.0, *) {
+                    if let desc = sys.fontDescriptor.withDesign(UIFontDescriptor.SystemDesign.serif) {
+                        base = UIFont(descriptor: desc, size: finalPointSize)
+                    } else {
+                        base = sys
+                    }
+                } else {
+                    base = sys
+                }
+            case "ui-rounded":
+                let sys = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
+                if #available(iOS 13.0, *) {
+                    if let desc = sys.fontDescriptor.withDesign(UIFontDescriptor.SystemDesign.rounded) {
+                        base = UIFont(descriptor: desc, size: finalPointSize)
+                    } else {
+                        base = sys
+                    }
+                } else {
+                    base = sys
+                }
+            case "ui-monospace":
+                if #available(iOS 13.0, *) {
+                    base = UIFont.monospacedSystemFont(ofSize: finalPointSize, weight: uiWeight)
+                } else {
+                    base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
+                }
+            default:
+                // Try to build a descriptor with family + traits
+                let baseDesc = UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.family: family])
+                var traits = [UIFontDescriptor.TraitKey: Any]()
+                traits[.weight] = uiWeight
+                var symbolic: UIFontDescriptor.SymbolicTraits = []
+                if isItalic { symbolic.insert(.traitItalic) }
+                let withTraits = baseDesc.addingAttributes([
+                    UIFontDescriptor.AttributeName.traits: traits,
+                    UIFontDescriptor.AttributeName.face: "",
+                ])
+                if let finalDesc = withTraits.withSymbolicTraits(symbolic) {
+                    base = UIFont(descriptor: finalDesc, size: finalPointSize)
+                } else if let named = UIFont(name: family, size: finalPointSize) {
+                    base = named
+                } else {
+                    base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
+                }
+            }
+        } else {
+            base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
+        }
+
+        if isItalic, !base.fontDescriptor.symbolicTraits.contains(.traitItalic) {
             var traits = base.fontDescriptor.symbolicTraits
             traits.insert(.traitItalic)
             if let italicDesc = base.fontDescriptor.withSymbolicTraits(traits) {

@@ -14,6 +14,7 @@ final class NitroTextImpl {
     var currentEllipsize: NSLineBreakMode = .byTruncatingTail
     var fontCache: [FontKey: UIFont] = [:]
     var allowFontScaling: Bool = true
+    var currentFontFamily: String? = nil
     var dynamicTypeTextStyle: UIFont.TextStyle? = nil
     @available(iOS 14.0, *)
     var currentLineBreakStrategy: NSParagraphStyle.LineBreakStrategy = .standard
@@ -54,6 +55,17 @@ final class NitroTextImpl {
         nitroTextView?.adjustsFontForContentSizeCategory = allowFontScaling
         if let text = nitroTextView?.attributedText, text.length > 0 {
             nitroTextView?.attributedText = text
+        }
+    }
+
+    func setFontFamily(_ value: String?) {
+        if currentFontFamily != value {
+            currentFontFamily = value
+            fontCache.removeAll(keepingCapacity: true)
+            if let current = nitroTextView?.attributedText, current.length > 0 {
+                nitroTextView?.attributedText = current
+                nitroTextView?.setNeedsLayout()
+            }
         }
     }
 
@@ -179,7 +191,7 @@ final class NitroTextImpl {
         }
 
         let result = NSMutableAttributedString()
-        let defaultColor = nitroTextView?.textColor ?? UIColor.label
+        let defaultColor = nitroTextView?.textColor ?? UIColor.clear
 
         for fragment in fragments {
             guard let rawText = fragment.text else { continue }

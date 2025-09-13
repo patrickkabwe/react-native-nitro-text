@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, type StyleProp, type TextStyle } from "react-native";
-import type { Fragment } from "./specs/nitro-text.nitro";
+import type { Fragment } from "./types";
 
 export function normalizeWeight(
     w?: TextStyle['fontWeight']
@@ -19,6 +19,7 @@ export function styleToFragment(style: StyleProp<TextStyle> | undefined): Partia
         fontSize: s.fontSize,
         fontWeight: normalizeWeight(s.fontWeight),
         fontStyle: s.fontStyle,
+        fontFamily: s.fontFamily as string | undefined,
         lineHeight: s.lineHeight,
         letterSpacing: s.letterSpacing,
         textAlign: s.textAlign,
@@ -89,15 +90,4 @@ type StyleFromPropsStyle = {
     textDecorationLine: TextStyle['textDecorationLine'] | undefined;
     textDecorationColor: string | undefined;
     textDecorationStyle: TextStyle['textDecorationStyle'] | undefined;
-}
-
-export function createStyleFromPropsStyle(style: StyleProp<TextStyle>): StyleFromPropsStyle {
-    const flat = StyleSheet.flatten(style) || {};
-    const colorProp = flat.color as string | undefined;
-    const textAlign = flat.textAlign as TextStyle['textAlign'] | undefined;
-    const textTransform = flat.textTransform as TextStyle['textTransform'] | undefined;
-    const textDecorationLine = flat.textDecorationLine as TextStyle['textDecorationLine'] | undefined;
-    const textDecorationColor = flat.textDecorationColor as string | undefined;
-    const textDecorationStyle = flat.textDecorationStyle as TextStyle['textDecorationStyle'] | undefined;
-    return { color: colorProp, textAlign, textTransform, textDecorationLine, textDecorationColor, textDecorationStyle };
 }

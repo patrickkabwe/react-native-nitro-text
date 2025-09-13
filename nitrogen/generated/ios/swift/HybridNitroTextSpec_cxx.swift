@@ -272,14 +272,14 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
-  public final var onSelectableTextMeasured: bridge.std__optional_std__function_void_double____height______ {
+  public final var onTextLayout: bridge.std__optional_std__function_void_const_TextLayoutEvent_____layout______ {
     @inline(__always)
     get {
-      return { () -> bridge.std__optional_std__function_void_double____height______ in
-        if let __unwrappedValue = self.__implementation.onSelectableTextMeasured {
-          return bridge.create_std__optional_std__function_void_double____height______({ () -> bridge.Func_void_double in
-            let __closureWrapper = Func_void_double(__unwrappedValue)
-            return bridge.create_Func_void_double(__closureWrapper.toUnsafe())
+      return { () -> bridge.std__optional_std__function_void_const_TextLayoutEvent_____layout______ in
+        if let __unwrappedValue = self.__implementation.onTextLayout {
+          return bridge.create_std__optional_std__function_void_const_TextLayoutEvent_____layout______({ () -> bridge.Func_void_TextLayoutEvent in
+            let __closureWrapper = Func_void_TextLayoutEvent(__unwrappedValue)
+            return bridge.create_Func_void_TextLayoutEvent(__closureWrapper.toUnsafe())
           }())
         } else {
           return .init()
@@ -288,13 +288,109 @@ open class HybridNitroTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.onSelectableTextMeasured = { () -> ((_ height: Double) -> Void)? in
-        if bridge.has_value_std__optional_std__function_void_double____height______(newValue) {
-          let __unwrapped = bridge.get_std__optional_std__function_void_double____height______(newValue)
-          return { () -> (Double) -> Void in
-            let __wrappedFunction = bridge.wrap_Func_void_double(__unwrapped)
-            return { (__height: Double) -> Void in
-              __wrappedFunction.call(__height)
+      self.__implementation.onTextLayout = { () -> ((_ layout: TextLayoutEvent) -> Void)? in
+        if bridge.has_value_std__optional_std__function_void_const_TextLayoutEvent_____layout______(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__function_void_const_TextLayoutEvent_____layout______(newValue)
+          return { () -> (TextLayoutEvent) -> Void in
+            let __wrappedFunction = bridge.wrap_Func_void_TextLayoutEvent(__unwrapped)
+            return { (__layout: TextLayoutEvent) -> Void in
+              __wrappedFunction.call(__layout)
+            }
+          }()
+        } else {
+          return nil
+        }
+      }()
+    }
+  }
+  
+  public final var onPress: bridge.std__optional_std__function_void____ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__function_void____ in
+        if let __unwrappedValue = self.__implementation.onPress {
+          return bridge.create_std__optional_std__function_void____({ () -> bridge.Func_void in
+            let __closureWrapper = Func_void(__unwrappedValue)
+            return bridge.create_Func_void(__closureWrapper.toUnsafe())
+          }())
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onPress = { () -> (() -> Void)? in
+        if bridge.has_value_std__optional_std__function_void____(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__function_void____(newValue)
+          return { () -> () -> Void in
+            let __wrappedFunction = bridge.wrap_Func_void(__unwrapped)
+            return { () -> Void in
+              __wrappedFunction.call()
+            }
+          }()
+        } else {
+          return nil
+        }
+      }()
+    }
+  }
+  
+  public final var onPressIn: bridge.std__optional_std__function_void____ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__function_void____ in
+        if let __unwrappedValue = self.__implementation.onPressIn {
+          return bridge.create_std__optional_std__function_void____({ () -> bridge.Func_void in
+            let __closureWrapper = Func_void(__unwrappedValue)
+            return bridge.create_Func_void(__closureWrapper.toUnsafe())
+          }())
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onPressIn = { () -> (() -> Void)? in
+        if bridge.has_value_std__optional_std__function_void____(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__function_void____(newValue)
+          return { () -> () -> Void in
+            let __wrappedFunction = bridge.wrap_Func_void(__unwrapped)
+            return { () -> Void in
+              __wrappedFunction.call()
+            }
+          }()
+        } else {
+          return nil
+        }
+      }()
+    }
+  }
+  
+  public final var onPressOut: bridge.std__optional_std__function_void____ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__function_void____ in
+        if let __unwrappedValue = self.__implementation.onPressOut {
+          return bridge.create_std__optional_std__function_void____({ () -> bridge.Func_void in
+            let __closureWrapper = Func_void(__unwrappedValue)
+            return bridge.create_Func_void(__closureWrapper.toUnsafe())
+          }())
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onPressOut = { () -> (() -> Void)? in
+        if bridge.has_value_std__optional_std__function_void____(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__function_void____(newValue)
+          return { () -> () -> Void in
+            let __wrappedFunction = bridge.wrap_Func_void(__unwrapped)
+            return { () -> Void in
+              __wrappedFunction.call()
             }
           }()
         } else {
@@ -318,6 +414,30 @@ open class HybridNitroTextSpec_cxx {
     @inline(__always)
     set {
       self.__implementation.text = { () -> String? in
+        if bridge.has_value_std__optional_std__string_(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__string_(newValue)
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }()
+    }
+  }
+  
+  public final var selectionColor: bridge.std__optional_std__string_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = self.__implementation.selectionColor {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.selectionColor = { () -> String? in
         if bridge.has_value_std__optional_std__string_(newValue) {
           let __unwrapped = bridge.get_std__optional_std__string_(newValue)
           return String(__unwrapped)
@@ -424,6 +544,30 @@ open class HybridNitroTextSpec_cxx {
     @inline(__always)
     set {
       self.__implementation.fontStyle = newValue.value
+    }
+  }
+  
+  public final var fontFamily: bridge.std__optional_std__string_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = self.__implementation.fontFamily {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.fontFamily = { () -> String? in
+        if bridge.has_value_std__optional_std__string_(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__string_(newValue)
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }()
     }
   }
   

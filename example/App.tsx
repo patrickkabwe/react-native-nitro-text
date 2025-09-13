@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { NitroText } from 'react-native-nitro-text';
+import { NitroText, TextLayoutEvent } from 'react-native-nitro-text';
 
 export default function App() {
   const [layoutInfo, setLayoutInfo] = useState<string>('');
@@ -10,9 +10,10 @@ export default function App() {
     setLayoutInfo(`Layout: ${Math.round(width)}×${Math.round(height)}px`);
   };
 
-  const handleTextLayout = (event: any) => {
-    const { lines } = event.nativeEvent;
+  const handleTextLayout = (event: TextLayoutEvent) => {
     // console.log('lines', lines);
+    console.log('width', event);
+    // console.log('height', height);
     // setLayoutInfo(`Lines: ${lines.length}`);
   };
 
@@ -20,7 +21,16 @@ export default function App() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Header Section */}
       <View style={styles.section}>
-        <NitroText style={styles.mainTitle}>🚀 NitroText Showcase</NitroText>
+        <NitroText
+          style={styles.mainTitle}
+          selectable={false}
+          onPressIn={() => console.log('onPressIn')}
+          onPressOut={() => console.log('onPressOut')}
+          onLongPress={() => console.log('onLongPress')}
+          onPress={() => console.log('onPress')}
+        >
+          🚀 NitroText Showcase
+        </NitroText>
         <NitroText style={styles.subtitle}>
           High-performance selectable text with native rendering
         </NitroText>
@@ -32,6 +42,19 @@ export default function App() {
         <NitroText style={styles.basicText}>
           This is a simple NitroText component with native performance. Try
           selecting this text to see the smooth selection behavior!
+        </NitroText>
+      </View>
+
+      {/* Nested NitroText wth numberOfLines (does not work currently it only renders the first line nested text doesn't render) */}
+      <View style={styles.section}>
+        <NitroText style={styles.sectionTitle}>
+          Nested NitroText with numberOfLines
+        </NitroText>
+        <NitroText style={styles.basicText} numberOfLines={2}>
+          This is a simple NitroText component with native performance.{' '}
+          <NitroText style={styles.bold}>
+            Try selecting this text to see the smooth selection behavior!
+          </NitroText>
         </NitroText>
       </View>
 
@@ -91,11 +114,7 @@ export default function App() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Layout Measurement</Text>
-        <Text
-          style={styles.measuredText}
-          onLayout={handleLayout}
-          onTextLayout={handleTextLayout}
-        >
+        <Text style={styles.measuredText} onLayout={handleLayout}>
           This text demonstrates layout measurement capabilities. The component
           can measure its dimensions and report back to JavaScript.
           {'\n\n'}
@@ -238,6 +257,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#1a1a1a',
     textAlign: 'center',
+    fontFamily: 'ui-monospace',
     // marginBottom: 8,
     backgroundColor: 'red',
   },
@@ -385,7 +405,7 @@ const styles = StyleSheet.create({
   // Code syntax
   codeBlock: {
     fontSize: 14,
-    fontFamily: 'Menlo, Monaco, monospace',
+    fontFamily: 'ui-monospace',
     backgroundColor: '#1e1e1e',
     color: '#d4d4d4',
     padding: 16,
