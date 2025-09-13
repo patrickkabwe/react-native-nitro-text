@@ -32,6 +32,10 @@ namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
+// Forward declaration of `TextLayoutEvent` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
+// Forward declaration of `TextLayout` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct TextLayout; }
 
 #include "Fragment.hpp"
 #include <vector>
@@ -46,7 +50,9 @@ namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
+#include "TextLayoutEvent.hpp"
 #include <functional>
+#include "TextLayout.hpp"
 
 #include "NitroText-Swift-Cxx-Umbrella.hpp"
 
@@ -148,12 +154,33 @@ namespace margelo::nitro::nitrotext {
     inline void setMinimumFontScale(std::optional<double> minimumFontScale) noexcept override {
       _swiftPart.setMinimumFontScale(minimumFontScale);
     }
-    inline std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() noexcept override {
-      auto __result = _swiftPart.getOnSelectableTextMeasured();
+    inline std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> getOnTextLayout() noexcept override {
+      auto __result = _swiftPart.getOnTextLayout();
       return __result;
     }
-    inline void setOnSelectableTextMeasured(const std::optional<std::function<void(double /* height */)>>& onSelectableTextMeasured) noexcept override {
-      _swiftPart.setOnSelectableTextMeasured(onSelectableTextMeasured);
+    inline void setOnTextLayout(const std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>& onTextLayout) noexcept override {
+      _swiftPart.setOnTextLayout(onTextLayout);
+    }
+    inline std::optional<std::function<void()>> getOnPress() noexcept override {
+      auto __result = _swiftPart.getOnPress();
+      return __result;
+    }
+    inline void setOnPress(const std::optional<std::function<void()>>& onPress) noexcept override {
+      _swiftPart.setOnPress(onPress);
+    }
+    inline std::optional<std::function<void()>> getOnPressIn() noexcept override {
+      auto __result = _swiftPart.getOnPressIn();
+      return __result;
+    }
+    inline void setOnPressIn(const std::optional<std::function<void()>>& onPressIn) noexcept override {
+      _swiftPart.setOnPressIn(onPressIn);
+    }
+    inline std::optional<std::function<void()>> getOnPressOut() noexcept override {
+      auto __result = _swiftPart.getOnPressOut();
+      return __result;
+    }
+    inline void setOnPressOut(const std::optional<std::function<void()>>& onPressOut) noexcept override {
+      _swiftPart.setOnPressOut(onPressOut);
     }
     inline std::optional<std::string> getText() noexcept override {
       auto __result = _swiftPart.getText();
@@ -161,6 +188,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setText(const std::optional<std::string>& text) noexcept override {
       _swiftPart.setText(text);
+    }
+    inline std::optional<std::string> getSelectionColor() noexcept override {
+      auto __result = _swiftPart.getSelectionColor();
+      return __result;
+    }
+    inline void setSelectionColor(const std::optional<std::string>& selectionColor) noexcept override {
+      _swiftPart.setSelectionColor(selectionColor);
     }
     inline std::optional<double> getFontSize() noexcept override {
       auto __result = _swiftPart.getFontSize();
@@ -196,6 +230,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setFontStyle(std::optional<FontStyle> fontStyle) noexcept override {
       _swiftPart.setFontStyle(fontStyle);
+    }
+    inline std::optional<std::string> getFontFamily() noexcept override {
+      auto __result = _swiftPart.getFontFamily();
+      return __result;
+    }
+    inline void setFontFamily(const std::optional<std::string>& fontFamily) noexcept override {
+      _swiftPart.setFontFamily(fontFamily);
     }
     inline std::optional<double> getLineHeight() noexcept override {
       auto __result = _swiftPart.getLineHeight();

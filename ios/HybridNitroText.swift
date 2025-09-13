@@ -16,11 +16,16 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
     override init() {
         self.nitroTextImpl = NitroTextImpl(textView)
         super.init()
+        self.textView.nitroTextDelegate = self
     }
 
-    func onNitroTextMeasured(height: Double) {
-        onSelectableTextMeasured?(height)
+    func onNitroTextLayout(_ layout: TextLayoutEvent) {
+        onTextLayout?(layout)
     }
+
+    func onNitroTextPressIn() { onPressIn?() }
+    func onNitroTextPressOut() { onPressOut?() }
+    func onNitroTextPress() { onPress?() }
 
     // Props
 
@@ -43,15 +48,10 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
         }
     }
 
-    var onSelectableTextMeasured: ((Double) -> Void)? {
-        didSet {
-            if onSelectableTextMeasured == nil {
-                textView.nitroTextDelegate = nil
-                return
-            }
-            textView.nitroTextDelegate = self
-        }
-    }
+    var onTextLayout: ((TextLayoutEvent) -> Void)? = nil
+    var onPress: (() -> Void)? = nil
+    var onPressIn: (() -> Void)? = nil
+    var onPressOut: (() -> Void)? = nil
 
     var fontSize: Double? {
         didSet {
@@ -81,6 +81,13 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
 
     var fontStyle: FontStyle? {
         didSet {
+            applyFragmentsAndProps()
+        }
+    }
+    
+    var fontFamily: String? {
+        didSet {
+            nitroTextImpl.setFontFamily(fontFamily)
             applyFragmentsAndProps()
         }
     }
@@ -114,6 +121,14 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
     var textDecorationStyle: TextDecorationStyle? {
         didSet {
             applyFragmentsAndProps()
+        }
+    }
+
+    var selectionColor: String? {
+        didSet {
+            if let v = selectionColor, let c = ColorParser.parse(v) {
+                textView.tintColor = c
+            }
         }
     }
 
@@ -189,13 +204,15 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
             fontWeight: fontWeight,
             fontColor: fontColor,
             fontStyle: fontStyle,
+            fontFamily: fontFamily,
             lineHeight: lineHeight,
             letterSpacing: letterSpacing,
             textAlign: textAlign,
             textTransform: textTransform,
             textDecorationLine: textDecorationLine,
             textDecorationColor: textDecorationColor,
-            textDecorationStyle: textDecorationStyle
+            textDecorationStyle: textDecorationStyle,
+            selectionColor: selectionColor
         )
         nitroTextImpl.apply(fragments: fragments, text: text, top: top)
     }

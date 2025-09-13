@@ -21,6 +21,8 @@ namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
+// Forward declaration of `TextLayoutEvent` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
 // Forward declaration of `FontWeight` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class FontWeight; }
 // Forward declaration of `FontStyle` to properly resolve imports.
@@ -40,6 +42,7 @@ namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
+#include "TextLayoutEvent.hpp"
 #include <functional>
 #include <string>
 #include "FontWeight.hpp"
@@ -94,10 +97,18 @@ namespace margelo::nitro::nitrotext {
       virtual void setAdjustsFontSizeToFit(std::optional<bool> adjustsFontSizeToFit) = 0;
       virtual std::optional<double> getMinimumFontScale() = 0;
       virtual void setMinimumFontScale(std::optional<double> minimumFontScale) = 0;
-      virtual std::optional<std::function<void(double /* height */)>> getOnSelectableTextMeasured() = 0;
-      virtual void setOnSelectableTextMeasured(const std::optional<std::function<void(double /* height */)>>& onSelectableTextMeasured) = 0;
+      virtual std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> getOnTextLayout() = 0;
+      virtual void setOnTextLayout(const std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>& onTextLayout) = 0;
+      virtual std::optional<std::function<void()>> getOnPress() = 0;
+      virtual void setOnPress(const std::optional<std::function<void()>>& onPress) = 0;
+      virtual std::optional<std::function<void()>> getOnPressIn() = 0;
+      virtual void setOnPressIn(const std::optional<std::function<void()>>& onPressIn) = 0;
+      virtual std::optional<std::function<void()>> getOnPressOut() = 0;
+      virtual void setOnPressOut(const std::optional<std::function<void()>>& onPressOut) = 0;
       virtual std::optional<std::string> getText() = 0;
       virtual void setText(const std::optional<std::string>& text) = 0;
+      virtual std::optional<std::string> getSelectionColor() = 0;
+      virtual void setSelectionColor(const std::optional<std::string>& selectionColor) = 0;
       virtual std::optional<double> getFontSize() = 0;
       virtual void setFontSize(std::optional<double> fontSize) = 0;
       virtual std::optional<FontWeight> getFontWeight() = 0;
@@ -108,6 +119,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setFragmentBackgroundColor(const std::optional<std::string>& fragmentBackgroundColor) = 0;
       virtual std::optional<FontStyle> getFontStyle() = 0;
       virtual void setFontStyle(std::optional<FontStyle> fontStyle) = 0;
+      virtual std::optional<std::string> getFontFamily() = 0;
+      virtual void setFontFamily(const std::optional<std::string>& fontFamily) = 0;
       virtual std::optional<double> getLineHeight() = 0;
       virtual void setLineHeight(std::optional<double> lineHeight) = 0;
       virtual std::optional<double> getLetterSpacing() = 0;

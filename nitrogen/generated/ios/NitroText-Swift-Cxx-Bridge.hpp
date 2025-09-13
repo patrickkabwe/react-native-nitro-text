@@ -28,6 +28,10 @@ namespace margelo::nitro::nitrotext { enum class TextAlign; }
 namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
 // Forward declaration of `TextDecorationStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
+// Forward declaration of `TextLayoutEvent` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
+// Forward declaration of `TextLayout` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct TextLayout; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
 
@@ -46,6 +50,8 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "TextAlign.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
+#include "TextLayout.hpp"
+#include "TextLayoutEvent.hpp"
 #include "TextTransform.hpp"
 #include <functional>
 #include <memory>
@@ -265,40 +271,88 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return *optional;
   }
   
-  // pragma MARK: std::function<void(double /* height */)>
+  // pragma MARK: std::vector<TextLayout>
   /**
-   * Specialized version of `std::function<void(double)>`.
+   * Specialized version of `std::vector<TextLayout>`.
    */
-  using Func_void_double = std::function<void(double /* height */)>;
-  /**
-   * Wrapper class for a `std::function<void(double / * height * /)>`, this can be used from Swift.
-   */
-  class Func_void_double_Wrapper final {
-  public:
-    explicit Func_void_double_Wrapper(std::function<void(double /* height */)>&& func): _function(std::make_unique<std::function<void(double /* height */)>>(std::move(func))) {}
-    inline void call(double height) const noexcept {
-      _function->operator()(height);
-    }
-  private:
-    std::unique_ptr<std::function<void(double /* height */)>> _function;
-  } SWIFT_NONCOPYABLE;
-  Func_void_double create_Func_void_double(void* _Nonnull swiftClosureWrapper) noexcept;
-  inline Func_void_double_Wrapper wrap_Func_void_double(Func_void_double value) noexcept {
-    return Func_void_double_Wrapper(std::move(value));
+  using std__vector_TextLayout_ = std::vector<TextLayout>;
+  inline std::vector<TextLayout> create_std__vector_TextLayout_(size_t size) noexcept {
+    std::vector<TextLayout> vector;
+    vector.reserve(size);
+    return vector;
   }
   
-  // pragma MARK: std::optional<std::function<void(double /* height */)>>
+  // pragma MARK: std::function<void(const TextLayoutEvent& /* layout */)>
   /**
-   * Specialized version of `std::optional<std::function<void(double / * height * /)>>`.
+   * Specialized version of `std::function<void(const TextLayoutEvent&)>`.
    */
-  using std__optional_std__function_void_double____height______ = std::optional<std::function<void(double /* height */)>>;
-  inline std::optional<std::function<void(double /* height */)>> create_std__optional_std__function_void_double____height______(const std::function<void(double /* height */)>& value) noexcept {
-    return std::optional<std::function<void(double /* height */)>>(value);
+  using Func_void_TextLayoutEvent = std::function<void(const TextLayoutEvent& /* layout */)>;
+  /**
+   * Wrapper class for a `std::function<void(const TextLayoutEvent& / * layout * /)>`, this can be used from Swift.
+   */
+  class Func_void_TextLayoutEvent_Wrapper final {
+  public:
+    explicit Func_void_TextLayoutEvent_Wrapper(std::function<void(const TextLayoutEvent& /* layout */)>&& func): _function(std::make_unique<std::function<void(const TextLayoutEvent& /* layout */)>>(std::move(func))) {}
+    inline void call(TextLayoutEvent layout) const noexcept {
+      _function->operator()(layout);
+    }
+  private:
+    std::unique_ptr<std::function<void(const TextLayoutEvent& /* layout */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* _Nonnull swiftClosureWrapper) noexcept;
+  inline Func_void_TextLayoutEvent_Wrapper wrap_Func_void_TextLayoutEvent(Func_void_TextLayoutEvent value) noexcept {
+    return Func_void_TextLayoutEvent_Wrapper(std::move(value));
   }
-  inline bool has_value_std__optional_std__function_void_double____height______(const std::optional<std::function<void(double /* height */)>>& optional) noexcept {
+  
+  // pragma MARK: std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>
+  /**
+   * Specialized version of `std::optional<std::function<void(const TextLayoutEvent& / * layout * /)>>`.
+   */
+  using std__optional_std__function_void_const_TextLayoutEvent_____layout______ = std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>;
+  inline std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> create_std__optional_std__function_void_const_TextLayoutEvent_____layout______(const std::function<void(const TextLayoutEvent& /* layout */)>& value) noexcept {
+    return std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>(value);
+  }
+  inline bool has_value_std__optional_std__function_void_const_TextLayoutEvent_____layout______(const std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>& optional) noexcept {
     return optional.has_value();
   }
-  inline std::function<void(double /* height */)> get_std__optional_std__function_void_double____height______(const std::optional<std::function<void(double /* height */)>>& optional) noexcept {
+  inline std::function<void(const TextLayoutEvent& /* layout */)> get_std__optional_std__function_void_const_TextLayoutEvent_____layout______(const std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::function<void()>
+  /**
+   * Specialized version of `std::function<void()>`.
+   */
+  using Func_void = std::function<void()>;
+  /**
+   * Wrapper class for a `std::function<void()>`, this can be used from Swift.
+   */
+  class Func_void_Wrapper final {
+  public:
+    explicit Func_void_Wrapper(std::function<void()>&& func): _function(std::make_unique<std::function<void()>>(std::move(func))) {}
+    inline void call() const noexcept {
+      _function->operator()();
+    }
+  private:
+    std::unique_ptr<std::function<void()>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void create_Func_void(void* _Nonnull swiftClosureWrapper) noexcept;
+  inline Func_void_Wrapper wrap_Func_void(Func_void value) noexcept {
+    return Func_void_Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::optional<std::function<void()>>
+  /**
+   * Specialized version of `std::optional<std::function<void()>>`.
+   */
+  using std__optional_std__function_void____ = std::optional<std::function<void()>>;
+  inline std::optional<std::function<void()>> create_std__optional_std__function_void____(const std::function<void()>& value) noexcept {
+    return std::optional<std::function<void()>>(value);
+  }
+  inline bool has_value_std__optional_std__function_void____(const std::optional<std::function<void()>>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline std::function<void()> get_std__optional_std__function_void____(const std::optional<std::function<void()>>& optional) noexcept {
     return *optional;
   }
   

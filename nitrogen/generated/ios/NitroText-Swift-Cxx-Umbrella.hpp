@@ -28,6 +28,10 @@ namespace margelo::nitro::nitrotext { enum class TextAlign; }
 namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
 // Forward declaration of `TextDecorationStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
+// Forward declaration of `TextLayoutEvent` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
+// Forward declaration of `TextLayout` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct TextLayout; }
 // Forward declaration of `TextTransform` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextTransform; }
 
@@ -42,6 +46,8 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "TextAlign.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
+#include "TextLayout.hpp"
+#include "TextLayoutEvent.hpp"
 #include "TextTransform.hpp"
 #include <functional>
 #include <memory>

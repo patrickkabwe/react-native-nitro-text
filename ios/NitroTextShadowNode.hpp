@@ -152,6 +152,16 @@ namespace margelo::nitro::nitrotext::views
                     applyFontStyle(props.fontStyle.value.value());
                 }
 
+                // fontFamily
+                if (fragOpt.has_value() && fragOpt->fontFamily.has_value())
+                {
+                    a.fontFamily = fragOpt->fontFamily.value();
+                }
+                else if (props.fontFamily.value.has_value())
+                {
+                    a.fontFamily = props.fontFamily.value.value();
+                }
+
                 // fontWeight
                 auto applyFontWeight = [&](margelo::nitro::nitrotext::FontWeight w)
                 {

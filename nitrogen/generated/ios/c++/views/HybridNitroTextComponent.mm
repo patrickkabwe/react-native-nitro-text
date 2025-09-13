@@ -116,15 +116,35 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setMinimumFontScale(newViewProps.minimumFontScale.value);
     newViewProps.minimumFontScale.isDirty = false;
   }
-  // onSelectableTextMeasured: optional
-  if (newViewProps.onSelectableTextMeasured.isDirty) {
-    swiftPart.setOnSelectableTextMeasured(newViewProps.onSelectableTextMeasured.value);
-    newViewProps.onSelectableTextMeasured.isDirty = false;
+  // onTextLayout: optional
+  if (newViewProps.onTextLayout.isDirty) {
+    swiftPart.setOnTextLayout(newViewProps.onTextLayout.value);
+    newViewProps.onTextLayout.isDirty = false;
+  }
+  // onPress: optional
+  if (newViewProps.onPress.isDirty) {
+    swiftPart.setOnPress(newViewProps.onPress.value);
+    newViewProps.onPress.isDirty = false;
+  }
+  // onPressIn: optional
+  if (newViewProps.onPressIn.isDirty) {
+    swiftPart.setOnPressIn(newViewProps.onPressIn.value);
+    newViewProps.onPressIn.isDirty = false;
+  }
+  // onPressOut: optional
+  if (newViewProps.onPressOut.isDirty) {
+    swiftPart.setOnPressOut(newViewProps.onPressOut.value);
+    newViewProps.onPressOut.isDirty = false;
   }
   // text: optional
   if (newViewProps.text.isDirty) {
     swiftPart.setText(newViewProps.text.value);
     newViewProps.text.isDirty = false;
+  }
+  // selectionColor: optional
+  if (newViewProps.selectionColor.isDirty) {
+    swiftPart.setSelectionColor(newViewProps.selectionColor.value);
+    newViewProps.selectionColor.isDirty = false;
   }
   // fontSize: optional
   if (newViewProps.fontSize.isDirty) {
@@ -150,6 +170,11 @@ using namespace margelo::nitro::nitrotext::views;
   if (newViewProps.fontStyle.isDirty) {
     swiftPart.setFontStyle(newViewProps.fontStyle.value);
     newViewProps.fontStyle.isDirty = false;
+  }
+  // fontFamily: optional
+  if (newViewProps.fontFamily.isDirty) {
+    swiftPart.setFontFamily(newViewProps.fontFamily.value);
+    newViewProps.fontFamily.isDirty = false;
   }
   // lineHeight: optional
   if (newViewProps.lineHeight.isDirty) {

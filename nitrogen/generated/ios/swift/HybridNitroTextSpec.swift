@@ -20,13 +20,18 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var maxFontSizeMultiplier: Double? { get set }
   var adjustsFontSizeToFit: Bool? { get set }
   var minimumFontScale: Double? { get set }
-  var onSelectableTextMeasured: ((_ height: Double) -> Void)? { get set }
+  var onTextLayout: ((_ layout: TextLayoutEvent) -> Void)? { get set }
+  var onPress: (() -> Void)? { get set }
+  var onPressIn: (() -> Void)? { get set }
+  var onPressOut: (() -> Void)? { get set }
   var text: String? { get set }
+  var selectionColor: String? { get set }
   var fontSize: Double? { get set }
   var fontWeight: FontWeight? { get set }
   var fontColor: String? { get set }
   var fragmentBackgroundColor: String? { get set }
   var fontStyle: FontStyle? { get set }
+  var fontFamily: String? { get set }
   var lineHeight: Double? { get set }
   var letterSpacing: Double? { get set }
   var numberOfLines: Double? { get set }

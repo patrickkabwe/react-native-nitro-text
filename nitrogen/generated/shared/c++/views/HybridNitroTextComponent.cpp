@@ -115,14 +115,44 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.minimumFontScale: ") + exc.what());
       }
     }()),
-    onSelectableTextMeasured([&]() -> CachedProp<std::optional<std::function<void(double /* height */)>>> {
+    onTextLayout([&]() -> CachedProp<std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>> {
       try {
-        const react::RawValue* rawValue = rawProps.at("onSelectableTextMeasured", nullptr, nullptr);
-        if (rawValue == nullptr) return sourceProps.onSelectableTextMeasured;
+        const react::RawValue* rawValue = rawProps.at("onTextLayout", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onTextLayout;
         const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
-        return CachedProp<std::optional<std::function<void(double /* height */)>>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, "f"), sourceProps.onSelectableTextMeasured);
+        return CachedProp<std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, "f"), sourceProps.onTextLayout);
       } catch (const std::exception& exc) {
-        throw std::runtime_error(std::string("NitroText.onSelectableTextMeasured: ") + exc.what());
+        throw std::runtime_error(std::string("NitroText.onTextLayout: ") + exc.what());
+      }
+    }()),
+    onPress([&]() -> CachedProp<std::optional<std::function<void()>>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onPress", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onPress;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::function<void()>>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, "f"), sourceProps.onPress);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.onPress: ") + exc.what());
+      }
+    }()),
+    onPressIn([&]() -> CachedProp<std::optional<std::function<void()>>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onPressIn", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onPressIn;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::function<void()>>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, "f"), sourceProps.onPressIn);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.onPressIn: ") + exc.what());
+      }
+    }()),
+    onPressOut([&]() -> CachedProp<std::optional<std::function<void()>>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onPressOut", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onPressOut;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::function<void()>>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, "f"), sourceProps.onPressOut);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.onPressOut: ") + exc.what());
       }
     }()),
     text([&]() -> CachedProp<std::optional<std::string>> {
@@ -133,6 +163,16 @@ namespace margelo::nitro::nitrotext::views {
         return CachedProp<std::optional<std::string>>::fromRawValue(*runtime, value, sourceProps.text);
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.text: ") + exc.what());
+      }
+    }()),
+    selectionColor([&]() -> CachedProp<std::optional<std::string>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("selectionColor", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.selectionColor;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::string>>::fromRawValue(*runtime, value, sourceProps.selectionColor);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.selectionColor: ") + exc.what());
       }
     }()),
     fontSize([&]() -> CachedProp<std::optional<double>> {
@@ -183,6 +223,16 @@ namespace margelo::nitro::nitrotext::views {
         return CachedProp<std::optional<FontStyle>>::fromRawValue(*runtime, value, sourceProps.fontStyle);
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.fontStyle: ") + exc.what());
+      }
+    }()),
+    fontFamily([&]() -> CachedProp<std::optional<std::string>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("fontFamily", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.fontFamily;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::string>>::fromRawValue(*runtime, value, sourceProps.fontFamily);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.fontFamily: ") + exc.what());
       }
     }()),
     lineHeight([&]() -> CachedProp<std::optional<double>> {
@@ -287,13 +337,18 @@ namespace margelo::nitro::nitrotext::views {
     maxFontSizeMultiplier(other.maxFontSizeMultiplier),
     adjustsFontSizeToFit(other.adjustsFontSizeToFit),
     minimumFontScale(other.minimumFontScale),
-    onSelectableTextMeasured(other.onSelectableTextMeasured),
+    onTextLayout(other.onTextLayout),
+    onPress(other.onPress),
+    onPressIn(other.onPressIn),
+    onPressOut(other.onPressOut),
     text(other.text),
+    selectionColor(other.selectionColor),
     fontSize(other.fontSize),
     fontWeight(other.fontWeight),
     fontColor(other.fontColor),
     fragmentBackgroundColor(other.fragmentBackgroundColor),
     fontStyle(other.fontStyle),
+    fontFamily(other.fontFamily),
     lineHeight(other.lineHeight),
     letterSpacing(other.letterSpacing),
     numberOfLines(other.numberOfLines),
@@ -315,13 +370,18 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("maxFontSizeMultiplier"): return true;
       case hashString("adjustsFontSizeToFit"): return true;
       case hashString("minimumFontScale"): return true;
-      case hashString("onSelectableTextMeasured"): return true;
+      case hashString("onTextLayout"): return true;
+      case hashString("onPress"): return true;
+      case hashString("onPressIn"): return true;
+      case hashString("onPressOut"): return true;
       case hashString("text"): return true;
+      case hashString("selectionColor"): return true;
       case hashString("fontSize"): return true;
       case hashString("fontWeight"): return true;
       case hashString("fontColor"): return true;
       case hashString("fragmentBackgroundColor"): return true;
       case hashString("fontStyle"): return true;
+      case hashString("fontFamily"): return true;
       case hashString("lineHeight"): return true;
       case hashString("letterSpacing"): return true;
       case hashString("numberOfLines"): return true;
