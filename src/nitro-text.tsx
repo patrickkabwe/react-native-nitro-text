@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import {
+  Platform,
   Text,
   type TextLayoutEvent,
   type TextProps,
@@ -43,7 +44,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     ...rest
   } = props
 
-  // Fast path: avoid fragment building when children is a simple string/number
   const isSimpleText =
     typeof children === 'string' || typeof children === 'number'
 
@@ -52,12 +52,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     return flattenChildrenToFragments(children, style as any)
   }, [children, style, isSimpleText])
 
-  // If this SelectableText is nested inside another, just render children so
-  // the parent can flatten styles/text. Do not render a native view.
-  // If inside RN Text, render a nested <Text> so local styles (e.g., color)
-  // can override the parent's inherited color without creating a native view.
-
-  if (isInsideRNText) {
+  if (isInsideRNText || Platform.OS === 'android') {
     const onRNTextLayout = useCallback(
       (e: TextLayoutEvent) => {
         onTextLayout?.(e.nativeEvent)
