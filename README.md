@@ -1,4 +1,3 @@
-# react-native-nitro-text
 <div>
   <img width="2652" height="611" alt="Group 18 1" src="https://github.com/user-attachments/assets/72c83d81-d887-4f91-9197-19007990bfa1" />
 </div>
