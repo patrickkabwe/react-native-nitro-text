@@ -44,50 +44,87 @@ function getFragmentConfig(style: TextStyle): {
     };
 }
 
+// Keys used to determine whether two adjacent fragments can be merged
+const MERGE_KEYS: (keyof Fragment)[] = [
+    'selectionColor',
+    'fontSize',
+    'fontWeight',
+    'fontColor',
+    'fragmentBackgroundColor',
+    'fontStyle',
+    'fontFamily',
+    'lineHeight',
+    'letterSpacing',
+    'textAlign',
+    'textTransform',
+    'textDecorationLine',
+    'textDecorationColor',
+    'textDecorationStyle',
+];
+
+// Pick fragment-like props from an element's props (outside of style)
+function pickFragmentOverrides(props: any): Partial<Fragment> {
+    if (!props || typeof props !== 'object') return {};
+    const out: Partial<Fragment> = {};
+    for (const k of MERGE_KEYS) {
+        if (props[k] !== undefined) (out as any)[k] = props[k];
+    }
+    return out;
+}
+
+
+
+function canMerge(a: Partial<Fragment>, b: Partial<Fragment>): boolean {
+    for (const k of MERGE_KEYS) {
+        if (a[k] !== b[k]) return false;
+    }
+    return true;
+}
+
+function pushFragment(out: Fragment[], text: string, attrs: Partial<Fragment>) {
+    if (!text) return;
+    const last = out[out.length - 1];
+    if (last && canMerge(last, attrs)) {
+        last.text = (last.text || "") + text;
+        return;
+    }
+    out.push({ text, ...attrs });
+}
+
+function flattenInto(
+    out: Fragment[],
+    children: React.ReactNode,
+    parentStyle?: TextStyle,
+    fragmentConfig?: ReturnType<typeof getFragmentConfig>,
+    inheritedOverrides: Partial<Fragment> = {}
+) {
+    React.Children.forEach(children, (child) => {
+        if (child == null || child === false) return;
+        if (typeof child === 'string' || typeof child === 'number') {
+            const base = styleToFragment(parentStyle);
+            const merged: Partial<Fragment> = { ...base, ...inheritedOverrides };
+            if (!fragmentConfig?.shouldApplyBackground && merged.fragmentBackgroundColor) {
+                delete merged.fragmentBackgroundColor;
+            }
+            pushFragment(out, String(child), merged);
+            return;
+        }
+        if (React.isValidElement(child)) {
+            const { children: nested, style: childStyle, ...restProps } = child.props as any;
+            const mergedStyle = [parentStyle, childStyle];
+            const ownOverrides = pickFragmentOverrides(restProps);
+            const mergedOverrides = { ...inheritedOverrides, ...ownOverrides };
+            flattenInto(out, nested, mergedStyle as any, getFragmentConfig(childStyle), mergedOverrides);
+        }
+    });
+}
+
 export function flattenChildrenToFragments(
     children: React.ReactNode,
     parentStyle?: TextStyle,
     fragmentConfig?: ReturnType<typeof getFragmentConfig>
 ): Fragment[] {
-    const frags: Fragment[] = [];
-    const push = (text: string, style?: TextStyle) => {
-        if (!text) return;
-        const base = styleToFragment(style);
-        if (!fragmentConfig?.shouldApplyBackground && base.fragmentBackgroundColor) {
-            delete base.fragmentBackgroundColor;
-        }
-        frags.push({ text, ...base } as Fragment);
-    };
-
-    React.Children.forEach(children, (child) => {
-        if (child == null || child === false) return;
-        if (typeof child === 'string' || typeof child === 'number') {
-            push(String(child), parentStyle);
-            return;
-        }
-        if (React.isValidElement(child)) {
-            const { children: nested, style: childStyle } = child.props as any;
-            const mergedStyle = [parentStyle, childStyle];
-
-            frags.push(
-                ...flattenChildrenToFragments(
-                    nested,
-                    mergedStyle as any,
-                    getFragmentConfig(childStyle)
-                )
-            );
-        }
-    });
-
-    return frags;
-}
-
-
-type StyleFromPropsStyle = {
-    color: string | undefined;
-    textAlign: TextStyle['textAlign'] | undefined;
-    textTransform: TextStyle['textTransform'] | undefined;
-    textDecorationLine: TextStyle['textDecorationLine'] | undefined;
-    textDecorationColor: string | undefined;
-    textDecorationStyle: TextStyle['textDecorationStyle'] | undefined;
+    const out: Fragment[] = [];
+    flattenInto(out, children, parentStyle, fragmentConfig, {});
+    return out;
 }

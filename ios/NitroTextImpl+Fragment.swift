@@ -39,7 +39,6 @@ extension NitroTextImpl {
                     fontFamily: top.fontFamily,
                     lineHeight: top.lineHeight,
                     letterSpacing: top.letterSpacing,
-                    numberOfLines: nil,
                     textAlign: top.textAlign,
                     textTransform: top.textTransform,
                     textDecorationLine: top.textDecorationLine,

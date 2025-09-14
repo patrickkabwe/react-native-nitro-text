@@ -91,6 +91,11 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setEllipsizeMode(newViewProps.ellipsizeMode.value);
     newViewProps.ellipsizeMode.isDirty = false;
   }
+  // numberOfLines: optional
+  if (newViewProps.numberOfLines.isDirty) {
+    swiftPart.setNumberOfLines(newViewProps.numberOfLines.value);
+    newViewProps.numberOfLines.isDirty = false;
+  }
   // lineBreakStrategyIOS: optional
   if (newViewProps.lineBreakStrategyIOS.isDirty) {
     swiftPart.setLineBreakStrategyIOS(newViewProps.lineBreakStrategyIOS.value);
@@ -185,11 +190,6 @@ using namespace margelo::nitro::nitrotext::views;
   if (newViewProps.letterSpacing.isDirty) {
     swiftPart.setLetterSpacing(newViewProps.letterSpacing.value);
     newViewProps.letterSpacing.isDirty = false;
-  }
-  // numberOfLines: optional
-  if (newViewProps.numberOfLines.isDirty) {
-    swiftPart.setNumberOfLines(newViewProps.numberOfLines.value);
-    newViewProps.numberOfLines.isDirty = false;
   }
   // textAlign: optional
   if (newViewProps.textAlign.isDirty) {

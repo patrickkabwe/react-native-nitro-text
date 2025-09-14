@@ -65,6 +65,16 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.ellipsizeMode: ") + exc.what());
       }
     }()),
+    numberOfLines([&]() -> CachedProp<std::optional<double>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("numberOfLines", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.numberOfLines;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<double>>::fromRawValue(*runtime, value, sourceProps.numberOfLines);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.numberOfLines: ") + exc.what());
+      }
+    }()),
     lineBreakStrategyIOS([&]() -> CachedProp<std::optional<LineBreakStrategyIOS>> {
       try {
         const react::RawValue* rawValue = rawProps.at("lineBreakStrategyIOS", nullptr, nullptr);
@@ -255,16 +265,6 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.letterSpacing: ") + exc.what());
       }
     }()),
-    numberOfLines([&]() -> CachedProp<std::optional<double>> {
-      try {
-        const react::RawValue* rawValue = rawProps.at("numberOfLines", nullptr, nullptr);
-        if (rawValue == nullptr) return sourceProps.numberOfLines;
-        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
-        return CachedProp<std::optional<double>>::fromRawValue(*runtime, value, sourceProps.numberOfLines);
-      } catch (const std::exception& exc) {
-        throw std::runtime_error(std::string("NitroText.numberOfLines: ") + exc.what());
-      }
-    }()),
     textAlign([&]() -> CachedProp<std::optional<TextAlign>> {
       try {
         const react::RawValue* rawValue = rawProps.at("textAlign", nullptr, nullptr);
@@ -332,6 +332,7 @@ namespace margelo::nitro::nitrotext::views {
     selectable(other.selectable),
     allowFontScaling(other.allowFontScaling),
     ellipsizeMode(other.ellipsizeMode),
+    numberOfLines(other.numberOfLines),
     lineBreakStrategyIOS(other.lineBreakStrategyIOS),
     dynamicTypeRamp(other.dynamicTypeRamp),
     maxFontSizeMultiplier(other.maxFontSizeMultiplier),
@@ -351,7 +352,6 @@ namespace margelo::nitro::nitrotext::views {
     fontFamily(other.fontFamily),
     lineHeight(other.lineHeight),
     letterSpacing(other.letterSpacing),
-    numberOfLines(other.numberOfLines),
     textAlign(other.textAlign),
     textTransform(other.textTransform),
     textDecorationLine(other.textDecorationLine),
@@ -365,6 +365,7 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("selectable"): return true;
       case hashString("allowFontScaling"): return true;
       case hashString("ellipsizeMode"): return true;
+      case hashString("numberOfLines"): return true;
       case hashString("lineBreakStrategyIOS"): return true;
       case hashString("dynamicTypeRamp"): return true;
       case hashString("maxFontSizeMultiplier"): return true;
@@ -384,7 +385,6 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("fontFamily"): return true;
       case hashString("lineHeight"): return true;
       case hashString("letterSpacing"): return true;
-      case hashString("numberOfLines"): return true;
       case hashString("textAlign"): return true;
       case hashString("textTransform"): return true;
       case hashString("textDecorationLine"): return true;

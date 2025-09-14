@@ -1,4 +1,4 @@
-import React, { createContext, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import {
   Text,
   type TextLayoutEvent,
@@ -22,13 +22,10 @@ const NitroTextView = getHostComponent<NitroTextProps, NitroTextMethods>(
   () => NitroTextConfig
 )
 
-const NitroTextNestingContext = createContext<boolean>(false)
-
 type NitroTextPropsWithEvents = Omit<TextProps, 'onTextLayout'> & NitroTextProps
 
 export const NitroText = (props: NitroTextPropsWithEvents) => {
   const isInsideRNText = React.useContext(unstable_TextAncestorContext)
-  //   const isNested = React.useContext(NitroTextNestingContext)
   const {
     children,
     style,
@@ -65,71 +62,45 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     )
 
     return (
-      <NitroTextNestingContext.Provider value={true}>
-        <Text
-          {...rest}
-          selectionColor={selectionColor as any}
-          onPress={onPress}
-          onPressIn={onPressIn}
-          onPressOut={onPressOut}
-          onLongPress={onLongPress}
-          selectable={selectable}
-          style={style}
-          onTextLayout={onRNTextLayout}
-        >
-          {children}
-        </Text>
-      </NitroTextNestingContext.Provider>
+      <Text
+        {...rest}
+        selectionColor={selectionColor as any}
+        onPress={onPress}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+        onLongPress={onLongPress}
+        selectable={selectable}
+        style={style}
+        onTextLayout={onRNTextLayout}
+      >
+        {children}
+      </Text>
     )
   }
+
+  // Note: Nested NitroText components do not mount as separate views.
+  // The parent NitroText flattens its children (including nested NitroText)
+  // into fragments, so this component will not observe `isNested`.
 
   const topStyles = styleToFragment(style || undefined)
 
   if (isSimpleText) {
     return (
-      <NitroTextNestingContext.Provider value={true}>
-        <NitroTextView
-          {...rest}
-          selectable={selectable}
-          fontFamily={topStyles.fontFamily}
-          selectionColor={selectionColor}
-          text={String(children)}
-          style={style}
-          fontColor={topStyles.fontColor}
-          textAlign={topStyles.textAlign}
-          textTransform={topStyles.textTransform}
-          fontSize={topStyles.fontSize}
-          fontWeight={topStyles.fontWeight}
-          fontStyle={topStyles.fontStyle}
-          lineHeight={topStyles.lineHeight}
-          letterSpacing={topStyles.letterSpacing}
-          textDecorationLine={topStyles.textDecorationLine}
-          textDecorationColor={topStyles.textDecorationColor}
-          textDecorationStyle={topStyles.textDecorationStyle}
-          onTextLayout={callback(onTextLayout)}
-          onPress={callback(onPress)}
-          onPressIn={callback(onPressIn)}
-          onPressOut={callback(onPressOut)}
-        />
-      </NitroTextNestingContext.Provider>
-    )
-  }
-
-  return (
-    <NitroTextNestingContext.Provider value={true}>
       <NitroTextView
         {...rest}
         selectable={selectable}
-        fragments={fragments}
         fontFamily={topStyles.fontFamily}
         selectionColor={selectionColor}
+        text={String(children)}
         style={style}
         fontColor={topStyles.fontColor}
-        fontWeight={topStyles.fontWeight}
-        fontStyle={topStyles.fontStyle}
-        letterSpacing={topStyles.letterSpacing}
         textAlign={topStyles.textAlign}
         textTransform={topStyles.textTransform}
+        fontSize={topStyles.fontSize}
+        fontWeight={topStyles.fontWeight}
+        fontStyle={topStyles.fontStyle}
+        lineHeight={topStyles.lineHeight}
+        letterSpacing={topStyles.letterSpacing}
         textDecorationLine={topStyles.textDecorationLine}
         textDecorationColor={topStyles.textDecorationColor}
         textDecorationStyle={topStyles.textDecorationStyle}
@@ -138,6 +109,30 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
         onPressIn={callback(onPressIn)}
         onPressOut={callback(onPressOut)}
       />
-    </NitroTextNestingContext.Provider>
+    )
+  }
+
+  return (
+    <NitroTextView
+      {...rest}
+      selectable={selectable}
+      fragments={fragments}
+      fontFamily={topStyles.fontFamily}
+      selectionColor={selectionColor}
+      style={style}
+      fontColor={topStyles.fontColor}
+      fontWeight={topStyles.fontWeight}
+      fontStyle={topStyles.fontStyle}
+      letterSpacing={topStyles.letterSpacing}
+      textAlign={topStyles.textAlign}
+      textTransform={topStyles.textTransform}
+      textDecorationLine={topStyles.textDecorationLine}
+      textDecorationColor={topStyles.textDecorationColor}
+      textDecorationStyle={topStyles.textDecorationStyle}
+      onTextLayout={callback(onTextLayout)}
+      onPress={callback(onPress)}
+      onPressIn={callback(onPressIn)}
+      onPressOut={callback(onPressOut)}
+    />
   )
 }

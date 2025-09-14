@@ -18,7 +18,7 @@ public extension Fragment {
   /**
    * Create a new instance of `Fragment`.
    */
-  init(text: String?, selectionColor: String?, fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fragmentBackgroundColor: String?, fontStyle: FontStyle?, fontFamily: String?, lineHeight: Double?, letterSpacing: Double?, numberOfLines: Double?, textAlign: TextAlign?, textTransform: TextTransform?, textDecorationLine: TextDecorationLine?, textDecorationColor: String?, textDecorationStyle: TextDecorationStyle?) {
+  init(text: String?, selectionColor: String?, fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fragmentBackgroundColor: String?, fontStyle: FontStyle?, fontFamily: String?, lineHeight: Double?, letterSpacing: Double?, textAlign: TextAlign?, textTransform: TextTransform?, textDecorationLine: TextDecorationLine?, textDecorationColor: String?, textDecorationStyle: TextDecorationStyle?) {
     self.init({ () -> bridge.std__optional_std__string_ in
       if let __unwrappedValue = text {
         return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
@@ -75,12 +75,6 @@ public extension Fragment {
       }
     }(), { () -> bridge.std__optional_double_ in
       if let __unwrappedValue = letterSpacing {
-        return bridge.create_std__optional_double_(__unwrappedValue)
-      } else {
-        return .init()
-      }
-    }(), { () -> bridge.std__optional_double_ in
-      if let __unwrappedValue = numberOfLines {
         return bridge.create_std__optional_double_(__unwrappedValue)
       } else {
         return .init()
@@ -314,23 +308,6 @@ public extension Fragment {
     @inline(__always)
     set {
       self.__letterSpacing = { () -> bridge.std__optional_double_ in
-        if let __unwrappedValue = newValue {
-          return bridge.create_std__optional_double_(__unwrappedValue)
-        } else {
-          return .init()
-        }
-      }()
-    }
-  }
-  
-  var numberOfLines: Double? {
-    @inline(__always)
-    get {
-      return self.__numberOfLines.value
-    }
-    @inline(__always)
-    set {
-      self.__numberOfLines = { () -> bridge.std__optional_double_ in
         if let __unwrappedValue = newValue {
           return bridge.create_std__optional_double_(__unwrappedValue)
         } else {

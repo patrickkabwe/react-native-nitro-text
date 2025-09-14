@@ -87,6 +87,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setAllowFontScaling(std::optional<bool> allowFontScaling) = 0;
       virtual std::optional<EllipsizeMode> getEllipsizeMode() = 0;
       virtual void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) = 0;
+      virtual std::optional<double> getNumberOfLines() = 0;
+      virtual void setNumberOfLines(std::optional<double> numberOfLines) = 0;
       virtual std::optional<LineBreakStrategyIOS> getLineBreakStrategyIOS() = 0;
       virtual void setLineBreakStrategyIOS(std::optional<LineBreakStrategyIOS> lineBreakStrategyIOS) = 0;
       virtual std::optional<DynamicTypeRamp> getDynamicTypeRamp() = 0;
@@ -125,8 +127,6 @@ namespace margelo::nitro::nitrotext {
       virtual void setLineHeight(std::optional<double> lineHeight) = 0;
       virtual std::optional<double> getLetterSpacing() = 0;
       virtual void setLetterSpacing(std::optional<double> letterSpacing) = 0;
-      virtual std::optional<double> getNumberOfLines() = 0;
-      virtual void setNumberOfLines(std::optional<double> numberOfLines) = 0;
       virtual std::optional<TextAlign> getTextAlign() = 0;
       virtual void setTextAlign(std::optional<TextAlign> textAlign) = 0;
       virtual std::optional<TextTransform> getTextTransform() = 0;
