@@ -1,6 +1,9 @@
 # react-native-nitro-text
+<div>
+  <img width="2652" height="611" alt="Group 18 1" src="https://github.com/user-attachments/assets/72c83d81-d887-4f91-9197-19007990bfa1" />
+</div>
 
-Drop‑in, high‑performance Text for React Native (Fabric). Native iOS rendering with smooth selection, rich styling fragments, precise measurement, and line limiting.
+<br />
 
 [![Version](https://img.shields.io/npm/v/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
 [![Downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
