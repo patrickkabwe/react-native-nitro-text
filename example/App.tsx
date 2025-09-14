@@ -126,7 +126,7 @@ export default function App() {
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Line Limiting</NitroText>
         <NitroText style={styles.description}>Two lines maximum:</NitroText>
-        <NitroText style={styles.limitedText} numberOfLines={2}>
+        <NitroText style={styles.limitedText} numberOfLines={2} ellipsizeMode='tail'>
           This is a very long text that would normally span multiple lines, but
           we're limiting it to just two lines. The text will be truncated with
           an ellipsis when it exceeds the specified number of lines. This is
