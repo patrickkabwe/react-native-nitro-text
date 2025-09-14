@@ -10,9 +10,14 @@ Drop‑in, high‑performance Text for React Native (Fabric). Native iOS renderi
 
 - Native iOS rendering: UITextView/TextKit for smooth selection and layout.
 - Rich styling fragments: nested styles merged into native attributed text.
-- Precise measurement: reports size for dynamic UIs; supports `numberOfLines`.
-- Text alignment & transform: `textAlign` and `textTransform` support.
-- Color parsing: decimal ARGB, named colors, hex (RGB/RGBA), `rgb()/rgba()`.
+- Precise measurement: per‑line metrics via `onTextLayout`; supports `numberOfLines`.
+- Ellipsis & wrapping: `ellipsizeMode` (`head` | `middle` | `tail` | `clip`) and iOS `lineBreakStrategyIOS`.
+- Typography: `fontFamily`, `fontWeight`, `fontStyle`, `letterSpacing`, `lineHeight`.
+- Text alignment & transform: `textAlign`, `textTransform`.
+- Decorations: `textDecorationLine`, `textDecorationStyle`, `textDecorationColor`.
+- Dynamic Type: `allowFontScaling`, `dynamicTypeRamp`, `maxFontSizeMultiplier`.
+- Selection & press: `selectable`, `selectionColor`, `onPress`, `onPressIn`, `onPressOut`.
+- Color parsing: decimal ARGB, named colors, hex (#rgb/#rgba/#rrggbb/#rrggbbaa, `0x...`), and `rgb()/rgba()`.
 - Works with RN Text: use NitroText inside RN `<Text>` and vice‑versa.
 
 ## Requirements
@@ -63,16 +68,20 @@ Rich text (nested fragments)
 Line limiting and measurement
 
 ```tsx
-<NitroText numberOfLines={2} style={{ fontSize: 16 }}>
+<NitroText
+  numberOfLines={2}
+  ellipsizeMode="tail"
+  style={{ fontSize: 16 }}
+>
   This long text will be truncated with an ellipsis when it exceeds two lines.
 </NitroText>
 
-// Native height callback (iOS)
+// Per‑line layout metrics (iOS)
 <NitroText
-  onSelectableTextMeasured={(height) => console.log('height', height)}
+  onTextLayout={(e) => console.log('lines', e.lines)}
   style={{ fontSize: 16 }}
 >
-  Measure my height after layout
+  Measure my layout after rendering
 </NitroText>
 ```
 
@@ -89,10 +98,19 @@ Mixed with RN Text
 
 Unless noted, props mirror React Native Text style behavior through the `style` prop.
 
-- `style`: supports `color`, `fontSize`, `fontWeight`, `fontStyle`, `lineHeight`, `textAlign`, `textTransform`.
-- `numberOfLines?: number`: single/multi‑line with tail truncation for single line.
+- `style`: supports `color`, `backgroundColor` (applies as fragment highlight), `fontSize`, `fontWeight`,
+  `fontStyle`, `fontFamily`, `lineHeight`, `letterSpacing`, `textAlign`, `textTransform`,
+  `textDecorationLine`, `textDecorationStyle`, `textDecorationColor`.
+- `numberOfLines?: number`: limits visible lines.
+- `ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip'`: truncation behavior when `numberOfLines` is set.
 - `selectable?: boolean` (default `true`): enables native selection.
-- `onSelectableTextMeasured?(height: number)`: native iOS height after layout.
+- `selectionColor?: string`: caret/selection handle tint color (iOS).
+- `allowFontScaling?: boolean` (default `true`): enable Dynamic Type scaling.
+- `dynamicTypeRamp?: DynamicTypeRamp`: iOS UIFontMetrics text style to scale against.
+- `maxFontSizeMultiplier?: number`: caps Dynamic Type scaling multiplier.
+- `lineBreakStrategyIOS?: 'none' | 'standard' | 'hangul-word' | 'push-out'`: iOS line break strategy.
+- `onTextLayout?(event)`: per‑line layout metrics `{ lines: Array<{ text, x, y, width, height, descender, capHeight, ascender, xHeight }> }`.
+- `onPress?()`, `onPressIn?()`, `onPressOut?()`: press events.
 
 Note: Nested `<NitroText>` elements produce styling fragments merged natively.
 
@@ -104,40 +122,37 @@ Note: Nested `<NitroText>` elements produce styling fragments merged natively.
 
 Status toward React Native `Text` parity. Checked = implemented, unchecked = planned.
 
-- [x] Core styles: `color`, `fontSize`, `fontWeight`, `fontStyle`, `lineHeight`
-- [x] Layout/behavior: `numberOfLines` (single‑line tail truncation), nested spans
+- [x] Core styles: `color`, `fontSize`, `fontWeight`, `fontStyle`, `lineHeight`, `letterSpacing`
+- [x] Layout/behavior: `numberOfLines`, `ellipsizeMode` (head/middle/tail/clip), nested spans
 - [x] Alignment/transform: `textAlign`, `textTransform`
+- [x] Decorations: `textDecorationLine`, `textDecorationStyle`, `textDecorationColor`
 - [x] Color parsing: decimal ARGB, named colors, hex, `rgb()/rgba()`
-- [x] Native selection: iOS selection handles/caret; smooth scrolling/selection
-- [x] Measurement: native height via `onSelectableTextMeasured`
-- [ ] `fontFamily` (custom fonts + weight/style fallback matrix)
-- [ ] `letterSpacing`, `textDecoration*`, `textShadow*`
-- [ ] `ellipsizeMode` parity (head, middle, tail, clip) and multi‑line behavior
-- [ ] `allowFontScaling`, `maxFontSizeMultiplier` (Dynamic Type)
+- [x] Native selection: iOS selection handles/caret; `selectionColor`
+- [x] Measurement: per‑line metrics via `onTextLayout`
+- [x] `fontFamily` (system families and custom names)
+- [x] Dynamic Type: `allowFontScaling`, `dynamicTypeRamp`, `maxFontSizeMultiplier`
+- [x] iOS `lineBreakStrategyIOS`
 - [ ] `fontVariant` (small‑caps, tabular‑nums, oldstyle‑nums, etc.)
-- [ ] iOS `lineBreakStrategyIOS`, `hyphenationFactor`
-- [ ] `selectionColor`, `dataDetectorTypes`, linkable spans
-- [ ] Press events: `onPress`, `onLongPress`, `onPressIn/Out` incl. nested spans
-- [ ] `onTextLayout` parity (line/fragment metrics)
+- [ ] `hyphenationFactor`
+- [ ] `onLongPress` parity in native path
 - [ ] Accessibility: roles/labels/hints, nested span accessibility
 - [ ] Bidi/RTL: `writingDirection`, mixed LTR/RTL validation
-- [ ] Baseline/typography: `baselineOffset`, ligatures, kerning
+- [ ] Text shadows: `textShadow*`
+- [ ] Baseline/typography: ligatures, kerning fine‑tuning
 - [ ] Inline attachments (inline images/icons) where feasible
 
 Priorities: fontFamily, letterSpacing/decoration/shadows, ellipsizeMode parity, press events.
 
 ## Text vs NitroText
 
-| Aspect | RN `Text` | `NitroText` |
-| --- | --- | --- |
-| Rendering engine | Platform text primitives via RN | Native iOS TextKit/UITextView via Fabric (reduced JS overhead) |
-| Performance | General‑purpose, solid for most cases | Optimized for rich text and large lists; faster layout/measurement and smoother selection |
-| Props coverage | Full RN `Text` surface | Core styles, alignment/transform, nested fragments, selection, single‑line `numberOfLines`; rest tracked in roadmap |
-| Selection | Functional selection behavior | Native iOS selection with precise caret/handles and smooth interaction |
-| Ellipsis | `ellipsizeMode`: head/middle/tail/clip; multi‑line | Tail on single‑line today; multi‑line + full parity planned |
-| Accessibility | Mature, cross‑platform | iOS first; parity in progress per roadmap |
-| Platform support | iOS, Android, Web (via RN impls) | iOS (Fabric) today; Android planned |
-| Recommended usage | Broad, cross‑platform text needs | Heavy/nested styled text and list performance; native selection/measurement focus |
+| Aspect            | RN `Text`                                          | `NitroText`                                                                                                         |
+| ----------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Rendering engine  | Platform text primitives via RN                    | Native iOS TextKit/UITextView via Fabric (reduced JS overhead)                                                      |
+| Performance       | General‑purpose, solid for most cases              | Optimized for rich text and large lists; faster layout/measurement and smoother selection                           |
+| Props coverage    | Full RN `Text` surface                             | Core styles, alignment/transform, nested fragments, selection, single‑line `numberOfLines`; rest tracked in roadmap |
+| Selection         | Functional selection behavior                      | Native iOS selection with precise caret/handles and smooth interaction                                              |                                                        |                                                          |
+| Platform support  | iOS, Android, Web (via RN impls)                   | iOS (Fabric) today; Android planned                                                                                 |
+| Recommended usage | Broad, cross‑platform text needs                   | Heavy/nested styled text and list performance; native selection/measurement focus                                   |
 
 ## Why NitroText?
 
