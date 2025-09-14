@@ -187,6 +187,23 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
+  public final var numberOfLines: bridge.std__optional_double_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_double_ in
+        if let __unwrappedValue = self.__implementation.numberOfLines {
+          return bridge.create_std__optional_double_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.numberOfLines = newValue.value
+    }
+  }
+  
   public final var lineBreakStrategyIOS: bridge.std__optional_LineBreakStrategyIOS_ {
     @inline(__always)
     get {
@@ -602,23 +619,6 @@ open class HybridNitroTextSpec_cxx {
     @inline(__always)
     set {
       self.__implementation.letterSpacing = newValue.value
-    }
-  }
-  
-  public final var numberOfLines: bridge.std__optional_double_ {
-    @inline(__always)
-    get {
-      return { () -> bridge.std__optional_double_ in
-        if let __unwrappedValue = self.__implementation.numberOfLines {
-          return bridge.create_std__optional_double_(__unwrappedValue)
-        } else {
-          return .init()
-        }
-      }()
-    }
-    @inline(__always)
-    set {
-      self.__implementation.numberOfLines = newValue.value
     }
   }
   

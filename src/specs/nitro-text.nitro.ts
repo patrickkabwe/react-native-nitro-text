@@ -35,6 +35,12 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
     ellipsizeMode?: EllipsizeMode
 
     /**
+     * Limits the text to a maximum number of lines. Truncation behavior is
+     * controlled via `ellipsizeMode`. Matches React Native Text's `numberOfLines`.
+     */
+    numberOfLines?: number
+
+    /**
      * iOS-only line breaking strategy applied when wrapping lines.
      * Mirrors React Native's `lineBreakStrategyIOS`.
      * - 'standard' (default): Use Apple's standard strategies

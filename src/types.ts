@@ -94,11 +94,6 @@ export type Fragment = {
     letterSpacing?: number
 
     /**
-     * The number of lines of the text.
-     */
-    numberOfLines?: number
-
-    /**
      * Horizontal text alignment applied to the whole block.
      */
     textAlign?: TextAlign

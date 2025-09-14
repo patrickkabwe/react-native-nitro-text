@@ -15,6 +15,7 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var selectable: Bool? { get set }
   var allowFontScaling: Bool? { get set }
   var ellipsizeMode: EllipsizeMode? { get set }
+  var numberOfLines: Double? { get set }
   var lineBreakStrategyIOS: LineBreakStrategyIOS? { get set }
   var dynamicTypeRamp: DynamicTypeRamp? { get set }
   var maxFontSizeMultiplier: Double? { get set }
@@ -34,7 +35,6 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var fontFamily: String? { get set }
   var lineHeight: Double? { get set }
   var letterSpacing: Double? { get set }
-  var numberOfLines: Double? { get set }
   var textAlign: TextAlign? { get set }
   var textTransform: TextTransform? { get set }
   var textDecorationLine: TextDecorationLine? { get set }

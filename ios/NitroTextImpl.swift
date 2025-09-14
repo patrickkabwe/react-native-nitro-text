@@ -150,12 +150,14 @@ final class NitroTextImpl {
     }
 
     func setText(_ attributedText: NSAttributedString) {
+        let mutable = NSMutableAttributedString(attributedString: attributedText)
+        applyBaselineOffset(mutable)
         if let storage = nitroTextView?.tkStorage ?? nitroTextView?.layoutManager.textStorage {
             storage.beginEditing()
-            storage.setAttributedString(attributedText)
+            storage.setAttributedString(mutable)
             storage.endEditing()
         } else {
-            nitroTextView?.attributedText = attributedText
+            nitroTextView?.attributedText = mutable
         }
     }
 
@@ -201,5 +203,31 @@ final class NitroTextImpl {
         }
 
         setText(result)
+    }
+}
+
+extension NitroTextImpl {
+    /// Mirrors RCTApplyBaselineOffset: Computes a baseline offset from paragraph lineHeights and fonts.
+    fileprivate func applyBaselineOffset(_ attributed: NSMutableAttributedString) {
+        let fullRange = NSRange(location: 0, length: attributed.length)
+
+        var maximumLineHeight: CGFloat = 0
+        attributed.enumerateAttribute(.paragraphStyle, in: fullRange, options: []) { value, _, _ in
+            guard let style = value as? NSParagraphStyle else { return }
+            maximumLineHeight = max(maximumLineHeight, style.maximumLineHeight)
+        }
+        if maximumLineHeight <= 0 { return }
+
+        var maximumFontLineHeight: CGFloat = 0
+        attributed.enumerateAttribute(.font, in: fullRange, options: []) { value, _, _ in
+            guard let font = value as? UIFont else { return }
+            maximumFontLineHeight = max(maximumFontLineHeight, font.lineHeight)
+        }
+        if maximumLineHeight < maximumFontLineHeight { return }
+
+        let baseLineOffset = (maximumLineHeight - maximumFontLineHeight) / 2.0
+        if baseLineOffset != 0 {
+            attributed.addAttribute(.baselineOffset, value: baseLineOffset, range: fullRange)
+        }
     }
 }

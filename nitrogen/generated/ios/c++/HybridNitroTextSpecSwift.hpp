@@ -119,6 +119,13 @@ namespace margelo::nitro::nitrotext {
     inline void setEllipsizeMode(std::optional<EllipsizeMode> ellipsizeMode) noexcept override {
       _swiftPart.setEllipsizeMode(ellipsizeMode);
     }
+    inline std::optional<double> getNumberOfLines() noexcept override {
+      auto __result = _swiftPart.getNumberOfLines();
+      return __result;
+    }
+    inline void setNumberOfLines(std::optional<double> numberOfLines) noexcept override {
+      _swiftPart.setNumberOfLines(numberOfLines);
+    }
     inline std::optional<LineBreakStrategyIOS> getLineBreakStrategyIOS() noexcept override {
       auto __result = _swiftPart.getLineBreakStrategyIOS();
       return __result;
@@ -251,13 +258,6 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setLetterSpacing(std::optional<double> letterSpacing) noexcept override {
       _swiftPart.setLetterSpacing(letterSpacing);
-    }
-    inline std::optional<double> getNumberOfLines() noexcept override {
-      auto __result = _swiftPart.getNumberOfLines();
-      return __result;
-    }
-    inline void setNumberOfLines(std::optional<double> numberOfLines) noexcept override {
-      _swiftPart.setNumberOfLines(numberOfLines);
     }
     inline std::optional<TextAlign> getTextAlign() noexcept override {
       auto __result = _swiftPart.getTextAlign();

@@ -12,7 +12,7 @@ export default function App() {
 
   const handleTextLayout = (event: TextLayoutEvent) => {
     // console.log('lines', lines);
-    console.log('width', event);
+    // console.log('width', event);
     // console.log('height', height);
     // setLayoutInfo(`Lines: ${lines.length}`);
   };
