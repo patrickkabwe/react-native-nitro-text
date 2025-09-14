@@ -12,7 +12,7 @@ extension NitroTextImpl {
         for fragment: Fragment,
         defaultColor: UIColor
     ) -> [NSAttributedString.Key: Any] {
-        var attrs: [NSAttributedString.Key: Any] = [:]
+        var attrs: [NSAttributedString.Key: Any] = Dictionary(minimumCapacity: 8)
 
         let font = makeFont(for: fragment, defaultPointSize: nitroTextView?.font?.pointSize)
         attrs[.font] = font.value
@@ -35,14 +35,15 @@ extension NitroTextImpl {
 
         // Underline / Strikethrough from textDecorationLine
         if let deco = fragment.textDecorationLine {
+            let styleRaw = nsUnderlineStyle(from: fragment.textDecorationStyle)
             switch deco {
             case .underline:
-                attrs[.underlineStyle] = nsUnderlineStyle(from: fragment.textDecorationStyle)
+                attrs[.underlineStyle] = styleRaw
             case .lineThrough:
-                attrs[.strikethroughStyle] = nsUnderlineStyle(from: fragment.textDecorationStyle)
+                attrs[.strikethroughStyle] = styleRaw
             case .underlineLineThrough:
-                attrs[.underlineStyle] = nsUnderlineStyle(from: fragment.textDecorationStyle)
-                attrs[.strikethroughStyle] = nsUnderlineStyle(from: fragment.textDecorationStyle)
+                attrs[.underlineStyle] = styleRaw
+                attrs[.strikethroughStyle] = styleRaw
             case .none:
                 break
             }
@@ -56,39 +57,7 @@ extension NitroTextImpl {
 
         return attrs
     }
-
-    func makeParagraphStyle(for fragment: Fragment) -> NSMutableParagraphStyle {
-        let para = NSMutableParagraphStyle()
-
-        if let lineHeight = fragment.lineHeight, lineHeight > 0 {
-            let baseSize: CGFloat = {
-                if let fs = fragment.fontSize { return CGFloat(fs) }
-                return nitroTextView?.font?.pointSize ?? CGFloat(14.0)
-            }()
-            let fontScaleMultiplier = allowFontScaling ? getScaleFactor(requestedSize: baseSize) : 1.0
-            let lh = CGFloat(lineHeight) * fontScaleMultiplier
-            para.minimumLineHeight = lh
-            para.maximumLineHeight = lh
-        }
-
-        if let align = fragment.textAlign {
-            switch align {
-            case .center: para.alignment = .center
-            case .right: para.alignment = .right
-            case .justify: para.alignment = .justified
-            case .left: para.alignment = .left
-            case .auto: para.alignment = .natural
-            }
-        } else {
-            para.alignment = currentTextAlignment
-        }
-
-        if #available(iOS 14.0, *), let _ = nitroTextView {
-            para.lineBreakStrategy = currentLineBreakStrategy
-        }
-        return para
-    }
-
+    
     func resolveColor(for fragment: Fragment, defaultColor: UIColor) -> UIColor {
         if let value = fragment.fontColor, let parsed = ColorParser.parse(value) {
             return parsed
@@ -111,7 +80,7 @@ extension NitroTextImpl {
     }
 
     func transform(_ text: String, with fragment: Fragment) -> String {
-        let effective: TextTransform = {
+        let textTransform: TextTransform = {
             if let ft = fragment.textTransform {
                 switch ft {
                 case .uppercase: return .uppercase
@@ -123,7 +92,7 @@ extension NitroTextImpl {
             return currentTransform
         }()
 
-        switch effective {
+        switch textTransform {
         case .uppercase: return text.uppercased()
         case .lowercase: return text.lowercased()
         case .capitalize: return text.capitalized

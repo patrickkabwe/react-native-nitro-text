@@ -22,7 +22,11 @@ const NitroTextView = getHostComponent<NitroTextProps, NitroTextMethods>(
   () => NitroTextConfig
 )
 
-type NitroTextPropsWithEvents = Omit<TextProps, 'onTextLayout'> & NitroTextProps
+type NitroTextPropsWithEvents = Pick<
+  NitroTextProps,
+  'onTextLayout' | 'onPress' | 'onPressIn' | 'onPressOut'
+> &
+  Omit<TextProps, 'onTextLayout'>
 
 export const NitroText = (props: NitroTextPropsWithEvents) => {
   const isInsideRNText = React.useContext(unstable_TextAncestorContext)
@@ -78,10 +82,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     )
   }
 
-  // Note: Nested NitroText components do not mount as separate views.
-  // The parent NitroText flattens its children (including nested NitroText)
-  // into fragments, so this component will not observe `isNested`.
-
   const topStyles = styleToFragment(style || undefined)
 
   if (isSimpleText) {
@@ -90,7 +90,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
         {...rest}
         selectable={selectable}
         fontFamily={topStyles.fontFamily}
-        selectionColor={selectionColor}
+        selectionColor={selectionColor as string}
         text={String(children)}
         style={style}
         fontColor={topStyles.fontColor}
@@ -118,7 +118,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       selectable={selectable}
       fragments={fragments}
       fontFamily={topStyles.fontFamily}
-      selectionColor={selectionColor}
+      selectionColor={selectionColor as string}
       style={style}
       fontColor={topStyles.fontColor}
       fontWeight={topStyles.fontWeight}

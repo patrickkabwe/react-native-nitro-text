@@ -19,7 +19,7 @@ export function styleToFragment(style: StyleProp<TextStyle> | undefined): Partia
         fontSize: s.fontSize,
         fontWeight: normalizeWeight(s.fontWeight),
         fontStyle: s.fontStyle,
-        fontFamily: s.fontFamily as string | undefined,
+        fontFamily: s.fontFamily,
         lineHeight: s.lineHeight,
         letterSpacing: s.letterSpacing,
         textAlign: s.textAlign,
@@ -71,8 +71,6 @@ function pickFragmentOverrides(props: any): Partial<Fragment> {
     }
     return out;
 }
-
-
 
 function canMerge(a: Partial<Fragment>, b: Partial<Fragment>): boolean {
     for (const k of MERGE_KEYS) {

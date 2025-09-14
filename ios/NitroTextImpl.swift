@@ -13,6 +13,7 @@ final class NitroTextImpl {
     var currentTransform: TextTransform = .none
     var currentEllipsize: NSLineBreakMode = .byTruncatingTail
     var fontCache: [FontKey: UIFont] = [:]
+    var paragraphStyleCache: [ParagraphKey: NSParagraphStyle] = [:]
     var allowFontScaling: Bool = true
     var currentFontFamily: String? = nil
     var dynamicTypeTextStyle: UIFont.TextStyle? = nil
@@ -53,6 +54,7 @@ final class NitroTextImpl {
     func setAllowFontScaling(_ value: Bool?) {
         allowFontScaling = value ?? true
         nitroTextView?.adjustsFontForContentSizeCategory = allowFontScaling
+        paragraphStyleCache.removeAll(keepingCapacity: true)
         if let text = nitroTextView?.attributedText, text.length > 0 {
             nitroTextView?.attributedText = text
         }
@@ -97,6 +99,7 @@ final class NitroTextImpl {
         if dynamicTypeTextStyle != style {
             dynamicTypeTextStyle = style
             fontCache.removeAll(keepingCapacity: true)
+            paragraphStyleCache.removeAll(keepingCapacity: true)
             if let current = nitroTextView?.attributedText, current.length > 0 {
                 nitroTextView?.attributedText = current
                 nitroTextView?.setNeedsLayout()
@@ -113,6 +116,7 @@ final class NitroTextImpl {
     func setMaxFontSizeMultiplier(_ value: Double?) {
         maxFontSizeMultiplier = value
         fontCache.removeAll(keepingCapacity: true)
+        paragraphStyleCache.removeAll(keepingCapacity: true)
         if let current = nitroTextView?.attributedText, current.length > 0 {
             nitroTextView?.attributedText = current
             nitroTextView?.setNeedsLayout()
@@ -192,14 +196,30 @@ final class NitroTextImpl {
             return
         }
 
+        if fragments.count == 1, let only = fragments.first, let raw = only.text, !raw.isEmpty {
+            let defaultColor = nitroTextView?.textColor ?? UIColor.clear
+            let text = transform(raw, with: only)
+            let attrs = makeAttributes(for: only, defaultColor: defaultColor)
+            let result = NSMutableAttributedString(string: text, attributes: attrs)
+            setText(result)
+            return
+        }
+
         let result = NSMutableAttributedString()
+        result.beginEditing()
+        defer { result.endEditing() }
+
         let defaultColor = nitroTextView?.textColor ?? UIColor.clear
 
         for fragment in fragments {
-            guard let rawText = fragment.text else { continue }
-            let text = transform(rawText, with: fragment)
-            let attributes = makeAttributes(for: fragment, defaultColor: defaultColor)
-            result.append(NSAttributedString(string: text, attributes: attributes))
+            guard let rawText = fragment.text, !rawText.isEmpty else { continue }
+            autoreleasepool {
+                let text = transform(rawText, with: fragment)
+                if !text.isEmpty {
+                    let attributes = makeAttributes(for: fragment, defaultColor: defaultColor)
+                    result.append(NSAttributedString(string: text, attributes: attributes))
+                }
+            }
         }
 
         setText(result)
@@ -212,17 +232,17 @@ extension NitroTextImpl {
         let fullRange = NSRange(location: 0, length: attributed.length)
 
         var maximumLineHeight: CGFloat = 0
-        attributed.enumerateAttribute(.paragraphStyle, in: fullRange, options: []) { value, _, _ in
-            guard let style = value as? NSParagraphStyle else { return }
-            maximumLineHeight = max(maximumLineHeight, style.maximumLineHeight)
+        var maximumFontLineHeight: CGFloat = 0
+
+        attributed.enumerateAttributes(in: fullRange, options: []) { attrs, _, _ in
+            if let style = attrs[.paragraphStyle] as? NSParagraphStyle {
+                maximumLineHeight = max(maximumLineHeight, style.maximumLineHeight)
+            }
+            if let font = attrs[.font] as? UIFont {
+                maximumFontLineHeight = max(maximumFontLineHeight, font.lineHeight)
+            }
         }
         if maximumLineHeight <= 0 { return }
-
-        var maximumFontLineHeight: CGFloat = 0
-        attributed.enumerateAttribute(.font, in: fullRange, options: []) { value, _, _ in
-            guard let font = value as? UIFont else { return }
-            maximumFontLineHeight = max(maximumFontLineHeight, font.lineHeight)
-        }
         if maximumLineHeight < maximumFontLineHeight { return }
 
         let baseLineOffset = (maximumLineHeight - maximumFontLineHeight) / 2.0
