@@ -2,23 +2,27 @@
   <h1>react-native-nitro-text</h1>
 </div>
 
-<div align="center">
- <video src="https://github.com/user-attachments/assets/1e2baa07-fe07-43a5-a3db-86ed051daa5a" alt="React Native Nitro Text" />
-</div>
-
 <p align="center">
   A Text component that is much richer and performant for both iOS and Android.
 </p>
 
----
+
+<div align="center">
+  
+https://github.com/user-attachments/assets/57f56b3f-3988-4235-af83-a5f2cfd82121
+
+</div>
 
 <div align="center">
 
-[![Version](https://img.shields.io/npm/v/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
-[![Downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
-[![License](https://img.shields.io/npm/l/react-native-nitro-text.svg)](https://github.com/patrickkabwe/react-native-nitro-text/LICENSE)
+[![npm version](https://img.shields.io/npm/v/react-native-nitro-text?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
+[![npm downloads](https://img.shields.io/npm/dt/react-native-nitro-text.svg?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
+[![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/patrickkabwe/react-native-nitro-text/blob/main/LICENSE)
 
 </div>
+
+---
 
 ## Features
 
