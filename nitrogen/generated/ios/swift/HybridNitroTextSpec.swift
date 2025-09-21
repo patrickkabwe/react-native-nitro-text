@@ -12,6 +12,7 @@ import NitroModules
 public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   // Properties
   var fragments: [Fragment]? { get set }
+  var renderer: NitroTextRenderer? { get set }
   var selectable: Bool? { get set }
   var allowFontScaling: Bool? { get set }
   var ellipsizeMode: EllipsizeMode? { get set }

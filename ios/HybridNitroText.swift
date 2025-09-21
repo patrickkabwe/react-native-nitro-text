@@ -34,6 +34,10 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
         didSet { markNeedsApply() }
     }
 
+    var renderer: NitroTextRenderer? {
+        didSet { markNeedsApply() }
+    }
+
     var selectable: Bool? {
         didSet {
             nitroTextImpl.setSelectable(selectable)
@@ -195,7 +199,12 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
             textDecorationStyle: textDecorationStyle,
             selectionColor: selectionColor
         )
-        nitroTextImpl.apply(fragments: fragments, text: text, top: top)
+        nitroTextImpl.apply(
+            fragments: fragments,
+            text: text,
+            renderer: renderer,
+            top: top
+        )
     }
 
     func afterUpdate() {

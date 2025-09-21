@@ -122,11 +122,33 @@ export default function App() {
         </Text>
       </View>
 
+      {/* Markdown */}
+      <View style={styles.section}>
+        <NitroText style={styles.sectionTitle}>Markdown</NitroText>
+        <NitroText style={styles.markdownText} renderer="markdown">
+          **Hello World** ~heading~ _italic_
+        </NitroText>
+      </View>
+      <View style={styles.section}>
+        <NitroText style={styles.sectionTitle}>Markdown</NitroText>
+        <Text
+          style={[styles.markdownText, { alignSelf: 'flex-start' }]}
+          selectable
+          selectionColor={'#000000'}
+        >
+          **Hello World** ~heading~ _italic_
+        </Text>
+      </View>
+
       {/* Line Limiting */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Line Limiting</NitroText>
         <NitroText style={styles.description}>Two lines maximum:</NitroText>
-        <NitroText style={styles.limitedText} numberOfLines={2} ellipsizeMode='tail'>
+        <NitroText
+          style={styles.limitedText}
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
           This is a very long text that would normally span multiple lines, but
           we're limiting it to just two lines. The text will be truncated with
           an ellipsis when it exceeds the specified number of lines. This is
@@ -331,6 +353,15 @@ const styles = StyleSheet.create({
   small: {
     fontSize: 12,
     color: '#6c757d',
+  },
+
+  markdownText: {
+    fontSize: 16,
+    color: '#495057',
+    // width: 190,
+    lineHeight: 24,
+    backgroundColor: '#e3f2fd',
+    alignSelf: 'flex-start',
   },
 
   // Layout measurement

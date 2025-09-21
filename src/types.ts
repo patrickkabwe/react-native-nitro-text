@@ -22,6 +22,8 @@ type FontStyle = 'normal' | 'italic' | 'oblique'
 type TextDecorationLine = 'none' | 'underline' | 'line-through' | 'underline line-through'
 type TextDecorationStyle = 'solid' | 'double' | 'dotted' | 'dashed'
 
+export type NitroTextRenderer = 'plain' | 'markdown'
+
 export type TextLayout = {
     text: string,
     x: number,

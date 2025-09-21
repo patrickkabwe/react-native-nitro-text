@@ -17,6 +17,7 @@ final class NitroTextImpl {
     var allowFontScaling: Bool = true
     var currentFontFamily: String? = nil
     var dynamicTypeTextStyle: UIFont.TextStyle? = nil
+    let markdownCache = NSCache<NSString, NSAttributedString>()
     @available(iOS 14.0, *)
     var currentLineBreakStrategy: NSParagraphStyle.LineBreakStrategy = .standard
     var maxFontSizeMultiplier: Double? = nil
@@ -25,25 +26,25 @@ final class NitroTextImpl {
 
     init(_ nitroTextView: NitroTextView) {
         self.nitroTextView = nitroTextView
+        markdownCache.countLimit = 16
     }
 
     func setLineBreakStrategyIOS(_ value: LineBreakStrategyIOS?) {
-        if #available(iOS 14.0, *) {
-            switch value {
-            case .some(.none):
-                currentLineBreakStrategy = []
-            case .some(.standard):
-                currentLineBreakStrategy = .standard
-            case .some(.hangulWord):
-                currentLineBreakStrategy = .hangulWordPriority
-            case .some(.pushOut):
-                currentLineBreakStrategy = .pushOut
-            default:
-                currentLineBreakStrategy = .standard
-            }
-            if let text = nitroTextView?.attributedText, text.length > 0 {
-                nitroTextView?.attributedText = text
-            }
+        guard #available(iOS 14.0, *) else { return }
+        switch value {
+        case .some(.none):
+            currentLineBreakStrategy = []
+        case .some(.standard):
+            currentLineBreakStrategy = .standard
+        case .some(.hangulWord):
+            currentLineBreakStrategy = .hangulWordPriority
+        case .some(.pushOut):
+            currentLineBreakStrategy = .pushOut
+        default:
+            currentLineBreakStrategy = .standard
+        }
+        if let text = nitroTextView?.attributedText, text.length > 0 {
+            nitroTextView?.attributedText = text
         }
     }
 
@@ -61,13 +62,12 @@ final class NitroTextImpl {
     }
 
     func setFontFamily(_ value: String?) {
-        if currentFontFamily != value {
-            currentFontFamily = value
-            fontCache.removeAll(keepingCapacity: true)
-            if let current = nitroTextView?.attributedText, current.length > 0 {
-                nitroTextView?.attributedText = current
-                nitroTextView?.setNeedsLayout()
-            }
+        guard currentFontFamily != value else { return }
+        currentFontFamily = value
+        fontCache.removeAll(keepingCapacity: true)
+        if let current = nitroTextView?.attributedText, current.length > 0 {
+            nitroTextView?.attributedText = current
+            nitroTextView?.setNeedsLayout()
         }
     }
 
@@ -96,14 +96,13 @@ final class NitroTextImpl {
             case nil: return nil
             }
         }()
-        if dynamicTypeTextStyle != style {
-            dynamicTypeTextStyle = style
-            fontCache.removeAll(keepingCapacity: true)
-            paragraphStyleCache.removeAll(keepingCapacity: true)
-            if let current = nitroTextView?.attributedText, current.length > 0 {
-                nitroTextView?.attributedText = current
-                nitroTextView?.setNeedsLayout()
-            }
+        guard dynamicTypeTextStyle != style else { return }
+        dynamicTypeTextStyle = style
+        fontCache.removeAll(keepingCapacity: true)
+        paragraphStyleCache.removeAll(keepingCapacity: true)
+        if let current = nitroTextView?.attributedText, current.length > 0 {
+            nitroTextView?.attributedText = current
+            nitroTextView?.setNeedsLayout()
         }
     }
 
@@ -165,11 +164,6 @@ final class NitroTextImpl {
         }
     }
 
-    func setPlainText(_ value: String?) {
-        let attributed = NSAttributedString(string: value ?? "")
-        setText(attributed)
-    }
-
     func setTextAlign(_ align: TextAlign?) {
         switch align {
         case .some(.center): currentTextAlignment = .center
@@ -192,7 +186,13 @@ final class NitroTextImpl {
 
     func setFragments(_ fragments: [Fragment]?) {
         guard let fragments = fragments, !fragments.isEmpty else {
-            nitroTextView?.attributedText = nil
+            if let storage = nitroTextView?.tkStorage ?? nitroTextView?.layoutManager.textStorage {
+                storage.beginEditing()
+                storage.setAttributedString(NSAttributedString())
+                storage.endEditing()
+            } else {
+                nitroTextView?.attributedText = nil
+            }
             return
         }
 
@@ -229,6 +229,7 @@ final class NitroTextImpl {
 extension NitroTextImpl {
     /// Mirrors RCTApplyBaselineOffset: Computes a baseline offset from paragraph lineHeights and fonts.
     fileprivate func applyBaselineOffset(_ attributed: NSMutableAttributedString) {
+        guard attributed.length > 0 else { return }
         let fullRange = NSRange(location: 0, length: attributed.length)
 
         var maximumLineHeight: CGFloat = 0

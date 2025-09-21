@@ -8,6 +8,7 @@ import type {
     EllipsizeMode,
     Fragment,
     LineBreakStrategyIOS,
+    NitroTextRenderer,
     TextLayoutEvent,
 } from '../types'
 
@@ -16,6 +17,13 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
      * The fragments of the text.
      */
     fragments?: Fragment[]
+
+    /**
+     * Chooses how text should be rendered natively.
+     * - 'plain' (default): treat `text`/`fragments` as styled runs.
+     * - 'markdown': parse the provided `text` as Markdown on iOS.
+     */
+    renderer?: NitroTextRenderer
 
     /**
      * Selectable text.
