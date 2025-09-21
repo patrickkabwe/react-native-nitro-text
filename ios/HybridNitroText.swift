@@ -113,8 +113,8 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
 
     var selectionColor: String? {
         didSet {
-            if let v = selectionColor, let c = ColorParser.parse(v) {
-                textView.tintColor = c
+            if let v = selectionColor, let color = ColorParser.parse(v) {
+                textView.tintColor = color
             }
         }
     }
