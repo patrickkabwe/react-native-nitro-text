@@ -1,6 +1,6 @@
 {
   "name": "react-native-nitro-text",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Text component that is much richer and performant for both iOS and Android.",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
@@ -58,7 +58,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/jest": "^29.5.12",
     "@types/react": "19.1.0",
-    "nitrogen": "^0.29.4",
+    "nitrogen": "^0.29.6",
     "react": "19.1.0",
     "react-native": "0.81.4",
     "react-native-builder-bob": "^0.37.0",
