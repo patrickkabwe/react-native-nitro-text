@@ -1,9 +1,24 @@
-# React Native Nitro Text
-A Text component that is much richer and performant for both iOS and Android.
+<div align="center">
+  <h1>react-native-nitro-text</h1>
+</div>
+
+<div align="center">
+ <video src="https://github.com/user-attachments/assets/1e2baa07-fe07-43a5-a3db-86ed051daa5a" alt="React Native Nitro Text" />
+</div>
+
+<p align="center">
+  A Text component that is much richer and performant for both iOS and Android.
+</p>
+
+---
+
+<div align="center">
 
 [![Version](https://img.shields.io/npm/v/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
 [![Downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
 [![License](https://img.shields.io/npm/l/react-native-nitro-text.svg)](https://github.com/patrickkabwe/react-native-nitro-text/LICENSE)
+
+</div>
 
 ## Features
 
@@ -41,6 +56,24 @@ export function Title() {
   return (
     <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
       🚀 NitroText Showcase
+    </Text>
+  )
+}
+```
+
+## Selection
+
+iOS uses native selection. On Android, NitroText currently falls back to React Native `Text`.
+
+```tsx
+import { NitroText as Text } from 'react-native-nitro-text'
+
+export function SelectionExample() {
+  return (
+    <Text selectable style={{ fontSize: 16, lineHeight: 22 }}>
+      Long-press to select this text. NitroText supports smooth selection,
+      even with <Text style={{ fontWeight: '600' }}>inline styles</Text> and
+      longer paragraphs.
     </Text>
   )
 }
