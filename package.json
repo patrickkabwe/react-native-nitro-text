@@ -1,6 +1,6 @@
 {
   "name": "react-native-nitro-text",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A Text component that is much richer and performant for both iOS and Android.",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
