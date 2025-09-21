@@ -1,8 +1,5 @@
-<div>
-  <img width="2652" height="611" alt="Group 18 1" src="https://github.com/user-attachments/assets/72c83d81-d887-4f91-9197-19007990bfa1" />
-</div>
-
-<br />
+# React Native Nitro Text
+A Text component that is much richer and performant for both iOS and Android.
 
 [![Version](https://img.shields.io/npm/v/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
 [![Downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
@@ -10,11 +7,11 @@
 
 ## Features
 
-- Works on both iOS and Android(currently fallback to RN `Text`)
-- Native iOS TextKit renderer (Fabric)
+- Works on both iOS and Android(currently fallback to RN `Text` on Android)
+- Native iOS rendering with smooth selection.
 - Nested fragments merge into a single native text view
+- Rendering Markdown and HTML (coming soon).
 - Supports only the New Architecture
-- Selection: selectable by default, iOS `selectionColor`
 
 ## Requirements
 
@@ -30,21 +27,21 @@ yarn add react-native-nitro-text react-native-nitro-modules
 iOS
 
 ```bash
-cd ios && pod install && cd -
+cd ios && pod install && cd ..
 ```
 
-That’s it. Nitro autolinking registers the view and codegen output.
+That’s it. You can now use the `NitroText` component in your app.
 
 ## Usage
 
 ```tsx
-import { NitroText } from 'react-native-nitro-text'
+import { NitroText as Text } from 'react-native-nitro-text'
 
 export function Title() {
   return (
-    <NitroText style={{ fontSize: 24, fontWeight: 'bold' }}>
+    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
       🚀 NitroText Showcase
-    </NitroText>
+    </Text>
   )
 }
 ```
@@ -52,15 +49,15 @@ export function Title() {
 ## Platform Support
 
 - iOS
-- Android (not implemented yet) - At the moment NitroText fallback to RN `Text`.
+- Android - At the moment `NitroText` fallback to RN `Text`.
 
 ## Why NitroText?
 
-Custom native text view with minimal JS overhead and native iOS selection. Great for heavy/nested styled text and large lists.
+Custom native text view with minimal JS overhead and native iOS selection. Great for heavy/nested styled text and large lists. It's a drop-in replacement for RN `Text` component.
 
 ## Development
 
-- `bun run build` — typecheck and build package
+- `bun run build` — typecheck and build the package
 - `bun run codegen` — regenerate codegen outputs
 - Example app in `example/`
 

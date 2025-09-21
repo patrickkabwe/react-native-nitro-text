@@ -72,8 +72,9 @@ final class NitroTextView: UITextView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        guard let delegate = nitroTextDelegate else { return }
         if let layout = computeTextLayoutEvent() {
-            nitroTextDelegate?.onNitroTextLayout(layout)
+            delegate.onNitroTextLayout(layout)
         }
     }
 
