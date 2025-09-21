@@ -1,7 +1,7 @@
 {
   "name": "react-native-nitro-text",
   "version": "0.1.0",
-  "description": "Drop‑in, high‑performance Text for React Native (Fabric). Native iOS rendering with smooth selection, rich styling fragments, precise measurement, and line limiting.",
+  "description": "A Text component that is much richer and performant for both iOS and Android.",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",

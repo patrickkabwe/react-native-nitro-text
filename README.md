@@ -1,20 +1,36 @@
-<div>
-  <img width="2652" height="611" alt="Group 18 1" src="https://github.com/user-attachments/assets/72c83d81-d887-4f91-9197-19007990bfa1" />
+<div align="center">
+  <h1>react-native-nitro-text</h1>
 </div>
 
-<br />
+<p align="center">
+  A Text component that is much richer and performant for both iOS and Android.
+</p>
 
-[![Version](https://img.shields.io/npm/v/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
-[![Downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg)](https://www.npmjs.com/package/react-native-nitro-text)
-[![License](https://img.shields.io/npm/l/react-native-nitro-text.svg)](https://github.com/patrickkabwe/react-native-nitro-text/LICENSE)
+
+<div align="center">
+  
+https://github.com/user-attachments/assets/57f56b3f-3988-4235-af83-a5f2cfd82121
+
+</div>
+
+<div align="center">
+
+[![npm version](https://img.shields.io/npm/v/react-native-nitro-text?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
+[![npm downloads](https://img.shields.io/npm/dt/react-native-nitro-text.svg?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
+[![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/patrickkabwe/react-native-nitro-text/blob/main/LICENSE)
+
+</div>
+
+---
 
 ## Features
 
-- Works on both iOS and Android(currently fallback to RN `Text`)
-- Native iOS TextKit renderer (Fabric)
+- Works on both iOS and Android(currently fallback to RN `Text` on Android)
+- Native iOS rendering with smooth selection.
 - Nested fragments merge into a single native text view
+- Rendering Markdown and HTML (coming soon).
 - Supports only the New Architecture
-- Selection: selectable by default, iOS `selectionColor`
 
 ## Requirements
 
@@ -30,21 +46,39 @@ yarn add react-native-nitro-text react-native-nitro-modules
 iOS
 
 ```bash
-cd ios && pod install && cd -
+cd ios && pod install && cd ..
 ```
 
-That’s it. Nitro autolinking registers the view and codegen output.
+That’s it. You can now use the `NitroText` component in your app.
 
 ## Usage
 
 ```tsx
-import { NitroText } from 'react-native-nitro-text'
+import { NitroText as Text } from 'react-native-nitro-text'
 
 export function Title() {
   return (
-    <NitroText style={{ fontSize: 24, fontWeight: 'bold' }}>
+    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
       🚀 NitroText Showcase
-    </NitroText>
+    </Text>
+  )
+}
+```
+
+## Selection
+
+iOS uses native selection. On Android, NitroText currently falls back to React Native `Text`.
+
+```tsx
+import { NitroText as Text } from 'react-native-nitro-text'
+
+export function SelectionExample() {
+  return (
+    <Text selectable style={{ fontSize: 16, lineHeight: 22 }}>
+      Long-press to select this text. NitroText supports smooth selection,
+      even with <Text style={{ fontWeight: '600' }}>inline styles</Text> and
+      longer paragraphs.
+    </Text>
   )
 }
 ```
@@ -52,15 +86,15 @@ export function Title() {
 ## Platform Support
 
 - iOS
-- Android (not implemented yet) - At the moment NitroText fallback to RN `Text`.
+- Android - At the moment `NitroText` fallback to RN `Text`.
 
 ## Why NitroText?
 
-Custom native text view with minimal JS overhead and native iOS selection. Great for heavy/nested styled text and large lists.
+Custom native text view with minimal JS overhead and native iOS selection. Great for heavy/nested styled text and large lists. It's a drop-in replacement for RN `Text` component.
 
 ## Development
 
-- `bun run build` — typecheck and build package
+- `bun run build` — typecheck and build the package
 - `bun run codegen` — regenerate codegen outputs
 - Example app in `example/`
 
