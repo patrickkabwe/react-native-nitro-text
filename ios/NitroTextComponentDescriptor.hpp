@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "NitroTextShadowNode.hpp"
+#include "../cpp/NitroTextShadowNode.hpp"
 #include <react/renderer/core/ConcreteComponentDescriptor.h>
 
 namespace margelo::nitro::nitrotext::views {
@@ -29,4 +29,3 @@ namespace margelo::nitro::nitrotext::views {
   };
 
 } // namespace margelo::nitro::nitrotext::views
-
