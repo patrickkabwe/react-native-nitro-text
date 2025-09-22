@@ -32,6 +32,7 @@
     "android/CMakeLists.txt",
     "android/src",
     "ios/**/*.h",
+    "ios/**/*.hpp",
     "ios/**/*.m",
     "ios/**/*.mm",
     "ios/**/*.cpp",
