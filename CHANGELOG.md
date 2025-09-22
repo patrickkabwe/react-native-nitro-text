@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.0...v1.0.1) (2025-09-22)
+
+### 🐛 Bug Fixes
+
+* ship NitroText headers with npm package ([325a3d9](https://github.com/patrickkabwe/react-native-nitro-text/commit/325a3d917b25b56809a6bd5741af7849fb224345))
+
 ## 1.0.0 (2025-09-21)
 
 ### ✨ Features
