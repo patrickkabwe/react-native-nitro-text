@@ -1,3 +1,13 @@
+## [1.0.2](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.1...v1.0.2) (2025-09-22)
+
+### 🐛 Bug Fixes
+
+* **ios:** selection reset ([#42](https://github.com/patrickkabwe/react-native-nitro-text/issues/42)) ([2e3f981](https://github.com/patrickkabwe/react-native-nitro-text/commit/2e3f9819d7ba9691d61934578401aa73f5b1cdbe))
+
+### 🔄 Code Refactors
+
+* move NitroText shadow node implementation into cpp prep work for android ([743b0e7](https://github.com/patrickkabwe/react-native-nitro-text/commit/743b0e722dae94849950a1161c0d4fb02c1c1c22))
+
 ## [1.0.1](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.0...v1.0.1) (2025-09-22)
 
 ### 🐛 Bug Fixes
