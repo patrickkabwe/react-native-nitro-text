@@ -19,6 +19,8 @@
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
+#include "NitroTextRenderer.hpp"
+#include <optional>
 #include <optional>
 #include <optional>
 #include "EllipsizeMode.hpp"
@@ -94,6 +96,7 @@ namespace margelo::nitro::nitrotext::views {
 
   public:
     CachedProp<std::optional<std::vector<Fragment>>> fragments;
+    CachedProp<std::optional<NitroTextRenderer>> renderer;
     CachedProp<std::optional<bool>> selectable;
     CachedProp<std::optional<bool>> allowFontScaling;
     CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;

@@ -136,6 +136,23 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
+  public final var renderer: bridge.std__optional_NitroTextRenderer_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_NitroTextRenderer_ in
+        if let __unwrappedValue = self.__implementation.renderer {
+          return bridge.create_std__optional_NitroTextRenderer_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.renderer = newValue.value
+    }
+  }
+  
   public final var selectable: bridge.std__optional_bool_ {
     @inline(__always)
     get {

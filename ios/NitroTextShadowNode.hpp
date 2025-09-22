@@ -6,6 +6,8 @@
 #pragma once
 
 #include "HybridNitroTextComponent.hpp"
+#include "NitroTextRenderer.hpp"
+#include "NitroMarkdownUtils.hpp"
 
 #include <react/renderer/core/LayoutConstraints.h>
 #include <react/renderer/core/LayoutContext.h>
@@ -15,9 +17,13 @@
 #include <react/renderer/components/view/ViewShadowNode.h>
 #include <react/renderer/textlayoutmanager/TextLayoutContext.h>
 #include <react/renderer/textlayoutmanager/TextLayoutManager.h>
+#include <string>
 
 namespace margelo::nitro::nitrotext::views
 {
+    std::string sanitizeMarkdownPlainText(const std::string &input);
+    NitroMarkdownAttributes makeNitroMarkdownAttributes(const std::string &input);
+
     /**
      * The Shadow Node for the "NitroText" View.
      * Mark as a Leaf + Measurable Yoga node so Fabric queries the ShadowNode for
@@ -54,18 +60,23 @@ namespace margelo::nitro::nitrotext::views
             const react::LayoutContext &layoutContext,
             const react::LayoutConstraints &layoutConstraints) const override
         {
-            
-            const auto &props = this->getConcreteProps();
 
-            auto makeTextAttributes = [&](const std::optional<margelo::nitro::nitrotext::Fragment> &fragOpt)
+            const auto &props = this->getConcreteProps();
+            const bool isMarkdownRenderer =
+                props.renderer.value.has_value() &&
+                props.renderer.value.value() == margelo::nitro::nitrotext::NitroTextRenderer::MARKDOWN;
+
+            auto makeTextAttributes = [&](
+                const std::optional<margelo::nitro::nitrotext::Fragment> &fragOpt,
+                const std::optional<NitroMarkdownAttributes> &markdownOpt)
             {
                 auto a = react::TextAttributes::defaultTextAttributes();
-                
+
                 // backgroundColor
-//                if (props.fragmentBackgroundColor.value.has_value())
-//                {
-//                    a.backgroundColor = props.fragmentBackgroundColor.value.value();
-//                }
+                //                if (props.fragmentBackgroundColor.value.has_value())
+                //                {
+                //                    a.backgroundColor = props.fragmentBackgroundColor.value.value();
+                //                }
 
                 // allowFontScaling
                 bool allowFontScaling = props.allowFontScaling.value.value_or(true);
@@ -330,6 +341,70 @@ namespace margelo::nitro::nitrotext::views
                 // Layout direction (match RN ParagraphShadowNode)
                 a.layoutDirection = layoutConstraints.layoutDirection;
 
+                if (markdownOpt.has_value())
+                {
+                    const auto &markdown = markdownOpt.value();
+                    if (markdown.fontWeight.has_value())
+                    {
+                        applyFontWeight(markdown.fontWeight.value());
+                    }
+                    if (markdown.fontStyle.has_value())
+                    {
+                        applyFontStyle(markdown.fontStyle.value());
+                    }
+                    if (markdown.fontFamily.has_value())
+                    {
+                        a.fontFamily = markdown.fontFamily.value();
+                    }
+                    if (markdown.textDecorationLine.has_value())
+                    {
+                        using RNTextDecorationLineType = facebook::react::TextDecorationLineType;
+                        switch (markdown.textDecorationLine.value())
+                        {
+                        case NitroTextDecorationLine::UNDERLINE:
+                            a.textDecorationLineType = RNTextDecorationLineType::Underline;
+                            break;
+                        case NitroTextDecorationLine::LINE_THROUGH:
+                            a.textDecorationLineType = RNTextDecorationLineType::Strikethrough;
+                            break;
+                        case NitroTextDecorationLine::UNDERLINE_LINE_THROUGH:
+                            a.textDecorationLineType = RNTextDecorationLineType::UnderlineStrikethrough;
+                            break;
+                        case NitroTextDecorationLine::NONE:
+                        default:
+                            a.textDecorationLineType = RNTextDecorationLineType::None;
+                            break;
+                        }
+                    }
+                    if (markdown.textDecorationStyle.has_value())
+                    {
+                        using RNTextDecorationStyle = facebook::react::TextDecorationStyle;
+                        switch (markdown.textDecorationStyle.value())
+                        {
+                        case NitroTextDecorationStyle::SOLID:
+                            a.textDecorationStyle = RNTextDecorationStyle::Solid;
+                            break;
+                        case NitroTextDecorationStyle::DOUBLE:
+                            a.textDecorationStyle = RNTextDecorationStyle::Double;
+                            break;
+                        case NitroTextDecorationStyle::DOTTED:
+                            a.textDecorationStyle = RNTextDecorationStyle::Dotted;
+                            break;
+                        case NitroTextDecorationStyle::DASHED:
+                            a.textDecorationStyle = RNTextDecorationStyle::Dashed;
+                            break;
+                        }
+                    }
+                    if (markdown.textAlign.has_value())
+                    {
+                        applyAlign(markdown.textAlign.value());
+                    }
+                    if (markdown.textTransform.has_value())
+                    {
+                        applyTransform(markdown.textTransform.value());
+                    }
+                }
+
                 return a;
             };
 
@@ -347,9 +422,17 @@ namespace margelo::nitro::nitrotext::views
                     const std::string fragmentText = f.text.has_value() ? f.text.value() : std::string("");
                     if (fragmentText.empty())
                         continue;
-                    auto attrs = makeTextAttributes(f);
+                    std::optional<NitroMarkdownAttributes> markdownAttributes;
+                    std::string measured = fragmentText;
+                    if (isMarkdownRenderer)
+                    {
+                        auto md = makeNitroMarkdownAttributes(fragmentText);
+                        measured = md.parsedText;
+                        markdownAttributes = std::move(md);
+                    }
+                    auto attrs = makeTextAttributes(f, markdownAttributes);
                     attributedString.appendFragment(react::AttributedString::Fragment{
-                        .string = fragmentText,
+                        .string = measured,
                         .textAttributes = attrs,
                         .parentShadowView = react::ShadowView(*this)});
                 }
@@ -357,9 +440,17 @@ namespace margelo::nitro::nitrotext::views
             else
             {
                 const std::string textToMeasure = props.text.value.has_value() ? props.text.value.value() : std::string("");
-                auto attrs = makeTextAttributes(std::nullopt);
+                std::optional<NitroMarkdownAttributes> markdownAttributes;
+                std::string measured = textToMeasure;
+                if (isMarkdownRenderer)
+                {
+                    auto md = makeNitroMarkdownAttributes(textToMeasure);
+                    measured = md.parsedText;
+                    markdownAttributes = std::move(md);
+                }
+                auto attrs = makeTextAttributes(std::nullopt, markdownAttributes);
                 attributedString.appendFragment(react::AttributedString::Fragment{
-                    .string = textToMeasure,
+                    .string = measured,
                     .textAttributes = attrs,
                     .parentShadowView = react::ShadowView(*this)});
             }

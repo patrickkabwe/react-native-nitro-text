@@ -24,27 +24,22 @@ extension NitroTextImpl {
         let selectionColor: String?
     }
 
-    func apply(fragments: [Fragment]?, text: String?, top: FragmentTopDefaults) {
+    func apply(
+        fragments: [Fragment]?,
+        text: String?,
+        renderer: NitroTextRenderer?,
+        top: FragmentTopDefaults
+    ) {
+        if renderer == .markdown, let markdownText = text {
+            if applyMarkdown(markdownText, defaults: top) {
+                return
+            }
+        }
+
         // Fast path: no fragments, but we have plain text
         guard let fragments, !fragments.isEmpty else {
             if let t = text {
-                let single = Fragment(
-                    text: t,
-                    selectionColor: top.selectionColor,
-                    fontSize: top.fontSize,
-                    fontWeight: top.fontWeight,
-                    fontColor: top.fontColor,
-                    fragmentBackgroundColor: nil,
-                    fontStyle: top.fontStyle,
-                    fontFamily: top.fontFamily,
-                    lineHeight: top.lineHeight,
-                    letterSpacing: top.letterSpacing,
-                    textAlign: top.textAlign,
-                    textTransform: top.textTransform,
-                    textDecorationLine: top.textDecorationLine,
-                    textDecorationColor: top.textDecorationColor,
-                    textDecorationStyle: top.textDecorationStyle
-                )
+                let single = top.makeFragment(withText: t)
                 setFragments([single])
             } else {
                 setFragments(nil)
@@ -67,6 +62,28 @@ extension NitroTextImpl {
         setFragments(merged)
     }
 
+}
+
+extension NitroTextImpl.FragmentTopDefaults {
+    func makeFragment(withText text: String?) -> Fragment {
+        Fragment(
+            text: text,
+            selectionColor: selectionColor,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+            fontColor: fontColor,
+            fragmentBackgroundColor: nil,
+            fontStyle: fontStyle,
+            fontFamily: fontFamily,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            textAlign: textAlign,
+            textTransform: textTransform,
+            textDecorationLine: textDecorationLine,
+            textDecorationColor: textDecorationColor,
+            textDecorationStyle: textDecorationStyle
+        )
+    }
 }
 
 // MARK: - Merge helpers
