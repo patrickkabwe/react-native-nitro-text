@@ -39,7 +39,7 @@ final class NitroTextView: UITextView {
 
     private func setupView() {
         isEditable = false
-        isSelectable = true
+        isSelectable = false
         isScrollEnabled = false
         isUserInteractionEnabled = true
         backgroundColor = .clear
