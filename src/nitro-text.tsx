@@ -33,7 +33,7 @@ let TextAncestorContext = unstable_TextAncestorContext
 if (
   Platform.constants.reactNativeVersion.major > 0 ||
   (Platform.constants.reactNativeVersion.major === 0 &&
-    Platform.constants.reactNativeVersion.minor >= 81)
+    Platform.constants.reactNativeVersion.minor < 81)
 ) {
   TextAncestorContext = require('react-native/Libraries/Text/TextAncestor')
 }

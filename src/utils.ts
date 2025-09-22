@@ -6,9 +6,36 @@ export function normalizeWeight(
     w?: TextStyle['fontWeight']
 ): Fragment['fontWeight'] | undefined {
     if (!w) return undefined;
-    if (typeof w === "string") return w as any;
+
+    if (typeof w === 'string' && isNaN(Number(w))) {
+        return w as Fragment['fontWeight'];
+    }
+
     const n = Number(w);
-    return n >= 100 && n <= 900 && n % 100 === 0 ? (String(n) as any) : undefined;
+
+    switch (n) {
+        case 100:
+            return 'ultralight';
+        case 200:
+            return 'light';
+        case 300:
+            return 'thin';
+        case 400:
+            return 'regular';
+        case 500:
+            return 'medium';
+        case 600:
+            return 'semibold';
+        case 700:
+            return 'bold';
+        case 800:
+            return 'heavy';
+        case 900:
+            return 'black';
+        default:
+            return 'regular';
+    }
+
 }
 
 export function styleToFragment(style: StyleProp<TextStyle> | undefined): Partial<Fragment> {
