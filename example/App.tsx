@@ -78,8 +78,10 @@ export default function App() {
           paragraph.
         </NitroText>
       </View>
+
+      {/* Rich Text Formatting using RN Text */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Rich Text Formatting</Text>
+        <Text style={styles.sectionTitle}>Rich Text Formatting(RN Text)</Text>
         <Text style={styles.richText}>
           Welcome to the world of <Text style={styles.bold}>bold text</Text>,{' '}
           <Text style={styles.italic}>beautiful italics</Text>, and{' '}
@@ -112,8 +114,9 @@ export default function App() {
         </NitroText>
       </View>
 
+      {/* Layout Measurement using RN Text */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Layout Measurement</Text>
+        <Text style={styles.sectionTitle}>Layout Measurement(RN Text)</Text>
         <Text style={styles.measuredText} onLayout={handleLayout}>
           This text demonstrates layout measurement capabilities. The component
           can measure its dimensions and report back to JavaScript.

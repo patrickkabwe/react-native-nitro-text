@@ -118,7 +118,8 @@ final class NitroTextView: UITextView {
         var index = glyphRange.location
         while index < NSMaxRange(glyphRange) {
             var lineGlyphRange = NSRange(location: 0, length: 0)
-            let usedRect = lm.lineFragmentUsedRect(forGlyphAt: index, effectiveRange: &lineGlyphRange)
+            let usedRect = lm.lineFragmentUsedRect(
+                forGlyphAt: index, effectiveRange: &lineGlyphRange)
             let charRange = lm.characterRange(forGlyphRange: lineGlyphRange, actualGlyphRange: nil)
 
             let substring = fullText.substring(with: charRange)
@@ -128,7 +129,9 @@ final class NitroTextView: UITextView {
             var desc: CGFloat = -(font?.descender ?? 0)
             var cap: CGFloat = font?.capHeight ?? 0
             var xh: CGFloat = font?.xHeight ?? 0
-            if let attrsFont = storage?.attribute(.font, at: charRange.location, effectiveRange: nil) as? UIFont {
+            if let attrsFont = storage?.attribute(
+                .font, at: charRange.location, effectiveRange: nil) as? UIFont
+            {
                 asc = attrsFont.ascender
                 desc = -(attrsFont.descender)
                 cap = attrsFont.capHeight
@@ -160,8 +163,33 @@ final class NitroTextView: UITextView {
     }
 
     @objc private func handleTap(_ recognizer: UITapGestureRecognizer) {
-        if recognizer.state == .ended {
-            nitroTextDelegate?.onNitroTextPress()
+        guard recognizer.state == .ended else { return }
+        clearSelectionIfNeeded(at: recognizer.location(in: self))
+        nitroTextDelegate?.onNitroTextPress()
+    }
+
+}
+
+private extension NitroTextView {
+    func selectionLength(_ range: UITextRange) -> Int {
+        offset(from: range.start, to: range.end)
+    }
+
+    func isPoint(_ point: CGPoint, insideSelection range: UITextRange) -> Bool {
+        for selectionRect in selectionRects(for: range) {
+            let rect = selectionRect.rect
+            if rect.isNull || rect.isEmpty { continue }
+            if rect.contains(point) { return true }
+        }
+        return false
+    }
+
+    func clearSelectionIfNeeded(at point: CGPoint) {
+        guard let currentSelection = selectedTextRange,
+            selectionLength(currentSelection) > 0
+        else { return }
+        if !isPoint(point, insideSelection: currentSelection) {
+            selectedTextRange = nil
         }
     }
 }

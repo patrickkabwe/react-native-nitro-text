@@ -1,6 +1,6 @@
 //
 // NitroTextShadowNode.cpp
-// Moved implementations from header into translation unit
+//
 //
 
 #include "NitroTextShadowNode.hpp"

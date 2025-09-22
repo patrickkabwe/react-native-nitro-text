@@ -30,7 +30,15 @@ type NitroTextPropsWithEvents = Pick<
   Omit<TextProps, 'onTextLayout'>
 
 export const NitroText = (props: NitroTextPropsWithEvents) => {
-  const isInsideRNText = React.useContext(unstable_TextAncestorContext)
+  let TextAncestorContext = unstable_TextAncestorContext
+  if (
+    Platform.constants.reactNativeVersion.major > 0 ||
+    (Platform.constants.reactNativeVersion.major === 0 &&
+      Platform.constants.reactNativeVersion.minor >= 81)
+  ) {
+    TextAncestorContext = require('react-native/Libraries/Text/TextAncestor')
+  }
+  const isInsideRNText = React.useContext(TextAncestorContext)
   const {
     children,
     style,
