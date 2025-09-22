@@ -48,7 +48,7 @@ final class NitroTextImpl {
     }
 
     func setSelectable(_ selectable: Bool?) {
-        nitroTextView?.isSelectable = selectable ?? true
+        nitroTextView?.isSelectable = selectable ?? false
     }
 
     func setAllowFontScaling(_ value: Bool?) {
