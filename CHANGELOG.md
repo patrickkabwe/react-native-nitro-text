@@ -1,3 +1,9 @@
+## [1.0.3](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.2...v1.0.3) (2025-09-22)
+
+### 🛠️ Other changes
+
+* **deps:** update NitroText to version 1.0.2 ([09fed5f](https://github.com/patrickkabwe/react-native-nitro-text/commit/09fed5f6d3c9f20b0690b9947b3f53be933051b0))
+
 ## [1.0.2](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.1...v1.0.2) (2025-09-22)
 
 ### 🐛 Bug Fixes
