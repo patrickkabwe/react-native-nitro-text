@@ -1,0 +1,55 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior
+title: '[Bug]: '
+labels: ['bug']
+assignees: []
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this?
+      placeholder: |
+        1. Go to '...'
+        2. Click '....'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code sample
+      description: Minimal code that reproduces the issue
+      placeholder: |
+        ```tsx
+        <NitroText>Your code here</NitroText>
+        ```
+      render: tsx
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: React Native version, platform, device
+      placeholder: e.g., RN 0.81.4, iOS, iPhone 15 Pro
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues
+          required: true
+        - label: I have provided a minimal reproduction case
+          required: true

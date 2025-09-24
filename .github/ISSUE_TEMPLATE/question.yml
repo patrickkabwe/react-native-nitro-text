@@ -1,0 +1,41 @@
+name: ❓ Question
+description: Ask a question or get help
+title: '[Question]: '
+labels: ['question']
+assignees: []
+
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: What's your question?
+      description: What would you like to know?
+      placeholder: Your question here...
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+      description: What approaches have you already tried?
+      placeholder: Describe what you've tried so far...
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code (if applicable)
+      description: Relevant code sample
+      placeholder: |
+        ```tsx
+        // Your code here
+        ```
+      render: tsx
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and discussions
+          required: true
