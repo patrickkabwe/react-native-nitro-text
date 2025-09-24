@@ -1,0 +1,43 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement
+title: '[Feature]: '
+labels: ['enhancement']
+assignees: []
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What would you like?
+      description: A clear description of the feature
+      placeholder: Describe the feature...
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why is this needed?
+      description: What problem does this solve?
+      placeholder: Explain why this would be useful...
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code example
+      description: How would you like to use this feature?
+      placeholder: |
+        ```tsx
+        <NitroText newFeature={true}>Example</NitroText>
+        ```
+      render: tsx
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues
+          required: true
+        - label: I have provided a clear use case
+          required: true
