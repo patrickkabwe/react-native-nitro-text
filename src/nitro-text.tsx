@@ -42,7 +42,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
   const {
     children,
     style,
-    selectable = true,
+    selectable,
     selectionColor,
     onTextLayout,
     onPress,
@@ -60,7 +60,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     return flattenChildrenToFragments(children, style as any)
   }, [children, style, isSimpleText])
 
-  if (isInsideRNText || Platform.OS === 'android') {
+  if (isInsideRNText) {
     const onRNTextLayout = useCallback(
       (e: TextLayoutEvent) => {
         onTextLayout?.(e.nativeEvent)
@@ -124,8 +124,10 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       selectionColor={selectionColor as string}
       style={style}
       fontColor={topStyles.fontColor}
+      fontSize={topStyles.fontSize}
       fontWeight={topStyles.fontWeight}
       fontStyle={topStyles.fontStyle}
+      lineHeight={topStyles.lineHeight}
       letterSpacing={topStyles.letterSpacing}
       textAlign={topStyles.textAlign}
       textTransform={topStyles.textTransform}

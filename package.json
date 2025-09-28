@@ -12,7 +12,7 @@
     "clean": "git clean -dfX",
     "release": "semantic-release",
     "build": "bun run typecheck && bob build",
-    "codegen": "nitro-codegen --logLevel=\"debug\" && bun run build",
+    "codegen": "nitrogen --logLevel=\"debug\" && bun run build && node post-script.js",
     "postcodegen": "bun --cwd example pod"
   },
   "keywords": [
@@ -59,12 +59,12 @@
     "@semantic-release/git": "^10.0.1",
     "@types/jest": "^29.5.12",
     "@types/react": "19.1.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "nitrogen": "^0.29.6",
     "react": "19.1.0",
     "react-native": "0.81.4",
     "react-native-builder-bob": "^0.37.0",
     "react-native-nitro-modules": "^0.29.6",
-    "conventional-changelog-conventionalcommits": "^9.1.0",
     "semantic-release": "^24.2.8",
     "typescript": "^5.8.3"
   },

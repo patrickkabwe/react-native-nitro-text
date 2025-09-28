@@ -1,5 +1,5 @@
 //
-// NitroTextShadowOverride.mm
+// HybridNitroTextComponent+ShadowOverride.mm
 // Override only the ShadowNode/Descriptor for the generated view class
 // without introducing a new ComponentView class.
 //
@@ -9,7 +9,7 @@
 #import <React/RCTViewComponentView.h>
 #import <react/renderer/componentregistry/ComponentDescriptorProvider.h>
 
-#import "NitroTextComponentDescriptor.hpp"
+#import "../cpp/NitroTextComponentDescriptor.hpp"
 
 // Forward-declare the generated view class; we don't import generated headers here.
 @interface HybridNitroTextComponent : RCTViewComponentView
@@ -39,4 +39,3 @@ using namespace margelo::nitro::nitrotext::views;
 }
 
 @end
-

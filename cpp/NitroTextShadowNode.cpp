@@ -412,7 +412,7 @@ react::Size NitroTextShadowNode::measureContent(
       react::TextLayoutContext textLayoutContext{
         .pointScaleFactor = layoutContext.pointScaleFactor,
         // TODO: investigate why surfaceId is not working for react-native <= 0.79
-//        .surfaceId = this->getSurfaceId(),
+       .surfaceId = this->getSurfaceId(),
       };
 
       const auto measurement = textLayoutManager_->measure(
