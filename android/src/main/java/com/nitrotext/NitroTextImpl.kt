@@ -1,5 +1,6 @@
 package com.nitrotext
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -42,6 +43,8 @@ class NitroTextImpl(private val view: AppCompatTextView) {
   private var textDecorationLine: TextDecorationLine? = null
   private var textDecorationColor: String? = null
   private var textDecorationStyle: TextDecorationStyle? = null
+
+  private var fragmentBackgroundColor: String? = null
 
   fun commit() {
     // Reset typography to avoid stale values from recycled views
@@ -86,6 +89,10 @@ class NitroTextImpl(private val view: AppCompatTextView) {
   fun setTextDecorationColor(value: String?) { textDecorationColor = value }
   fun setTextDecorationStyle(value: TextDecorationStyle?) { textDecorationStyle = value }
 
+  fun setFragmentBackgroundColor(value: String?) {
+    fragmentBackgroundColor = value
+  }
+
   // Apply helpers
   private fun applySelectable() {
     selectable?.let { view.setTextIsSelectable(it) }
@@ -127,11 +134,12 @@ class NitroTextImpl(private val view: AppCompatTextView) {
   }
 
   private fun applyAlignment() {
-    when (textAlign) {
-      TextAlign.LEFT -> view.gravity = Gravity.START or Gravity.CENTER_VERTICAL
-      TextAlign.RIGHT -> view.gravity = Gravity.END or Gravity.CENTER_VERTICAL
-      TextAlign.CENTER -> view.gravity = Gravity.CENTER
-      TextAlign.JUSTIFY, TextAlign.AUTO, null -> Unit
+    val verticalCenter = Gravity.CENTER_VERTICAL
+    view.gravity = when (textAlign) {
+      TextAlign.LEFT -> Gravity.START or verticalCenter
+      TextAlign.RIGHT -> Gravity.END or verticalCenter
+      TextAlign.CENTER -> Gravity.CENTER_HORIZONTAL or verticalCenter
+      TextAlign.JUSTIFY, TextAlign.AUTO, null -> Gravity.START or verticalCenter
     }
   }
 
@@ -152,7 +160,7 @@ class NitroTextImpl(private val view: AppCompatTextView) {
       view.text = ""
     }
 
-    fontColor?.let { parseColorSafe(it)?.let(view::setTextColor) }
+    view.setTextColor(resolvedFontColor())
     fontSize?.let {
       if (allowFontScaling) {
         view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, it.toFloat())
@@ -206,7 +214,7 @@ class NitroTextImpl(private val view: AppCompatTextView) {
     view.text = builder
 
     // Apply default text color for runs without explicit color
-    fontColor?.let { parseColorSafe(it)?.let(view::setTextColor) }
+    view.setTextColor(resolvedFontColor())
   }
 
   private fun applyDecorationSpans(builder: SpannableStringBuilder, start: Int, end: Int, line: TextDecorationLine?) {
@@ -251,6 +259,11 @@ class NitroTextImpl(private val view: AppCompatTextView) {
   private fun parseColorSafe(str: String): Int? = try {
       str.toColorInt()
   } catch (_: Throwable) { null }
+
+  private fun resolvedFontColor(): Int {
+    val parsed = fontColor?.let { parseColorSafe(it) }
+    return parsed ?: Color.BLACK
+  }
 
   private fun resolveLineHeight(value: Double?): Float? {
     val raw = value ?: return null

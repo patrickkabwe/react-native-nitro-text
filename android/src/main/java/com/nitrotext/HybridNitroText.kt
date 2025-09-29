@@ -127,7 +127,7 @@ class HybridNitroText(val context: ThemedReactContext) : HybridNitroTextSpec(), 
   override var fragmentBackgroundColor: String?
     get() = null
     set(value) {
-      // TODO: Implement fragmentBackgroundColor
+      impl.setFragmentBackgroundColor(value)
     }
 
   override var fontStyle: FontStyle?

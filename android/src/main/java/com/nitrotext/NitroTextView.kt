@@ -20,7 +20,7 @@ interface NitroTextViewDelegate {
 @SuppressLint("ViewConstructor")
 class NitroTextView(ctx: Context) : ReactViewGroup(ctx) {
    val textView = AppCompatTextView(ctx).apply {
-      includeFontPadding = false
+      includeFontPadding = true
       minWidth = 0; minHeight = 0
       breakStrategy = LineBreaker.BREAK_STRATEGY_HIGH_QUALITY
       hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NORMAL

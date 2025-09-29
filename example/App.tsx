@@ -159,14 +159,14 @@ export default function App() {
           NitroText can seamlessly integrate with React Native's Text component:
           {'\n\n'}
           <Text style={styles.rnText}>
-            This is a React Native Text component{' '}
-            <NitroText style={styles.nested}>with nested NitroText</NitroText>{' '}
+            This is a React Native Text component
+            <NitroText style={styles.nested}> with nested NitroText </NitroText>
             inside it.
           </Text>
           {'\n\n'}And vice versa - NitroText can contain:{'\n'}
           <NitroText style={styles.nestedContainer}>
-            Regular text with{' '}
-            <Text style={styles.rnNested}>RN Text nested inside</Text>{' '}
+            Regular text with
+            <Text style={styles.rnNested}>{' '}RN Text nested inside</Text>{' '}
             NitroText.
           </NitroText>
         </NitroText>
