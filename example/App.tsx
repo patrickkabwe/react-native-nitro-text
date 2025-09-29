@@ -11,7 +11,7 @@ export default function App() {
   };
 
   const handleTextLayout = (event: TextLayoutEvent) => {
-    // console.log('lines', lines);
+    console.log('lines', event.lines);
     // console.log('width', event);
     // console.log('height', height);
     // setLayoutInfo(`Lines: ${lines.length}`);
@@ -286,7 +286,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     borderWidth: 1,
     borderColor: 'blue',
-    width: '100%',
   },
   sectionTitle: {
     fontSize: 24,

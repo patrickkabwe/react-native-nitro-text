@@ -1,18 +1,20 @@
 package com.nitrotext
 
-import android.os.Build
-import android.view.View
 import androidx.annotation.Keep
-import androidx.annotation.RequiresApi
 import com.facebook.proguard.annotations.DoNotStrip
 import com.facebook.react.uimanager.ThemedReactContext
 import com.margelo.nitro.nitrotext.*
 
 @Keep
 @DoNotStrip
-class HybridNitroText(val context: ThemedReactContext) : HybridNitroTextSpec() {
+class HybridNitroText(val context: ThemedReactContext) : HybridNitroTextSpec(), NitroTextViewDelegate {
   override val view: NitroTextView = NitroTextView(context)
   private val impl = NitroTextImpl(view.textView)
+  private var onTextLayoutCallback: ((TextLayoutEvent) -> Unit)? = null
+
+  init {
+    view.nitroTextDelegate = this
+  }
 
   override var fragments: Array<Fragment>?
     get() = null
@@ -73,9 +75,9 @@ class HybridNitroText(val context: ThemedReactContext) : HybridNitroTextSpec() {
     set(value) { value }
 
   override var onTextLayout: ((TextLayoutEvent) -> Unit)?
-    get() = null
+    get() = onTextLayoutCallback
     set(value) {
-      // TODO: Implement onTextLayout
+      onTextLayoutCallback = value
     }
 
   override var onPress: (() -> Unit)?
@@ -168,5 +170,9 @@ class HybridNitroText(val context: ThemedReactContext) : HybridNitroTextSpec() {
     impl.commit()
     view.requestLayout()
     view.invalidate()
+  }
+
+  override fun onNitroTextLayout(event: TextLayoutEvent) {
+    onTextLayoutCallback?.invoke(event)
   }
 }

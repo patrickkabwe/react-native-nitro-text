@@ -8,7 +8,7 @@ import kotlin.math.floor
 /**
  * Matches React Native's CustomLineHeightSpan so lineHeight behaves the same as <Text>.
  */
-class NitroTextImplLineHeightSpan(heightPx: Float) : LineHeightSpan {
+class NitroLineHeightSpan(heightPx: Float) : LineHeightSpan {
   private val lineHeight: Int = ceil(heightPx.toDouble()).toInt()
 
   override fun chooseHeight(

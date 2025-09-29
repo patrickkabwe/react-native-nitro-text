@@ -11,7 +11,6 @@ import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.TypefaceSpan
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatTextView
 import com.facebook.react.uimanager.PixelUtil
@@ -280,7 +279,7 @@ class NitroTextImpl(private val view: AppCompatTextView) {
     } else {
       Spannable.SPAN_EXCLUSIVE_INCLUSIVE
     }
-    builder.setSpan(NitroTextImplLineHeightSpan(lineHeightPx), start, end, flags)
+    builder.setSpan(NitroLineHeightSpan(lineHeightPx), start, end, flags)
   }
 
   companion object {
