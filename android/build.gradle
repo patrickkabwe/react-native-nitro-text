@@ -137,6 +137,8 @@ dependencies {
   // Add a dependency on NitroModules
   implementation project(":react-native-nitro-modules")
 
+  implementation "org.jsoup:jsoup:1.18.1"
+
 }
 
 if (isNewArchitectureEnabled()) {

@@ -48,6 +48,18 @@ abstract class HybridNitroTextSpec: HybridView() {
   @get:Keep
   @set:DoNotStrip
   @set:Keep
+  abstract var renderer: NitroRenderer?
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var richTextStyleRules: Array<RichTextStyleRule>?
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
   abstract var selectable: Boolean?
   
   @get:DoNotStrip

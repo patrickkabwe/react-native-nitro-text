@@ -15,6 +15,10 @@
 
 // Forward declaration of `Fragment` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct Fragment; }
+// Forward declaration of `NitroRenderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class NitroRenderer; }
+// Forward declaration of `RichTextStyleRule` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyleRule; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
@@ -39,6 +43,8 @@ namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
+#include "NitroRenderer.hpp"
+#include "RichTextStyleRule.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
@@ -81,6 +87,10 @@ namespace margelo::nitro::nitrotext {
       // Properties
       virtual std::optional<std::vector<Fragment>> getFragments() = 0;
       virtual void setFragments(const std::optional<std::vector<Fragment>>& fragments) = 0;
+      virtual std::optional<NitroRenderer> getRenderer() = 0;
+      virtual void setRenderer(std::optional<NitroRenderer> renderer) = 0;
+      virtual std::optional<std::vector<RichTextStyleRule>> getRichTextStyleRules() = 0;
+      virtual void setRichTextStyleRules(const std::optional<std::vector<RichTextStyleRule>>& richTextStyleRules) = 0;
       virtual std::optional<bool> getSelectable() = 0;
       virtual void setSelectable(std::optional<bool> selectable) = 0;
       virtual std::optional<bool> getAllowFontScaling() = 0;

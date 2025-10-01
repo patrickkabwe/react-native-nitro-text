@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, type StyleProp, type TextStyle } from "react-native";
-import type { Fragment } from "./types";
+import type { Fragment, RichTextStyle, RichTextStyleRule } from "./types";
 
 export function normalizeWeight(
     w?: TextStyle['fontWeight']
@@ -152,4 +152,30 @@ export function flattenChildrenToFragments(
     const out: Fragment[] = [];
     flattenInto(out, children, parentStyle, fragmentConfig, {});
     return out;
+}
+
+function styleToRichTextStyle(style: StyleProp<TextStyle> | undefined): RichTextStyle {
+    const flat = StyleSheet.flatten(style) || {};
+    const fragmentAttrs = styleToFragment(flat);
+    return {
+        ...fragmentAttrs,
+        marginTop: flat.marginTop as number | undefined,
+        marginBottom: flat.marginBottom as number | undefined,
+        marginLeft: flat.marginLeft as number | undefined,
+        marginRight: flat.marginRight as number | undefined,
+    };
+}
+
+export function buildRichTextStyleRules(
+    styles?: Record<string, StyleProp<TextStyle>>
+): RichTextStyleRule[] | undefined {
+    if (!styles) return undefined;
+    const entries = Object.entries(styles);
+    if (entries.length === 0) return undefined;
+    const rules: RichTextStyleRule[] = [];
+    for (const [selector, style] of entries) {
+        const normalized = styleToRichTextStyle(style);
+        rules.push({ selector, style: normalized });
+    }
+    return rules;
 }

@@ -7,21 +7,28 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.BackgroundColorSpan
+import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.TypefaceSpan
 import android.text.style.UnderlineSpan
 import android.view.Gravity
+import android.text.method.ArrowKeyMovementMethod
+import android.text.method.LinkMovementMethod
 import androidx.appcompat.widget.AppCompatTextView
 import com.facebook.react.uimanager.PixelUtil
 import com.margelo.nitro.nitrotext.*
 import androidx.core.graphics.toColorInt
+import com.nitrotext.renderers.NitroHtmlRenderer
+import com.nitrotext.spans.NitroLineHeightSpan
 
 class NitroTextImpl(private val view: AppCompatTextView) {
   // Stored props
   private var fragments: Array<Fragment>? = null
   private var text: String? = null
+  private var renderer: NitroRenderer = NitroRenderer.PLAINTEXT
+  private var richTextStyleRules: Array<RichTextStyleRule>? = null
 
   private var selectable: Boolean? = null
   private var selectionColor: String? = null
@@ -56,7 +63,11 @@ class NitroTextImpl(private val view: AppCompatTextView) {
     applyAlignment()
 
     val frags = fragments
-    if (!frags.isNullOrEmpty()) {
+    val content = text
+    
+    if (renderer == NitroRenderer.HTML && !content.isNullOrEmpty()) {
+      applyHtml(content)
+    } else if (!frags.isNullOrEmpty()) {
       applyFragments(frags)
     } else {
       applySimpleText()
@@ -68,6 +79,8 @@ class NitroTextImpl(private val view: AppCompatTextView) {
   // Setters
   fun setFragments(value: Array<Fragment>?) { fragments = value }
   fun setText(value: String?) { text = value }
+  fun setRenderer(value: NitroRenderer?) { renderer = value ?: NitroRenderer.PLAINTEXT }
+  fun setRichTextStyleRules(value: Array<RichTextStyleRule>?) { richTextStyleRules = value }
 
   fun setSelectable(value: Boolean?) { selectable = value }
   fun setSelectionColor(value: String?) { selectionColor = value }
@@ -212,7 +225,7 @@ class NitroTextImpl(private val view: AppCompatTextView) {
     }
     containerLineHeightPx?.let { applyLineHeightSpan(builder, 0, builder.length, it) }
     view.text = builder
-
+    
     // Apply default text color for runs without explicit color
     view.setTextColor(resolvedFontColor())
   }
@@ -265,6 +278,59 @@ class NitroTextImpl(private val view: AppCompatTextView) {
     return parsed ?: Color.BLACK
   }
 
+  private fun baseRichTextStyle(): RichTextStyle {
+    return RichTextStyle(
+      fontColor = fontColor,
+      fragmentBackgroundColor = fragmentBackgroundColor,
+      fontSize = fontSize,
+      fontWeight = fontWeight,
+      fontStyle = fontStyle,
+      fontFamily = fontFamily,
+      lineHeight = lineHeight,
+      letterSpacing = letterSpacing,
+      textAlign = textAlign,
+      textTransform = textTransform,
+      textDecorationLine = textDecorationLine,
+      textDecorationColor = textDecorationColor,
+      textDecorationStyle = textDecorationStyle,
+      marginTop = null,
+      marginBottom = null,
+      marginLeft = null,
+      marginRight = null,
+    )
+  }
+
+  private fun applyHtml(html: String) {
+    val renderer = NitroHtmlRenderer(
+      context = view.context,
+      defaultTextSizePx = view.textSize,
+      allowFontScaling = allowFontScaling,
+      maxFontSizeMultiplier = maxFontSizeMultiplier,
+    )
+    val spannable = renderer.render(html, baseRichTextStyle(), richTextStyleRules)
+    trimTrailingNewlines(spannable)
+    view.text = spannable
+    val hasLinks = spannable.getSpans(0, spannable.length, ClickableSpan::class.java).isNotEmpty()
+    view.linksClickable = hasLinks
+    val isSelectable = selectable == true
+    view.movementMethod = when {
+      hasLinks && isSelectable -> LinkMovementMethod.getInstance()
+      hasLinks -> HtmlLinkMovementMethod
+      isSelectable -> ArrowKeyMovementMethod.getInstance()
+      else -> null
+    }
+    view.setTextIsSelectable(isSelectable)
+    view.setTextColor(resolvedFontColor())
+  }
+
+  private fun trimTrailingNewlines(builder: SpannableStringBuilder) {
+    var length = builder.length
+    while (length > 0 && builder[length - 1] == '\n') {
+      builder.delete(length - 1, length)
+      length = builder.length
+    }
+  }
+
   private fun resolveLineHeight(value: Double?): Float? {
     val raw = value ?: return null
     val px = if (allowFontScaling) {
@@ -293,9 +359,5 @@ class NitroTextImpl(private val view: AppCompatTextView) {
       Spannable.SPAN_EXCLUSIVE_INCLUSIVE
     }
     builder.setSpan(NitroLineHeightSpan(lineHeightPx), start, end, flags)
-  }
-
-  companion object {
-    private const val TAG = "NitroTextImpl"
   }
 }

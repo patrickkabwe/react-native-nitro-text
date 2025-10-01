@@ -25,6 +25,8 @@ include_directories(
 # Add custom ShadowNode implementation
 target_sources(
         ${PACKAGE_NAME} PRIVATE
+        ../cpp/NitroHtmlUtils.cpp
+        ../cpp/NitroHtmlUtils.hpp
         ../cpp/NitroTextShadowNode.cpp
         ../cpp/NitroTextShadowNode.hpp
         ../cpp/NitroTextComponentDescriptor.cpp

@@ -51,6 +51,10 @@ namespace margelo::nitro::nitrotext {
     // Properties
     std::optional<std::vector<Fragment>> getFragments() override;
     void setFragments(const std::optional<std::vector<Fragment>>& fragments) override;
+    std::optional<NitroRenderer> getRenderer() override;
+    void setRenderer(std::optional<NitroRenderer> renderer) override;
+    std::optional<std::vector<RichTextStyleRule>> getRichTextStyleRules() override;
+    void setRichTextStyleRules(const std::optional<std::vector<RichTextStyleRule>>& richTextStyleRules) override;
     std::optional<bool> getSelectable() override;
     void setSelectable(std::optional<bool> selectable) override;
     std::optional<bool> getAllowFontScaling() override;
