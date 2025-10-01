@@ -165,11 +165,6 @@ final class NitroTextImpl {
         }
     }
 
-    func setPlainText(_ value: String?) {
-        let attributed = NSAttributedString(string: value ?? "")
-        setText(attributed)
-    }
-
     func setTextAlign(_ align: TextAlign?) {
         switch align {
         case .some(.center): currentTextAlignment = .center

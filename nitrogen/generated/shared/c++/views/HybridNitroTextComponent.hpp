@@ -19,58 +19,22 @@
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
-#include <optional>
-#include <optional>
+#include "NitroRenderer.hpp"
+#include "RichTextStyleRule.hpp"
 #include "EllipsizeMode.hpp"
-#include <optional>
-#include <optional>
 #include "LineBreakStrategyIOS.hpp"
-#include <optional>
 #include "DynamicTypeRamp.hpp"
-#include <optional>
-#include <optional>
-#include <optional>
-#include <optional>
 #include "TextLayoutEvent.hpp"
 #include <functional>
-#include <optional>
-#include <functional>
-#include <optional>
-#include <functional>
-#include <optional>
-#include <functional>
-#include <optional>
 #include <string>
-#include <optional>
-#include <string>
-#include <optional>
-#include <optional>
 #include "FontWeight.hpp"
-#include <optional>
-#include <string>
-#include <optional>
-#include <string>
-#include <optional>
 #include "FontStyle.hpp"
-#include <optional>
-#include <string>
-#include <optional>
-#include <optional>
-#include <optional>
 #include "TextAlign.hpp"
-#include <optional>
 #include "TextTransform.hpp"
-#include <optional>
 #include "TextDecorationLine.hpp"
-#include <optional>
-#include <string>
-#include <optional>
 #include "TextDecorationStyle.hpp"
-#include <optional>
 #include <memory>
 #include "HybridNitroTextSpec.hpp"
-#include <functional>
-#include <optional>
 
 namespace margelo::nitro::nitrotext::views {
 
@@ -94,6 +58,8 @@ namespace margelo::nitro::nitrotext::views {
 
   public:
     CachedProp<std::optional<std::vector<Fragment>>> fragments;
+    CachedProp<std::optional<NitroRenderer>> renderer;
+    CachedProp<std::optional<std::vector<RichTextStyleRule>>> richTextStyleRules;
     CachedProp<std::optional<bool>> selectable;
     CachedProp<std::optional<bool>> allowFontScaling;
     CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;

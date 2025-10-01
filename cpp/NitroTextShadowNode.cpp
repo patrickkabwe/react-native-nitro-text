@@ -5,15 +5,29 @@
 
 #include "NitroTextShadowNode.hpp"
 
+#include "NitroHtmlUtils.hpp"
+
 #include <cmath>
 #include <optional>
 #include <string>
 #include <utility>
 
+#if defined(__ANDROID__)
+#include <android/log.h>
+#endif
+
 #include <react/renderer/attributedstring/AttributedStringBox.h>
 
 #if __has_include(<cxxreact/ReactNativeVersion.h>)
 #include <cxxreact/ReactNativeVersion.h>
+#endif
+
+#if defined(REACT_NATIVE_VERSION_MAJOR)
+#define RN_VERSION_AT_LEAST(major, minor)                                                     \
+  ((REACT_NATIVE_VERSION_MAJOR > (major)) ||                                                  \
+   (REACT_NATIVE_VERSION_MAJOR == (major) && REACT_NATIVE_VERSION_MINOR >= (minor)))
+#else
+#define RN_VERSION_AT_LEAST(major, minor) 0
 #endif
 
 namespace margelo::nitro::nitrotext::views {
@@ -38,6 +52,9 @@ react::Size NitroTextShadowNode::measureContent(
     const react::LayoutConstraints &layoutConstraints) const
 {
   const auto &props = this->getConcreteProps();
+  using NitroRenderer = margelo::nitro::nitrotext::NitroRenderer;
+  const bool isHtmlRenderer = props.renderer.value.has_value() &&
+    props.renderer.value.value() == NitroRenderer::HTML;
 
   auto makeTextAttributes =
       [&](const std::optional<margelo::nitro::nitrotext::Fragment> &fragOpt) {
@@ -327,11 +344,14 @@ react::Size NitroTextShadowNode::measureContent(
         for (const auto &f : frags)
         {
           const std::string fragmentText = f.text.has_value() ? f.text.value() : std::string("");
-          if (fragmentText.empty())
+          const std::string sanitizedFragmentText =
+            isHtmlRenderer ? html::NitroHtmlUtils::stripTags(fragmentText)
+                           : fragmentText;
+          if (sanitizedFragmentText.empty())
             continue;
           auto attrs = makeTextAttributes(f);
           attributedString.appendFragment(react::AttributedString::Fragment{
-            .string = fragmentText,
+            .string = sanitizedFragmentText,
             .textAttributes = attrs,
             .parentShadowView = react::ShadowView(*this)});
         }
@@ -339,9 +359,28 @@ react::Size NitroTextShadowNode::measureContent(
       else
       {
         const std::string textToMeasure = props.text.value.has_value() ? props.text.value.value() : std::string("");
+        const std::string sanitizedText =
+          isHtmlRenderer ? html::NitroHtmlUtils::stripTags(textToMeasure)
+                          : textToMeasure;
+#if defined(__ANDROID__)
+#if defined(__FILE_NAME__)
+        constexpr const char *kFileName = __FILE_NAME__;
+#else
+        constexpr const char *kFileName = __FILE__;
+#endif
+        __android_log_print(
+          ANDROID_LOG_INFO,
+          "NitroTextShadowNode",
+          "%s:%d textToMeasure: %s",
+          kFileName,
+          __LINE__,
+          sanitizedText.c_str());
+#else
+        LOG(INFO) << "textToMeasure: " << sanitizedText;
+#endif
         auto attrs = makeTextAttributes(std::nullopt);
         attributedString.appendFragment(react::AttributedString::Fragment{
-          .string = textToMeasure,
+          .string = sanitizedText,
           .textAttributes = attrs,
           .parentShadowView = react::ShadowView(*this)});
       }
@@ -366,14 +405,10 @@ react::Size NitroTextShadowNode::measureContent(
       // but leaving the scale here avoids over-adjusting and potential divergences.
       if (props.minimumFontScale.value.has_value())
       {
-#if defined(REACT_NATIVE_VERSION_MAJOR)
-#if (REACT_NATIVE_VERSION_MAJOR > 0) || \
-    (REACT_NATIVE_VERSION_MAJOR == 0 && REACT_NATIVE_VERSION_MINOR >= 81)
-        paragraphAttributes.minimumFontScale =
-            props.minimumFontScale.value.value();
+#if RN_VERSION_AT_LEAST(0, 81)
+        paragraphAttributes.minimumFontScale = props.minimumFontScale.value.value();
 #else
         // React Native < 0.81 does not expose paragraphAttributes.minimumFontScale yet.
-#endif
 #endif
       }
 
@@ -411,8 +446,10 @@ react::Size NitroTextShadowNode::measureContent(
       // Measure using given constraints (Yoga already accounts for padding/border).
       react::TextLayoutContext textLayoutContext{
         .pointScaleFactor = layoutContext.pointScaleFactor,
-        // TODO: investigate why surfaceId is not working for react-native <= 0.79
-//        .surfaceId = this->getSurfaceId(),
+#if RN_VERSION_AT_LEAST(0, 81)
+        // Older React Native versions didn't surface `surfaceId` on TextLayoutContext.
+        .surfaceId = this->getSurfaceId(),
+#endif
       };
 
       const auto measurement = textLayoutManager_->measure(

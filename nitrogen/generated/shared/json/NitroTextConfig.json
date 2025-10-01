@@ -5,6 +5,8 @@
   "directEventTypes": {},
   "validAttributes": {
     "fragments": true,
+    "renderer": true,
+    "richTextStyleRules": true,
     "selectable": true,
     "allowFontScaling": true,
     "ellipsizeMode": true,

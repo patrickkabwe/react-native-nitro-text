@@ -14,7 +14,8 @@
   },
   "autolinking": {
     "NitroText": {
-      "swift": "HybridNitroText"
+      "swift": "HybridNitroText",
+      "kotlin": "HybridNitroText"
     }
   },
   "ignorePaths": [

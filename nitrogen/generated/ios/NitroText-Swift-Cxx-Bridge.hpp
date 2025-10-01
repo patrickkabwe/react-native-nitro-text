@@ -22,6 +22,12 @@ namespace margelo::nitro::nitrotext { struct Fragment; }
 namespace margelo::nitro::nitrotext { class HybridNitroTextSpec; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
+// Forward declaration of `NitroRenderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class NitroRenderer; }
+// Forward declaration of `RichTextStyleRule` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyleRule; }
+// Forward declaration of `RichTextStyle` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyle; }
 // Forward declaration of `TextAlign` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextDecorationLine` to properly resolve imports.
@@ -47,6 +53,9 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "Fragment.hpp"
 #include "HybridNitroTextSpec.hpp"
 #include "LineBreakStrategyIOS.hpp"
+#include "NitroRenderer.hpp"
+#include "RichTextStyle.hpp"
+#include "RichTextStyleRule.hpp"
 #include "TextAlign.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
@@ -208,6 +217,47 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline std::vector<Fragment> get_std__optional_std__vector_Fragment__(const std::optional<std::vector<Fragment>>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<NitroRenderer>
+  /**
+   * Specialized version of `std::optional<NitroRenderer>`.
+   */
+  using std__optional_NitroRenderer_ = std::optional<NitroRenderer>;
+  inline std::optional<NitroRenderer> create_std__optional_NitroRenderer_(const NitroRenderer& value) noexcept {
+    return std::optional<NitroRenderer>(value);
+  }
+  inline bool has_value_std__optional_NitroRenderer_(const std::optional<NitroRenderer>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline NitroRenderer get_std__optional_NitroRenderer_(const std::optional<NitroRenderer>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::vector<RichTextStyleRule>
+  /**
+   * Specialized version of `std::vector<RichTextStyleRule>`.
+   */
+  using std__vector_RichTextStyleRule_ = std::vector<RichTextStyleRule>;
+  inline std::vector<RichTextStyleRule> create_std__vector_RichTextStyleRule_(size_t size) noexcept {
+    std::vector<RichTextStyleRule> vector;
+    vector.reserve(size);
+    return vector;
+  }
+  
+  // pragma MARK: std::optional<std::vector<RichTextStyleRule>>
+  /**
+   * Specialized version of `std::optional<std::vector<RichTextStyleRule>>`.
+   */
+  using std__optional_std__vector_RichTextStyleRule__ = std::optional<std::vector<RichTextStyleRule>>;
+  inline std::optional<std::vector<RichTextStyleRule>> create_std__optional_std__vector_RichTextStyleRule__(const std::vector<RichTextStyleRule>& value) noexcept {
+    return std::optional<std::vector<RichTextStyleRule>>(value);
+  }
+  inline bool has_value_std__optional_std__vector_RichTextStyleRule__(const std::optional<std::vector<RichTextStyleRule>>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline std::vector<RichTextStyleRule> get_std__optional_std__vector_RichTextStyleRule__(const std::optional<std::vector<RichTextStyleRule>>& optional) noexcept {
     return *optional;
   }
   
