@@ -16,6 +16,14 @@
 #include <cxxreact/ReactNativeVersion.h>
 #endif
 
+#if defined(REACT_NATIVE_VERSION_MAJOR)
+#define RN_VERSION_AT_LEAST(major, minor)                                                     \
+  ((REACT_NATIVE_VERSION_MAJOR > (major)) ||                                                  \
+   (REACT_NATIVE_VERSION_MAJOR == (major) && REACT_NATIVE_VERSION_MINOR >= (minor)))
+#else
+#define RN_VERSION_AT_LEAST(major, minor) 0
+#endif
+
 namespace margelo::nitro::nitrotext::views {
 
 react::ShadowNodeTraits NitroTextShadowNode::BaseTraits()
@@ -366,14 +374,10 @@ react::Size NitroTextShadowNode::measureContent(
       // but leaving the scale here avoids over-adjusting and potential divergences.
       if (props.minimumFontScale.value.has_value())
       {
-#if defined(REACT_NATIVE_VERSION_MAJOR)
-#if (REACT_NATIVE_VERSION_MAJOR > 0) || \
-    (REACT_NATIVE_VERSION_MAJOR == 0 && REACT_NATIVE_VERSION_MINOR >= 81)
-        paragraphAttributes.minimumFontScale =
-            props.minimumFontScale.value.value();
+#if RN_VERSION_AT_LEAST(0, 81)
+        paragraphAttributes.minimumFontScale = props.minimumFontScale.value.value();
 #else
         // React Native < 0.81 does not expose paragraphAttributes.minimumFontScale yet.
-#endif
 #endif
       }
 
@@ -411,8 +415,10 @@ react::Size NitroTextShadowNode::measureContent(
       // Measure using given constraints (Yoga already accounts for padding/border).
       react::TextLayoutContext textLayoutContext{
         .pointScaleFactor = layoutContext.pointScaleFactor,
-        // TODO: investigate why surfaceId is not working for react-native <= 0.79
-//        .surfaceId = this->getSurfaceId(),
+#if RN_VERSION_AT_LEAST(0, 81)
+        // Older React Native versions didn't surface `surfaceId` on TextLayoutContext.
+        .surfaceId = this->getSurfaceId(),
+#endif
       };
 
       const auto measurement = textLayoutManager_->measure(

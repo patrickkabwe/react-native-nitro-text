@@ -11,7 +11,7 @@ export default function App() {
   };
 
   const handleTextLayout = (event: TextLayoutEvent) => {
-    // console.log('lines', lines);
+    console.log('lines', event.lines);
     // console.log('width', event);
     // console.log('height', height);
     // setLayoutInfo(`Lines: ${lines.length}`);
@@ -34,12 +34,15 @@ export default function App() {
         <NitroText style={styles.subtitle}>
           High-performance selectable text with native rendering
         </NitroText>
+        <Text style={styles.subtitle} selectable>
+          High-performance selectable text with native rendering
+        </Text>
       </View>
 
       {/* Basic Usage */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Basic Usage</NitroText>
-        <NitroText style={styles.basicText}>
+        <NitroText style={styles.basicText} selectable>
           This is a simple NitroText component with native performance. Try
           selecting this text to see the smooth selection behavior!
         </NitroText>
@@ -48,7 +51,7 @@ export default function App() {
       {/* Nested NitroText wth numberOfLines (does not work currently it only renders the first line nested text doesn't render) */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>
-          Nested NitroText with numberOfLines
+          Nested NitroText with numberOfLines (NitroText)
         </NitroText>
         <NitroText style={styles.basicText} numberOfLines={2}>
           This is a simple NitroText component with native performance.{' '}
@@ -56,6 +59,17 @@ export default function App() {
             Try selecting this text to see the smooth selection behavior!
           </NitroText>
         </NitroText>
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          Nested NitroText with numberOfLines (RN Text)
+        </Text>
+        <Text style={styles.basicText} numberOfLines={2}>
+          This is a simple NitroText component with native performance.{' '}
+          <Text style={styles.bold}>
+            Try selecting this text to see the smooth selection behavior!
+          </Text>
+        </Text>
       </View>
 
       {/* Rich Text Formatting */}
@@ -145,14 +159,14 @@ export default function App() {
           NitroText can seamlessly integrate with React Native's Text component:
           {'\n\n'}
           <Text style={styles.rnText}>
-            This is a React Native Text component{' '}
-            <NitroText style={styles.nested}>with nested NitroText</NitroText>{' '}
+            This is a React Native Text component
+            <NitroText style={styles.nested}> with nested NitroText </NitroText>
             inside it.
           </Text>
           {'\n\n'}And vice versa - NitroText can contain:{'\n'}
           <NitroText style={styles.nestedContainer}>
-            Regular text with{' '}
-            <Text style={styles.rnNested}>RN Text nested inside</Text>{' '}
+            Regular text with
+            <Text style={styles.rnNested}>{' '}RN Text nested inside</Text>{' '}
             NitroText.
           </NitroText>
         </NitroText>
@@ -270,6 +284,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'flex-start',
     lineHeight: 24,
+    borderWidth: 1,
+    borderColor: 'blue',
   },
   sectionTitle: {
     fontSize: 24,
