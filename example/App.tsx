@@ -361,7 +361,7 @@ export default function App() {
           {'\n\n'}And vice versa - NitroText can contain:{'\n'}
           <NitroText style={styles.nestedContainer}>
             Regular text with
-            <Text style={styles.rnNested}> RN Text nested inside</Text>{' '}
+            <Text style={styles.rnNested}> RN Text nested inside </Text>
             NitroText.
           </NitroText>
         </NitroText>
