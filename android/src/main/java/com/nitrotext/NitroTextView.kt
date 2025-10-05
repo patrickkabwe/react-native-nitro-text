@@ -7,10 +7,13 @@ import android.graphics.text.LineBreaker
 import android.text.Layout
 import android.text.TextPaint
 import android.view.View
+import android.view.View.MeasureSpec
 import androidx.appcompat.widget.AppCompatTextView
 import com.facebook.react.views.view.ReactViewGroup
 import com.margelo.nitro.nitrotext.TextLayout
 import com.margelo.nitro.nitrotext.TextLayoutEvent
+import kotlin.math.max
+import kotlin.math.min
 
 
 interface NitroTextViewDelegate {
@@ -20,11 +23,16 @@ interface NitroTextViewDelegate {
 @SuppressLint("ViewConstructor")
 class NitroTextView(ctx: Context) : ReactViewGroup(ctx) {
    val textView = AppCompatTextView(ctx).apply {
-      includeFontPadding = true
+      includeFontPadding = false
       minWidth = 0; minHeight = 0
       breakStrategy = LineBreaker.BREAK_STRATEGY_HIGH_QUALITY
       hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NORMAL
       setHorizontallyScrolling(false)
+      overScrollMode = OVER_SCROLL_NEVER
+      isVerticalScrollBarEnabled = false
+      isNestedScrollingEnabled = false
+      isScrollContainer = false
+      background = null
    }
 
    var nitroTextDelegate: NitroTextViewDelegate? = null
@@ -44,6 +52,45 @@ class NitroTextView(ctx: Context) : ReactViewGroup(ctx) {
             LayoutParams.MATCH_PARENT
          )
       )
+
+   }
+
+   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+      val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+      val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+      val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+      val heightSize = MeasureSpec.getSize(heightMeasureSpec)
+
+      val horizontalPadding = paddingLeft + paddingRight
+      val verticalPadding = paddingTop + paddingBottom
+
+      val childWidthSpec = when (widthMode) {
+         MeasureSpec.UNSPECIFIED -> MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+         else -> {
+            val available = max(0, widthSize - horizontalPadding)
+            MeasureSpec.makeMeasureSpec(available, widthMode)
+         }
+      }
+
+      val childHeightSpec = getChildMeasureSpec(heightMeasureSpec, verticalPadding, LayoutParams.WRAP_CONTENT)
+
+      textView.measure(childWidthSpec, childHeightSpec)
+
+      val measuredWidth = when (widthMode) {
+         MeasureSpec.EXACTLY -> widthSize
+         MeasureSpec.AT_MOST -> min(widthSize, textView.measuredWidth + horizontalPadding)
+         MeasureSpec.UNSPECIFIED -> textView.measuredWidth + horizontalPadding
+         else -> textView.measuredWidth + horizontalPadding
+      }
+
+      val measuredHeight = when (heightMode) {
+         MeasureSpec.EXACTLY -> heightSize
+         MeasureSpec.AT_MOST -> min(heightSize, textView.measuredHeight + verticalPadding)
+         MeasureSpec.UNSPECIFIED -> textView.measuredHeight + verticalPadding
+         else -> textView.measuredHeight + verticalPadding
+      }
+
+      setMeasuredDimension(measuredWidth, measuredHeight)
    }
 
    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {

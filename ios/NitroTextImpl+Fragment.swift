@@ -22,38 +22,43 @@ extension NitroTextImpl {
         let textDecorationColor: String?
         let textDecorationStyle: TextDecorationStyle?
         let selectionColor: String?
+        let fragmentBackgroundColor: String?
     }
 
-    func apply(fragments: [Fragment]?, text: String?, top: FragmentTopDefaults) {
-        // Fast path: no fragments, but we have plain text
+    func apply(
+        fragments: [Fragment]?,
+        text: String?,
+        top: FragmentTopDefaults,
+        defaultColor: UIColor
+    ) {
         guard let fragments, !fragments.isEmpty else {
-            if let t = text {
-                let single = Fragment(
-                    text: t,
-                    selectionColor: top.selectionColor,
-                    fontSize: top.fontSize,
-                    fontWeight: top.fontWeight,
-                    fontColor: top.fontColor,
-                    fragmentBackgroundColor: nil,
-                    fontStyle: top.fontStyle,
-                    fontFamily: top.fontFamily,
-                    lineHeight: top.lineHeight,
-                    letterSpacing: top.letterSpacing,
-                    textAlign: top.textAlign,
-                    textTransform: top.textTransform,
-                    textDecorationLine: top.textDecorationLine,
-                    textDecorationColor: top.textDecorationColor,
-                    textDecorationStyle: top.textDecorationStyle
-                )
-                setFragments([single])
-            } else {
-                setFragments(nil)
+            guard let t = text, !t.isEmpty else {
+                renderFragments(nil, defaultColor: defaultColor)
+                return
             }
+            let single = Fragment(
+                text: t,
+                selectionColor: top.selectionColor,
+                fontSize: top.fontSize,
+                fontWeight: top.fontWeight,
+                fontColor: top.fontColor,
+                fragmentBackgroundColor: top.fragmentBackgroundColor,
+                fontStyle: top.fontStyle,
+                fontFamily: top.fontFamily,
+                lineHeight: top.lineHeight,
+                letterSpacing: top.letterSpacing,
+                textAlign: top.textAlign,
+                textTransform: top.textTransform,
+                textDecorationLine: top.textDecorationLine,
+                textDecorationColor: top.textDecorationColor,
+                textDecorationStyle: top.textDecorationStyle
+            )
+            renderFragments([single], defaultColor: defaultColor)
             return
         }
 
         if !hasApplicableTop(top), fragments.allSatisfy({ $0.text != nil }) {
-            setFragments(fragments)
+            renderFragments(fragments, defaultColor: defaultColor)
             return
         }
 
@@ -64,9 +69,8 @@ extension NitroTextImpl {
             mergeTop(into: &frag, with: top)
             merged.append(frag)
         }
-        setFragments(merged)
+        renderFragments(merged, defaultColor: defaultColor)
     }
-
 }
 
 // MARK: - Merge helpers
@@ -86,6 +90,7 @@ private extension NitroTextImpl {
         if let s = top.textDecorationColor, !s.isEmpty { return true }
         if top.textDecorationStyle != nil { return true }
         if let s = top.selectionColor, !s.isEmpty { return true }
+        if let s = top.fragmentBackgroundColor, !s.isEmpty { return true }
         return false
     }
 
@@ -103,6 +108,9 @@ private extension NitroTextImpl {
 
         if frag.fontColor == nil, let v = top.fontColor, !v.isEmpty { frag.fontColor = v }
         if frag.selectionColor == nil, let v = top.selectionColor, !v.isEmpty { frag.selectionColor = v }
+        if frag.fragmentBackgroundColor == nil, let v = top.fragmentBackgroundColor, !v.isEmpty {
+            frag.fragmentBackgroundColor = v
+        }
 
         if frag.textAlign == nil, let v = top.textAlign { frag.textAlign = v }
         if frag.textTransform == nil, let v = top.textTransform { frag.textTransform = v }

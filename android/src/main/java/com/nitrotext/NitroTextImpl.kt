@@ -121,7 +121,6 @@ class NitroTextImpl(private val view: AppCompatTextView) {
     val lines = numberOfLines?.toInt() ?: Int.MAX_VALUE
     view.maxLines = if (lines <= 0) Int.MAX_VALUE else lines
     view.isSingleLine = (lines == 1)
-  
     view.ellipsize = when (ellipsizeMode) {
       EllipsizeMode.HEAD   -> TextUtils.TruncateAt.START
       EllipsizeMode.MIDDLE -> TextUtils.TruncateAt.MIDDLE

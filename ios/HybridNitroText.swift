@@ -12,7 +12,6 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
     private let textView = NitroTextView()
     var view: UIView { textView }
     let nitroTextImpl: NitroTextImpl
-    private var needsApply: Bool = false
 
     override init() {
         self.nitroTextImpl = NitroTextImpl(textView)
@@ -31,19 +30,20 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
     // Props
 
     var fragments: [Fragment]? {
-        didSet { markNeedsApply() }
+        didSet {
+            nitroTextImpl.setFragments(fragments)
+        }
     }
 
     var renderer: NitroRenderer? {
         didSet {
-            // HTML rendering is currently implemented on Android only.
-            // Keep tracking the requested renderer to avoid dropping the prop.
+            nitroTextImpl.setRenderer(renderer)
         }
     }
 
     var richTextStyleRules: [RichTextStyleRule]? {
         didSet {
-            // No-op on iOS for now.
+            nitroTextImpl.setRichTextStyleRules(richTextStyleRules)
         }
     }
 
@@ -56,7 +56,6 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
     var allowFontScaling: Bool? {
         didSet {
             nitroTextImpl.setAllowFontScaling(allowFontScaling)
-            markNeedsApply()
         }
     }
 
@@ -68,80 +67,73 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
     var fontSize: Double? {
         didSet {
             nitroTextImpl.setFontSize(fontSize)
-            markNeedsApply()
         }
     }
 
     var fontWeight: FontWeight? {
-        didSet { markNeedsApply() }
+        didSet { nitroTextImpl.setFontWeight(fontWeight) }
     }
 
     var fontColor: String? {
-        didSet {
-            textView.textColor = ColorParser.parse(fontColor)
-            markNeedsApply()
-        }
+        didSet { nitroTextImpl.setFontColor(fontColor) }
     }
 
     var fragmentBackgroundColor: String? {
-        didSet { markNeedsApply() }
+        didSet { nitroTextImpl.setFragmentBackgroundColor(fragmentBackgroundColor) }
     }
 
     var fontStyle: FontStyle? {
-        didSet { markNeedsApply() }
+        didSet { nitroTextImpl.setFontStyle(fontStyle) }
     }
-    
+
     var fontFamily: String? {
         didSet {
             nitroTextImpl.setFontFamily(fontFamily)
-            markNeedsApply()
         }
     }
 
     var textAlign: TextAlign? {
         didSet {
             nitroTextImpl.setTextAlign(textAlign)
-            markNeedsApply()
         }
     }
 
     var textTransform: TextTransform? {
         didSet {
             nitroTextImpl.setTextTransform(textTransform)
-            markNeedsApply()
         }
     }
 
     var textDecorationLine: TextDecorationLine? {
-        didSet { markNeedsApply() }
+        didSet { nitroTextImpl.setTextDecorationLine(textDecorationLine) }
     }
 
     var textDecorationColor: String? {
-        didSet { markNeedsApply() }
+        didSet { nitroTextImpl.setTextDecorationColor(textDecorationColor) }
     }
 
     var textDecorationStyle: TextDecorationStyle? {
-        didSet { markNeedsApply() }
+        didSet { nitroTextImpl.setTextDecorationStyle(textDecorationStyle) }
     }
 
     var selectionColor: String? {
         didSet {
-            if let v = selectionColor, let color = ColorParser.parse(v) {
-                textView.tintColor = color
-            }
+            nitroTextImpl.setSelectionColor(selectionColor)
         }
     }
 
     var lineHeight: Double? {
-        didSet { markNeedsApply() }
+        didSet { nitroTextImpl.setLineHeight(lineHeight) }
     }
 
     var letterSpacing: Double? {
-        didSet { markNeedsApply() }
+        didSet { nitroTextImpl.setLetterSpacing(letterSpacing) }
     }
 
     var text: String? {
-        didSet { markNeedsApply() }
+        didSet {
+            nitroTextImpl.setText(text)
+        }
     }
 
     var numberOfLines: Double? {
@@ -159,65 +151,37 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
     var dynamicTypeRamp: DynamicTypeRamp? {
         didSet {
             nitroTextImpl.setDynamicTypeRamp(dynamicTypeRamp)
-            markNeedsApply()
         }
     }
 
     var lineBreakStrategyIOS: LineBreakStrategyIOS? {
         didSet {
             nitroTextImpl.setLineBreakStrategyIOS(lineBreakStrategyIOS)
-            markNeedsApply()
         }
     }
 
     var maxFontSizeMultiplier: Double? {
         didSet {
             nitroTextImpl.setMaxFontSizeMultiplier(maxFontSizeMultiplier)
-            markNeedsApply()
         }
     }
 
     var adjustsFontSizeToFit: Bool? {
         didSet {
             nitroTextImpl.setAdjustsFontSizeToFit(adjustsFontSizeToFit)
-            markNeedsApply()
         }
     }
 
     var minimumFontScale: Double? {
         didSet {
             nitroTextImpl.setMinimumFontScale(minimumFontScale)
-            markNeedsApply()
         }
-    }
-
-    // Merge per-fragment props with top-level fallbacks and apply (delegated to NitroTextImpl)
-    private func applyFragmentsAndProps() {
-        let top = NitroTextImpl.FragmentTopDefaults(
-            fontSize: fontSize,
-            fontWeight: fontWeight,
-            fontColor: fontColor,
-            fontStyle: fontStyle,
-            fontFamily: fontFamily,
-            lineHeight: lineHeight,
-            letterSpacing: letterSpacing,
-            textAlign: textAlign,
-            textTransform: textTransform,
-            textDecorationLine: textDecorationLine,
-            textDecorationColor: textDecorationColor,
-            textDecorationStyle: textDecorationStyle,
-            selectionColor: selectionColor
-        )
-        nitroTextImpl.apply(fragments: fragments, text: text, top: top)
     }
 
     func afterUpdate() {
-        if needsApply {
-            applyFragmentsAndProps()
-            needsApply = false
+        if nitroTextImpl.consumeNeedsCommit() {
+            nitroTextImpl.commit()
         }
         textView.setNeedsLayout()
     }
-
-    private func markNeedsApply() { needsApply = true }
 }

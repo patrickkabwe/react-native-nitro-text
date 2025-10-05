@@ -1,8 +1,154 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Platform, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { NitroText, TextLayoutEvent } from 'react-native-nitro-text';
 
-const htmlComingFromServer = `<h1>This is a h1 text</h1><h2>This is a h2 text</h2><h3>This is a h3 text</h3><h4>This is a h4 text</h4><h5>This is a h5 text</h5><h6>This is a h6 text</h6><p>This is a simple NitroText component with native performance. Try selecting this text to see the smooth selection behavior!</p><div><a href='https://www.google.com'>Google Link</a><br/><b>This is a bold text</b><br/><i>This is an italic text</i><br/><u>This is an underline text</u><br/><s>This is a strikethrough text</s><br/><code>This is a code text</code><br/><pre>This is a pre text</pre><br/></div>`.trim();
+const htmlComingFromServer = `
+  <!-- HEADING ELEMENTS (h1-h6) -->
+  <h1>Heading Level 1</h1>
+  <h2>Heading Level 2</h2>
+  <h3>Heading Level 3</h3>
+  <h4>Heading Level 4</h4>
+  <h5>Heading Level 5</h5>
+  <h6>Heading Level 6</h6>
+  
+  <!-- PARAGRAPH ELEMENT (p) -->
+  <p>This is a standard paragraph element demonstrating regular text content.</p>
+  
+  <!-- INLINE ELEMENTS - BOLD -->
+  <p>Text with <b>bold using b tag</b> and <strong>bold using strong tag</strong></p>
+  
+  <!-- INLINE ELEMENTS - ITALIC -->
+  <p>Text with <i>italic using i tag</i> and <em>emphasized using em tag</em></p>
+  
+  <!-- INLINE ELEMENTS - UNDERLINE -->
+  <p>Text with <u>underlined content</u> inline</p>
+  
+  <!-- INLINE ELEMENTS - STRIKETHROUGH -->
+  <p>Text with <s>strikethrough content</s> inline</p>
+  
+  <!-- INLINE ELEMENTS - CODE -->
+  <p>Inline code: <code>const x = 42;</code> within text</p>
+  
+  <!-- INLINE ELEMENTS - MARK (highlight) -->
+  <p>Text with <mark>highlighted content</mark> using mark tag</p>
+  
+  <!-- INLINE ELEMENTS - SMALL -->
+  <p>Regular text with <small>smaller text</small> using small tag</p>
+  
+  <!-- INLINE ELEMENTS - SPAN -->
+  <p>Text with <span>span element</span> for generic inline content</p>
+  
+  <!-- INLINE ELEMENTS - SUB/SUP -->
+  <p>Chemical formula: H<sub>2</sub>O and math equation: E=mc<sup>2</sup></p>
+  
+  <!-- PREFORMATTED BLOCK -->
+  <pre>function example() {
+  return 'preformatted code block';
+}</pre>
+  
+  <!-- LINK ELEMENTS -->
+  <p>Simple link: <a href='https://www.google.com'>Google</a> and email: <a href='mailto:hello@example.com'>hello@example.com</a></p>
+  
+  <!-- LINE BREAKS -->
+  <p>First line<br/>Second line<br/>Third line</p>
+  
+  <!-- HORIZONTAL RULE -->
+  <hr/>
+  
+  <!-- UNORDERED LIST (ul) -->
+  <ul>
+    <li>First unordered item</li>
+    <li>Second unordered item</li>
+    <li>Third unordered item with <b>bold text</b></li>
+    <li>Fourth item with <a href='https://example.com'>a link</a></li>
+  </ul>
+  
+  <!-- ORDERED LIST (ol) -->
+  <ol>
+    <li>First ordered item</li>
+    <li>Second ordered item</li>
+    <li>Third ordered item with <i>italic text</i></li>
+    <li>Fourth item with <code>inline code</code></li>
+  </ol>
+
+  
+  <!-- BLOCKQUOTE -->
+  <blockquote>
+    <p>This is a blockquote element used for quotations or excerpts from other sources.</p>
+  </blockquote>
+  
+  <!-- BLOCK ELEMENT (div) -->
+  <div>
+    <p>Content inside a div block element</p>
+  </div>
+  
+  <!-- SEMANTIC ELEMENT - SECTION -->
+  <section>
+    <h3>Section Title</h3>
+    <p>This is content inside a section element, used for thematic grouping.</p>
+  </section>
+  
+  <!-- SEMANTIC ELEMENT - ARTICLE -->
+  <article>
+    <h3>Article Title</h3>
+    <p>This is an article element representing self-contained content.</p>
+    <p>Articles can have multiple paragraphs and <a href='https://source.com'>citations</a>.</p>
+  </article>
+  
+  <!-- SEMANTIC ELEMENT - ASIDE -->
+  <aside>
+    <p>This is an aside element for content tangentially related to the main content.</p>
+  </aside>
+  
+  <!-- SEMANTIC ELEMENT - HEADER -->
+  <header>
+    <h3>Header Section</h3>
+    <p>Introductory content or navigation in a header element.</p>
+  </header>
+  
+  <!-- SEMANTIC ELEMENT - FOOTER -->
+  <footer>
+    <p>Footer content with copyright © 2024 and <a href='https://terms.com'>terms of service</a>.</p>
+  </footer>
+  
+  <!-- SEMANTIC ELEMENT - MAIN -->
+  <main>
+    <h3>Main Content</h3>
+    <p>The main content area of the document.</p>
+  </main>
+  
+  <!-- SEMANTIC ELEMENT - NAV -->
+  <nav>
+    <a href='#home'>Home</a> | <a href='#about'>About</a> | <a href='#contact'>Contact</a>
+  </nav>
+  
+  <!-- COMBINED INLINE FORMATTING -->
+  <p>Combined: <b><i>bold italic</i></b>, <u><b>underlined bold</b></u>, <b><i><u>all three</u></i></b></p>
+  
+  <!-- COMPLEX NESTED CONTENT -->
+  <article>
+    <header>
+      <h2>Product Launch</h2>
+      <p><small>Posted on January 15, 2024</small></p>
+    </header>
+    <section>
+      <h3>Features</h3>
+      <ul>
+        <li><b>Fast</b> - Lightning-quick performance</li>
+        <li><i>Reliable</i> - 99.9% uptime</li>
+        <li><code>developer-friendly</code> - Easy to integrate</li>
+      </ul>
+    </section>
+    <section>
+      <h3>Pricing</h3>
+      <p><s>Was $99</s> <b>Now $79</b></p>
+      <p><a href='https://buy.com'>Buy Now</a> or <a href='https://learn.com'>Learn More</a></p>
+    </section>
+    <footer>
+      <p><small>Terms and conditions apply</small></p>
+    </footer>
+  </article>
+`;
 
 export default function App() {
   const [layoutInfo, setLayoutInfo] = useState<string>('');
@@ -37,6 +183,16 @@ export default function App() {
         >
           🚀 NitroText Showcase
         </NitroText>
+        <Text
+          style={styles.mainTitle}
+          selectable={false}
+          onPressIn={() => console.log('onPressIn')}
+          onPressOut={() => console.log('onPressOut')}
+          onLongPress={() => console.log('onLongPress')}
+          onPress={() => console.log('onPress')}
+        >
+          🚀 NitroText Showcase
+        </Text>
         <NitroText style={styles.subtitle}>
           High-performance selectable text with native rendering
         </NitroText>
@@ -58,18 +214,18 @@ export default function App() {
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Html Renderer</NitroText>
         <NitroText
-          selectable={true}
+          selectable
           style={styles.htmlText}
           renderer="html"
           renderStyles={{
             b: { fontWeight: 'bold', color: '#E53E3E' }, // deep red
             i: { fontStyle: 'italic', color: '#3182CE' }, // bright blue
-            u: { textDecorationLine: 'underline', textDecorationStyle: 'dashed', textDecorationColor: '#38A169' }, // green
-            s: { textDecorationLine: 'line-through', textDecorationStyle: 'dashed', textDecorationColor: '#E53E3E' }, // red
-            code: { fontFamily: 'monospace', color: '#805AD5' }, // purple
-            pre: { fontFamily: 'monospace', color: '#805AD5' }, // purple
+            u: { textDecorationStyle: 'dashed', textDecorationColor: '#38A169' }, // green
+            s: { textDecorationStyle: 'dashed', textDecorationColor: '#E53E3E' }, // red
+            code: { fontFamily: Platform.select({android:'monospace', ios: "ui-monospace"}), color: '#805AD5' }, // purple
+            pre: { fontFamily: Platform.select({android:'monospace', ios: "ui-monospace"}), color: '#805AD5' }, // purple
             p: { color: '#2D3748' }, // dark gray for better readability
-            a: { color: '#4299E1' }, // lighter blue for links
+            a: { color: 'green' }, // lighter blue for links
             h1: { color: '#2F855A', fontWeight: 'bold', fontSize: 32 }, // darker green
             h2: { color: '#2C5282', fontWeight: 'bold', fontSize: 24 }, // darker blue
             h3: { color: '#C05621', fontWeight: 'bold', fontSize: 18.72 }, // darker orange
@@ -80,6 +236,7 @@ export default function App() {
         >
           {htmlComingFromServer}
         </NitroText>
+  
       </View>
 
       {/* Nested NitroText wth numberOfLines (does not work currently it only renders the first line nested text doesn't render) */}
@@ -204,7 +361,7 @@ export default function App() {
           {'\n\n'}And vice versa - NitroText can contain:{'\n'}
           <NitroText style={styles.nestedContainer}>
             Regular text with
-            <Text style={styles.rnNested}> RN Text nested inside</Text>{' '}
+            <Text style={styles.rnNested}> RN Text nested inside </Text>
             NitroText.
           </NitroText>
         </NitroText>
@@ -352,13 +509,11 @@ const styles = StyleSheet.create({
   htmlText: {
     fontSize: 16,
     color: '#495057',
-    lineHeight: 24,
-    backgroundColor: '#ffffff',
-    padding: 16,
+    lineHeight: 30,
+    padding:16,
     borderRadius: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: '#007bff',
-    // height:450
+    borderWidth: 1,
+    borderColor: '#007bff',
   },
 
   // Rich text styles
@@ -474,7 +629,7 @@ const styles = StyleSheet.create({
   // Code syntax
   codeBlock: {
     fontSize: 14,
-    fontFamily: 'ui-monospace',
+    fontFamily: Platform.select({android:'monospace', ios: "ui-monospace"}),
     backgroundColor: '#1e1e1e',
     color: '#d4d4d4',
     padding: 16,

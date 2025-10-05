@@ -19,6 +19,7 @@ final class NitroTextView: UITextView {
     var tkLayoutManager: NSLayoutManager?
     weak var nitroTextDelegate: NitroTextViewDelegate?
     private var tapRecognizer: UITapGestureRecognizer?
+    private var linkTouchInProgress: Bool = false
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         if let provided = textContainer {
@@ -45,7 +46,8 @@ final class NitroTextView: UITextView {
         backgroundColor = .clear
         textContainerInset = .zero
         textContainer.lineFragmentPadding = 0
-        layoutManager.usesFontLeading = false
+        layoutManager.usesFontLeading = true
+        textColor = .black
         contentInset = .zero
         clipsToBounds = true
 
@@ -63,7 +65,7 @@ final class NitroTextView: UITextView {
     private static func makeTextKitStack() -> (NSTextStorage, NSLayoutManager, NSTextContainer) {
         let storage = NSTextStorage()
         let layout = NSLayoutManager()
-        layout.usesFontLeading = false
+        layout.usesFontLeading = true
         let container = NSTextContainer(size: .zero)
         layout.addTextContainer(container)
         storage.addLayoutManager(layout)
@@ -80,17 +82,28 @@ final class NitroTextView: UITextView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        nitroTextDelegate?.onNitroTextPressIn()
+        linkTouchInProgress = touches.first.flatMap { link(at: $0.location(in: self)) } != nil
+        if !linkTouchInProgress {
+            nitroTextDelegate?.onNitroTextPressIn()
+        }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        nitroTextDelegate?.onNitroTextPressOut()
+        if linkTouchInProgress {
+            linkTouchInProgress = false
+        } else {
+            nitroTextDelegate?.onNitroTextPressOut()
+        }
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesCancelled(touches, with: event)
-        nitroTextDelegate?.onNitroTextPressOut()
+        if linkTouchInProgress {
+            linkTouchInProgress = false
+        } else {
+            nitroTextDelegate?.onNitroTextPressOut()
+        }
     }
 
     private func computeTextLayoutEvent() -> TextLayoutEvent? {
@@ -164,7 +177,13 @@ final class NitroTextView: UITextView {
 
     @objc private func handleTap(_ recognizer: UITapGestureRecognizer) {
         guard recognizer.state == .ended else { return }
-        clearSelectionIfNeeded(at: recognizer.location(in: self))
+        let location = recognizer.location(in: self)
+        if let url = link(at: location) {
+            openLink(url)
+            linkTouchInProgress = false
+            return
+        }
+        clearSelectionIfNeeded(at: location)
         nitroTextDelegate?.onNitroTextPress()
     }
 
@@ -191,5 +210,57 @@ private extension NitroTextView {
         if !isPoint(point, insideSelection: currentSelection) {
             selectedTextRange = nil
         }
+    }
+
+    func link(at point: CGPoint) -> URL? {
+        let layoutManager = tkLayoutManager ?? self.layoutManager
+        guard let textStorage = tkStorage ?? layoutManager.textStorage,
+              textStorage.length > 0 else { return nil }
+
+        let location = CGPoint(
+            x: point.x - textContainerInset.left - contentOffset.x,
+            y: point.y - textContainerInset.top - contentOffset.y
+        )
+
+        let container = textContainer
+        let glyphIndex = layoutManager.glyphIndex(for: location, in: container)
+        if glyphIndex >= layoutManager.numberOfGlyphs { return nil }
+
+        var fraction: CGFloat = 0
+        let effectiveIndex = layoutManager.glyphIndex(for: location, in: container, fractionOfDistanceThroughGlyph: &fraction)
+        if effectiveIndex >= layoutManager.numberOfGlyphs { return nil }
+        if fraction == 1.0 { return nil }
+
+        let glyphRect = layoutManager.boundingRect(forGlyphRange: NSRange(location: effectiveIndex, length: 1), in: container)
+        if !glyphRect.contains(location) { return nil }
+
+        let charIndex = layoutManager.characterIndexForGlyph(at: effectiveIndex)
+        if charIndex >= textStorage.length { return nil }
+
+        let attribute = textStorage.attribute(.link, at: charIndex, effectiveRange: nil)
+        if let url = attribute as? URL {
+            return url
+        }
+        if let string = attribute as? String {
+            return URL(string: string)
+        }
+        return nil
+    }
+
+    func openLink(_ url: URL) {
+        guard let application = NitroTextView.sharedApplication else { return }
+        guard application.canOpenURL(url) else { return }
+        if #available(iOS 10.0, *) {
+            application.open(url, options: [:], completionHandler: nil)
+        } else {
+            application.openURL(url)
+        }
+    }
+
+    static var sharedApplication: UIApplication? {
+        let selector = NSSelectorFromString("sharedApplication")
+        guard UIApplication.responds(to: selector) else { return nil }
+        let unmanaged = UIApplication.perform(selector)
+        return unmanaged?.takeUnretainedValue() as? UIApplication
     }
 }
