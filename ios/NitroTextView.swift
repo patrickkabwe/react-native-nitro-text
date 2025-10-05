@@ -46,7 +46,7 @@ final class NitroTextView: UITextView {
         backgroundColor = .clear
         textContainerInset = .zero
         textContainer.lineFragmentPadding = 0
-        layoutManager.usesFontLeading = true
+        layoutManager.usesFontLeading = false
         textColor = .black
         contentInset = .zero
         clipsToBounds = true

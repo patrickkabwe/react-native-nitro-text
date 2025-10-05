@@ -19,29 +19,25 @@ public extension TextLayoutEvent {
    * Create a new instance of `TextLayoutEvent`.
    */
   init(lines: [TextLayout]) {
-    self.init({ () -> bridge.std__vector_TextLayout_ in
-      var __vector = bridge.create_std__vector_TextLayout_(lines.count)
-      for __item in lines {
-        __vector.push_back(__item)
-      }
-      return __vector
-    }())
+    self.init(lines.withUnsafeBufferPointer { __pointer -> bridge.std__vector_TextLayout_ in
+      return bridge.copy_std__vector_TextLayout_(__pointer.baseAddress!, lines.count)
+    })
   }
 
   var lines: [TextLayout] {
     @inline(__always)
     get {
-      return self.__lines.map({ __item in __item })
+      return { () -> [TextLayout] in
+        let __data = bridge.get_data_std__vector_TextLayout_(self.__lines)
+        let __size = self.__lines.size()
+        return Array(UnsafeBufferPointer(start: __data, count: __size))
+      }()
     }
     @inline(__always)
     set {
-      self.__lines = { () -> bridge.std__vector_TextLayout_ in
-        var __vector = bridge.create_std__vector_TextLayout_(newValue.count)
-        for __item in newValue {
-          __vector.push_back(__item)
-        }
-        return __vector
-      }()
+      self.__lines = newValue.withUnsafeBufferPointer { __pointer -> bridge.std__vector_TextLayout_ in
+        return bridge.copy_std__vector_TextLayout_(__pointer.baseAddress!, newValue.count)
+      }
     }
   }
 }

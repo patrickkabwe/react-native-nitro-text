@@ -111,13 +111,9 @@ open class HybridNitroTextSpec_cxx {
     get {
       return { () -> bridge.std__optional_std__vector_Fragment__ in
         if let __unwrappedValue = self.__implementation.fragments {
-          return bridge.create_std__optional_std__vector_Fragment__({ () -> bridge.std__vector_Fragment_ in
-            var __vector = bridge.create_std__vector_Fragment_(__unwrappedValue.count)
-            for __item in __unwrappedValue {
-              __vector.push_back(__item)
-            }
-            return __vector
-          }())
+          return bridge.create_std__optional_std__vector_Fragment__(__unwrappedValue.withUnsafeBufferPointer { __pointer -> bridge.std__vector_Fragment_ in
+            return bridge.copy_std__vector_Fragment_(__pointer.baseAddress!, __unwrappedValue.count)
+          })
         } else {
           return .init()
         }
@@ -128,7 +124,11 @@ open class HybridNitroTextSpec_cxx {
       self.__implementation.fragments = { () -> [Fragment]? in
         if bridge.has_value_std__optional_std__vector_Fragment__(newValue) {
           let __unwrapped = bridge.get_std__optional_std__vector_Fragment__(newValue)
-          return __unwrapped.map({ __item in __item })
+          return { () -> [Fragment] in
+            let __data = bridge.get_data_std__vector_Fragment_(__unwrapped)
+            let __size = __unwrapped.size()
+            return Array(UnsafeBufferPointer(start: __data, count: __size))
+          }()
         } else {
           return nil
         }
@@ -158,13 +158,9 @@ open class HybridNitroTextSpec_cxx {
     get {
       return { () -> bridge.std__optional_std__vector_RichTextStyleRule__ in
         if let __unwrappedValue = self.__implementation.richTextStyleRules {
-          return bridge.create_std__optional_std__vector_RichTextStyleRule__({ () -> bridge.std__vector_RichTextStyleRule_ in
-            var __vector = bridge.create_std__vector_RichTextStyleRule_(__unwrappedValue.count)
-            for __item in __unwrappedValue {
-              __vector.push_back(__item)
-            }
-            return __vector
-          }())
+          return bridge.create_std__optional_std__vector_RichTextStyleRule__(__unwrappedValue.withUnsafeBufferPointer { __pointer -> bridge.std__vector_RichTextStyleRule_ in
+            return bridge.copy_std__vector_RichTextStyleRule_(__pointer.baseAddress!, __unwrappedValue.count)
+          })
         } else {
           return .init()
         }
@@ -175,7 +171,11 @@ open class HybridNitroTextSpec_cxx {
       self.__implementation.richTextStyleRules = { () -> [RichTextStyleRule]? in
         if bridge.has_value_std__optional_std__vector_RichTextStyleRule__(newValue) {
           let __unwrapped = bridge.get_std__optional_std__vector_RichTextStyleRule__(newValue)
-          return __unwrapped.map({ __item in __item })
+          return { () -> [RichTextStyleRule] in
+            let __data = bridge.get_data_std__vector_RichTextStyleRule_(__unwrapped)
+            let __size = __unwrapped.size()
+            return Array(UnsafeBufferPointer(start: __data, count: __size))
+          }()
         } else {
           return nil
         }
