@@ -76,6 +76,16 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setFragments(newViewProps.fragments.value);
     newViewProps.fragments.isDirty = false;
   }
+  // renderer: optional
+  if (newViewProps.renderer.isDirty) {
+    swiftPart.setRenderer(newViewProps.renderer.value);
+    newViewProps.renderer.isDirty = false;
+  }
+  // richTextStyleRules: optional
+  if (newViewProps.richTextStyleRules.isDirty) {
+    swiftPart.setRichTextStyleRules(newViewProps.richTextStyleRules.value);
+    newViewProps.richTextStyleRules.isDirty = false;
+  }
   // selectable: optional
   if (newViewProps.selectable.isDirty) {
     swiftPart.setSelectable(newViewProps.selectable.value);

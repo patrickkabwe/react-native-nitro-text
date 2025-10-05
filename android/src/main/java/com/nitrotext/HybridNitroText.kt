@@ -22,6 +22,18 @@ class HybridNitroText(val context: ThemedReactContext) : HybridNitroTextSpec(), 
       impl.setFragments(value)
     }
 
+  override var renderer: NitroRenderer?
+    get() = null
+    set(value) {
+      impl.setRenderer(value)
+    }
+
+  override var richTextStyleRules: Array<RichTextStyleRule>?
+    get() = null
+    set(value) {
+      impl.setRichTextStyleRules(value)
+    }
+
   override var selectable: Boolean?
     get() = null
     set(value) {

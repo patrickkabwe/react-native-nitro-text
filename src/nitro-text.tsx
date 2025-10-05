@@ -5,6 +5,8 @@ import {
   type TextLayoutEvent,
   type TextProps,
   unstable_TextAncestorContext,
+  type StyleProp,
+  type TextStyle,
 } from 'react-native'
 
 import {
@@ -14,7 +16,8 @@ import {
 } from 'react-native-nitro-modules'
 import NitroTextConfig from '../nitrogen/generated/shared/json/NitroTextConfig.json'
 import type { NitroTextMethods, NitroTextProps } from './specs/nitro-text.nitro'
-import { flattenChildrenToFragments, styleToFragment } from './utils'
+import { buildRichTextStyleRules, flattenChildrenToFragments, styleToFragment } from './utils'
+import type { NitroRenderer, RichTextStyleRule } from './types'
 
 export type NitroTextRef = HybridRef<NitroTextProps, NitroTextMethods>
 
@@ -23,11 +26,11 @@ const NitroTextView = getHostComponent<NitroTextProps, NitroTextMethods>(
   () => NitroTextConfig
 )
 
-type NitroTextPropsWithEvents = Pick<
-  NitroTextProps,
-  'onTextLayout' | 'onPress' | 'onPressIn' | 'onPressOut'
-> &
-  Omit<TextProps, 'onTextLayout'>
+type NitroTextPropsWithEvents =
+  Pick<NitroTextProps, 'onTextLayout' | 'onPress' | 'onPressIn' | 'onPressOut' | 'renderer'> &
+  Omit<TextProps, 'onTextLayout'> & {
+    renderStyles?: Record<string, StyleProp<TextStyle>>
+  }
 
 let TextAncestorContext = unstable_TextAncestorContext
 if (
@@ -49,16 +52,41 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     onPressIn,
     onPressOut,
     onLongPress,
+    renderer = 'plaintext',
+    renderStyles,
     ...rest
   } = props
 
-  const isSimpleText =
+  const htmlText = React.useMemo(() => {
+    if (renderer !== 'html') return null
+    if (typeof children === 'string' || typeof children === 'number') {
+      return String(children)
+    }
+    const array = React.Children.toArray(children)
+    if (array.length === 0) return null
+    if (array.every((child) => typeof child === 'string' || typeof child === 'number')) {
+      return array.map((child) => String(child)).join('')
+    }
+    return null
+  }, [children, renderer])
+
+  const plainChildText =
     typeof children === 'string' || typeof children === 'number'
+      ? String(children)
+      : null
+
+  const effectiveText = htmlText ?? plainChildText
+  const isSimpleText = effectiveText != null
 
   const fragments = React.useMemo(() => {
     if (isSimpleText) return []
     return flattenChildrenToFragments(children, style as any)
   }, [children, style, isSimpleText])
+
+  const richTextStyleRules: RichTextStyleRule[] | undefined = React.useMemo(() => {
+    if (renderer !== 'html') return undefined
+    return buildRichTextStyleRules(renderStyles)
+  }, [renderStyles, renderer])
 
   if (isInsideRNText) {
     const onRNTextLayout = useCallback(
@@ -94,7 +122,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
         selectable={selectable}
         fontFamily={topStyles.fontFamily}
         selectionColor={selectionColor as string}
-        text={String(children)}
+        text={effectiveText ?? ''}
         style={style}
         fontColor={topStyles.fontColor}
         textAlign={topStyles.textAlign}
@@ -107,6 +135,8 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
         textDecorationLine={topStyles.textDecorationLine}
         textDecorationColor={topStyles.textDecorationColor}
         textDecorationStyle={topStyles.textDecorationStyle}
+        renderer={renderer as NitroRenderer}
+        richTextStyleRules={richTextStyleRules}
         onTextLayout={callback(onTextLayout)}
         onPress={callback(onPress)}
         onPressIn={callback(onPressIn)}
@@ -134,6 +164,8 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       textDecorationLine={topStyles.textDecorationLine}
       textDecorationColor={topStyles.textDecorationColor}
       textDecorationStyle={topStyles.textDecorationStyle}
+      renderer={renderer as NitroRenderer}
+      richTextStyleRules={richTextStyleRules}
       onTextLayout={callback(onTextLayout)}
       onPress={callback(onPress)}
       onPressIn={callback(onPressIn)}

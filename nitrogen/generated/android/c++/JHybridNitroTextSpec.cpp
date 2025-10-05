@@ -21,6 +21,12 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
 // Forward declaration of `TextDecorationStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
+// Forward declaration of `NitroRenderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class NitroRenderer; }
+// Forward declaration of `RichTextStyleRule` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyleRule; }
+// Forward declaration of `RichTextStyle` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyle; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
@@ -49,6 +55,12 @@ namespace margelo::nitro::nitrotext { struct TextLayout; }
 #include "JTextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
 #include "JTextDecorationStyle.hpp"
+#include "NitroRenderer.hpp"
+#include "JNitroRenderer.hpp"
+#include "RichTextStyleRule.hpp"
+#include "JRichTextStyleRule.hpp"
+#include "RichTextStyle.hpp"
+#include "JRichTextStyle.hpp"
 #include "EllipsizeMode.hpp"
 #include "JEllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
@@ -108,6 +120,41 @@ namespace margelo::nitro::nitrotext {
       for (size_t __i = 0; __i < __size; __i++) {
         const auto& __element = fragments.value()[__i];
         __array->setElement(__i, *JFragment::fromCpp(__element));
+      }
+      return __array;
+    }() : nullptr);
+  }
+  std::optional<NitroRenderer> JHybridNitroTextSpec::getRenderer() {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JNitroRenderer>()>("getRenderer");
+    auto __result = method(_javaPart);
+    return __result != nullptr ? std::make_optional(__result->toCpp()) : std::nullopt;
+  }
+  void JHybridNitroTextSpec::setRenderer(std::optional<NitroRenderer> renderer) {
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<JNitroRenderer> /* renderer */)>("setRenderer");
+    method(_javaPart, renderer.has_value() ? JNitroRenderer::fromCpp(renderer.value()) : nullptr);
+  }
+  std::optional<std::vector<RichTextStyleRule>> JHybridNitroTextSpec::getRichTextStyleRules() {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JArrayClass<JRichTextStyleRule>>()>("getRichTextStyleRules");
+    auto __result = method(_javaPart);
+    return __result != nullptr ? std::make_optional([&]() {
+      size_t __size = __result->size();
+      std::vector<RichTextStyleRule> __vector;
+      __vector.reserve(__size);
+      for (size_t __i = 0; __i < __size; __i++) {
+        auto __element = __result->getElement(__i);
+        __vector.push_back(__element->toCpp());
+      }
+      return __vector;
+    }()) : std::nullopt;
+  }
+  void JHybridNitroTextSpec::setRichTextStyleRules(const std::optional<std::vector<RichTextStyleRule>>& richTextStyleRules) {
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JArrayClass<JRichTextStyleRule>> /* richTextStyleRules */)>("setRichTextStyleRules");
+    method(_javaPart, richTextStyleRules.has_value() ? [&]() {
+      size_t __size = richTextStyleRules.value().size();
+      jni::local_ref<jni::JArrayClass<JRichTextStyleRule>> __array = jni::JArrayClass<JRichTextStyleRule>::newArray(__size);
+      for (size_t __i = 0; __i < __size; __i++) {
+        const auto& __element = richTextStyleRules.value()[__i];
+        __array->setElement(__i, *JRichTextStyleRule::fromCpp(__element));
       }
       return __array;
     }() : nullptr);

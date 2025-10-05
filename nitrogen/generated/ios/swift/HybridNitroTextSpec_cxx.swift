@@ -136,6 +136,53 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
+  public final var renderer: bridge.std__optional_NitroRenderer_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_NitroRenderer_ in
+        if let __unwrappedValue = self.__implementation.renderer {
+          return bridge.create_std__optional_NitroRenderer_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.renderer = newValue.value
+    }
+  }
+  
+  public final var richTextStyleRules: bridge.std__optional_std__vector_RichTextStyleRule__ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__vector_RichTextStyleRule__ in
+        if let __unwrappedValue = self.__implementation.richTextStyleRules {
+          return bridge.create_std__optional_std__vector_RichTextStyleRule__({ () -> bridge.std__vector_RichTextStyleRule_ in
+            var __vector = bridge.create_std__vector_RichTextStyleRule_(__unwrappedValue.count)
+            for __item in __unwrappedValue {
+              __vector.push_back(__item)
+            }
+            return __vector
+          }())
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.richTextStyleRules = { () -> [RichTextStyleRule]? in
+        if bridge.has_value_std__optional_std__vector_RichTextStyleRule__(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__vector_RichTextStyleRule__(newValue)
+          return __unwrapped.map({ __item in __item })
+        } else {
+          return nil
+        }
+      }()
+    }
+  }
+  
   public final var selectable: bridge.std__optional_bool_ {
     @inline(__always)
     get {

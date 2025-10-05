@@ -8,6 +8,8 @@ import type {
     EllipsizeMode,
     Fragment,
     LineBreakStrategyIOS,
+    NitroRenderer,
+    RichTextStyleRule,
     TextLayoutEvent,
 } from '../types'
 
@@ -16,6 +18,16 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
      * The fragments of the text.
      */
     fragments?: Fragment[]
+
+    /**
+     * Selects which renderer to use for the incoming `text`. Defaults to `plaintext`.
+     */
+    renderer?: NitroRenderer
+
+    /**
+     * Rich text style rules that can target HTML (or future markdown) elements by selector.
+     */
+    richTextStyleRules?: RichTextStyleRule[]
 
     /**
      * Selectable text.

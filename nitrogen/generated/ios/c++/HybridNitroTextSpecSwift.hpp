@@ -26,6 +26,12 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
 // Forward declaration of `TextDecorationStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
+// Forward declaration of `NitroRenderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class NitroRenderer; }
+// Forward declaration of `RichTextStyleRule` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyleRule; }
+// Forward declaration of `RichTextStyle` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyle; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
@@ -47,6 +53,9 @@ namespace margelo::nitro::nitrotext { struct TextLayout; }
 #include "TextTransform.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
+#include "NitroRenderer.hpp"
+#include "RichTextStyleRule.hpp"
+#include "RichTextStyle.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
@@ -97,6 +106,20 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setFragments(const std::optional<std::vector<Fragment>>& fragments) noexcept override {
       _swiftPart.setFragments(fragments);
+    }
+    inline std::optional<NitroRenderer> getRenderer() noexcept override {
+      auto __result = _swiftPart.getRenderer();
+      return __result;
+    }
+    inline void setRenderer(std::optional<NitroRenderer> renderer) noexcept override {
+      _swiftPart.setRenderer(renderer);
+    }
+    inline std::optional<std::vector<RichTextStyleRule>> getRichTextStyleRules() noexcept override {
+      auto __result = _swiftPart.getRichTextStyleRules();
+      return __result;
+    }
+    inline void setRichTextStyleRules(const std::optional<std::vector<RichTextStyleRule>>& richTextStyleRules) noexcept override {
+      _swiftPart.setRichTextStyleRules(richTextStyleRules);
     }
     inline std::optional<bool> getSelectable() noexcept override {
       auto __result = _swiftPart.getSelectable();

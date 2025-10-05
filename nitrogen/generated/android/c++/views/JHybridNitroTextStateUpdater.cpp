@@ -40,6 +40,14 @@ void JHybridNitroTextStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /
     view->setFragments(props.fragments.value);
     // TODO: Set isDirty = false
   }
+  if (props.renderer.isDirty) {
+    view->setRenderer(props.renderer.value);
+    // TODO: Set isDirty = false
+  }
+  if (props.richTextStyleRules.isDirty) {
+    view->setRichTextStyleRules(props.richTextStyleRules.value);
+    // TODO: Set isDirty = false
+  }
   if (props.selectable.isDirty) {
     view->setSelectable(props.selectable.value);
     // TODO: Set isDirty = false

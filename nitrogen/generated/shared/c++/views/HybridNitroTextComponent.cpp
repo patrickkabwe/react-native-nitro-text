@@ -35,6 +35,26 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.fragments: ") + exc.what());
       }
     }()),
+    renderer([&]() -> CachedProp<std::optional<NitroRenderer>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("renderer", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.renderer;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<NitroRenderer>>::fromRawValue(*runtime, value, sourceProps.renderer);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.renderer: ") + exc.what());
+      }
+    }()),
+    richTextStyleRules([&]() -> CachedProp<std::optional<std::vector<RichTextStyleRule>>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("richTextStyleRules", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.richTextStyleRules;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::vector<RichTextStyleRule>>>::fromRawValue(*runtime, value, sourceProps.richTextStyleRules);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.richTextStyleRules: ") + exc.what());
+      }
+    }()),
     selectable([&]() -> CachedProp<std::optional<bool>> {
       try {
         const react::RawValue* rawValue = rawProps.at("selectable", nullptr, nullptr);
@@ -329,6 +349,8 @@ namespace margelo::nitro::nitrotext::views {
   HybridNitroTextProps::HybridNitroTextProps(const HybridNitroTextProps& other):
     react::ViewProps(),
     fragments(other.fragments),
+    renderer(other.renderer),
+    richTextStyleRules(other.richTextStyleRules),
     selectable(other.selectable),
     allowFontScaling(other.allowFontScaling),
     ellipsizeMode(other.ellipsizeMode),
@@ -362,6 +384,8 @@ namespace margelo::nitro::nitrotext::views {
   bool HybridNitroTextProps::filterObjectKeys(const std::string& propName) {
     switch (hashString(propName)) {
       case hashString("fragments"): return true;
+      case hashString("renderer"): return true;
+      case hashString("richTextStyleRules"): return true;
       case hashString("selectable"): return true;
       case hashString("allowFontScaling"): return true;
       case hashString("ellipsizeMode"): return true;

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { NitroText, TextLayoutEvent } from 'react-native-nitro-text';
+
+const htmlComingFromServer = `<h1>This is a h1 text</h1><h2>This is a h2 text</h2><h3>This is a h3 text</h3><h4>This is a h4 text</h4><h5>This is a h5 text</h5><h6>This is a h6 text</h6><p>This is a simple NitroText component with native performance. Try selecting this text to see the smooth selection behavior!</p><div><a href='https://www.google.com'>Google Link</a><br/><b>This is a bold text</b><br/><i>This is an italic text</i><br/><u>This is an underline text</u><br/><s>This is a strikethrough text</s><br/><code>This is a code text</code><br/><pre>This is a pre text</pre><br/></div>`.trim();
 
 export default function App() {
   const [layoutInfo, setLayoutInfo] = useState<string>('');
@@ -16,6 +18,10 @@ export default function App() {
     // console.log('height', height);
     // setLayoutInfo(`Lines: ${lines.length}`);
   };
+
+  useLayoutEffect(() => {
+    StatusBar.setBarStyle('dark-content');
+  }, []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -45,6 +51,34 @@ export default function App() {
         <NitroText style={styles.basicText} selectable>
           This is a simple NitroText component with native performance. Try
           selecting this text to see the smooth selection behavior!
+        </NitroText>
+      </View>
+
+      {/* Html Renderer */}
+      <View style={styles.section}>
+        <NitroText style={styles.sectionTitle}>Html Renderer</NitroText>
+        <NitroText
+          selectable={true}
+          style={styles.htmlText}
+          renderer="html"
+          renderStyles={{
+            b: { fontWeight: 'bold', color: '#E53E3E' }, // deep red
+            i: { fontStyle: 'italic', color: '#3182CE' }, // bright blue
+            u: { textDecorationLine: 'underline', textDecorationStyle: 'dashed', textDecorationColor: '#38A169' }, // green
+            s: { textDecorationLine: 'line-through', textDecorationStyle: 'dashed', textDecorationColor: '#E53E3E' }, // red
+            code: { fontFamily: 'monospace', color: '#805AD5' }, // purple
+            pre: { fontFamily: 'monospace', color: '#805AD5' }, // purple
+            p: { color: '#2D3748' }, // dark gray for better readability
+            a: { color: '#4299E1' }, // lighter blue for links
+            h1: { color: '#2F855A', fontWeight: 'bold', fontSize: 32 }, // darker green
+            h2: { color: '#2C5282', fontWeight: 'bold', fontSize: 24 }, // darker blue
+            h3: { color: '#C05621', fontWeight: 'bold', fontSize: 18.72 }, // darker orange
+            h4: { color: '#553C9A', fontWeight: 'bold', fontSize: 16 }, // darker purple
+            h5: { color: '#744210', fontWeight: 'bold', fontSize: 13.28 }, // darker brown
+            h6: { color: '#4A5568', fontWeight: 'bold', fontSize: 10.72 }, // medium gray
+          }}
+        >
+          {htmlComingFromServer}
         </NitroText>
       </View>
 
@@ -143,7 +177,11 @@ export default function App() {
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Line Limiting</NitroText>
         <NitroText style={styles.description}>Two lines maximum:</NitroText>
-        <NitroText style={styles.limitedText} numberOfLines={2} ellipsizeMode='tail'>
+        <NitroText
+          style={styles.limitedText}
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
           This is a very long text that would normally span multiple lines, but
           we're limiting it to just two lines. The text will be truncated with
           an ellipsis when it exceeds the specified number of lines. This is
@@ -166,7 +204,7 @@ export default function App() {
           {'\n\n'}And vice versa - NitroText can contain:{'\n'}
           <NitroText style={styles.nestedContainer}>
             Regular text with
-            <Text style={styles.rnNested}>{' '}RN Text nested inside</Text>{' '}
+            <Text style={styles.rnNested}> RN Text nested inside</Text>{' '}
             NitroText.
           </NitroText>
         </NitroText>
@@ -309,6 +347,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderLeftWidth: 4,
     borderLeftColor: '#007bff',
+  },
+
+  htmlText: {
+    fontSize: 16,
+    color: '#495057',
+    lineHeight: 24,
+    backgroundColor: '#ffffff',
+    padding: 16,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#007bff',
+    // height:450
   },
 
   // Rich text styles
