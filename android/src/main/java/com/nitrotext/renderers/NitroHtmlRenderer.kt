@@ -66,6 +66,7 @@ class NitroHtmlRenderer(
     traverse(document.body(), builder, stateStack, blockStack, blockRanges, listStack, ruleMap)
 
     applyBlockMargins(builder, blockRanges)
+    trimTrailingWhitespace(builder)
     return builder
   }
 
@@ -86,9 +87,11 @@ class NitroHtmlRenderer(
 
   private fun appendText(textNode: TextNode, builder: SpannableStringBuilder, state: StyleState) {
     val raw = if (state.preserveWhitespace) textNode.wholeText else textNode.text()
+    if (!state.preserveWhitespace && raw.isBlank()) return
     if (raw.isEmpty()) return
 
     val content = applyTextTransform(raw, state.style.textTransform)
+    if (!state.preserveWhitespace && content.isBlank()) return
     if (content.isEmpty()) return
 
     val start = builder.length
@@ -274,6 +277,21 @@ class NitroHtmlRenderer(
     }
   }
 
+  private fun trimTrailingWhitespace(builder: SpannableStringBuilder) {
+    var end = builder.length
+    while (end > 0) {
+      val ch = builder[end - 1]
+      if (ch == '\n' || ch == ' ') {
+        end -= 1
+      } else {
+        break
+      }
+    }
+    if (end < builder.length) {
+      builder.delete(end, builder.length)
+    }
+  }
+
   private fun applyListSpan(
     builder: SpannableStringBuilder,
     start: Int,
@@ -334,9 +352,9 @@ class NitroHtmlRenderer(
   private fun defaultStyleForTag(tag: String): RichTextStyle? = when (tag) {
     "strong", "b" -> createStyle(fontWeight = FontWeight.BOLD)
     "em", "i" -> createStyle(fontStyle = FontStyle.ITALIC)
-    "u" -> createStyle(textDecorationLine = TextDecorationLine.UNDERLINE)
-    "s", "strike", "del" -> createStyle(textDecorationLine = TextDecorationLine.LINE_THROUGH)
-    "code" -> createStyle(fontFamily = "monospace")
+    "u" -> createStyle(textDecorationLine = TextDecorationLine.UNDERLINE, textDecorationStyle = TextDecorationStyle.SOLID)
+    "s", "strike", "del" -> createStyle(textDecorationLine = TextDecorationLine.LINE_THROUGH, textDecorationStyle = TextDecorationStyle.SOLID)
+    "code", "pre" -> createStyle(fontFamily = "monospace")
     else -> null
   }
 

@@ -99,7 +99,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     return (
       <Text
         {...rest}
-        selectionColor={selectionColor as any}
+        selectionColor={selectionColor}
         onPress={onPress}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
