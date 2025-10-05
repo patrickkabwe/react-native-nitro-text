@@ -19,7 +19,6 @@ internal object HtmlLinkMovementMethod : MovementMethod {
 
   override fun onTouchEvent(widget: TextView, buffer: Spannable, event: MotionEvent): Boolean {
     val action = event.action
-
     if (action != MotionEvent.ACTION_UP && action != MotionEvent.ACTION_DOWN) {
       return false
     }
@@ -41,7 +40,6 @@ internal object HtmlLinkMovementMethod : MovementMethod {
       }
       return true
     }
-
     return false
   }
 }

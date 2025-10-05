@@ -23,6 +23,10 @@
 #include <os/log.h>
 #endif
 
+#if defined(__ANDROID__)
+#include <android/log.h>
+#endif
+
 #include <react/renderer/attributedstring/AttributedStringBox.h>
 
 #if __has_include(<cxxreact/ReactNativeVersion.h>)

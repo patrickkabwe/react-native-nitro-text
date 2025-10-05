@@ -88,8 +88,6 @@ final class NitroTextImpl {
                 defaultColor: defaultColor
             )
         }
-
-        textView.setNeedsLayout()
     }
 
     @discardableResult
