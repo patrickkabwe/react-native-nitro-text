@@ -1,5 +1,14 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { Platform, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
+import {
+    Platform,
+    ScrollView,
+    StatusBar,
+    StyleProp,
+    StyleSheet,
+    Text,
+    TextStyle,
+    View,
+} from 'react-native';
 import { NitroText, TextLayoutEvent } from 'react-native-nitro-text';
 
 const htmlComingFromServer = `
@@ -165,6 +174,38 @@ export default function App() {
     // setLayoutInfo(`Lines: ${lines.length}`);
   };
 
+  const htmlStyles: Record<string, StyleProp<TextStyle>> = useMemo(
+    () => ({
+      b: { fontWeight: 'bold', color: '#E53E3E' }, // deep red
+      i: { fontStyle: 'italic', color: '#3182CE' }, // bright blue
+      u: { textDecorationStyle: 'dashed', textDecorationColor: '#38A169' }, // green
+      s: { textDecorationStyle: 'dashed', textDecorationColor: '#E53E3E' }, // red
+      code: {
+        fontFamily: Platform.select({
+          android: 'monospace',
+          ios: 'ui-monospace',
+        }),
+        color: '#805AD5',
+      }, // purple
+      pre: {
+        fontFamily: Platform.select({
+          android: 'monospace',
+          ios: 'ui-monospace',
+        }),
+        color: '#805AD5',
+      }, // purple
+      p: { color: '#2D3748' }, // dark gray for better readability
+      a: { color: 'green' }, // lighter blue for links
+      h1: { color: '#2F855A', fontWeight: 'bold', fontSize: 32 }, // darker green
+      h2: { color: '#2C5282', fontWeight: 'bold', fontSize: 24 }, // darker blue
+      h3: { color: '#C05621', fontWeight: 'bold', fontSize: 18.72 }, // darker orange
+      h4: { color: '#553C9A', fontWeight: 'bold', fontSize: 16 }, // darker purple
+      h5: { color: '#744210', fontWeight: 'bold', fontSize: 13.28 }, // darker brown
+      h6: { color: '#4A5568', fontWeight: 'bold', fontSize: 10.72 }, // medium gray
+    }),
+    [],
+  );
+
   useLayoutEffect(() => {
     StatusBar.setBarStyle('dark-content');
   }, []);
@@ -217,22 +258,7 @@ export default function App() {
           selectable
           style={styles.htmlText}
           renderer="html"
-          renderStyles={{
-            b: { fontWeight: 'bold', color: '#E53E3E' }, // deep red
-            i: { fontStyle: 'italic', color: '#3182CE' }, // bright blue
-            u: { textDecorationStyle: 'dashed', textDecorationColor: '#38A169' }, // green
-            s: { textDecorationStyle: 'dashed', textDecorationColor: '#E53E3E' }, // red
-            code: { fontFamily: Platform.select({android:'monospace', ios: "ui-monospace"}), color: '#805AD5' }, // purple
-            pre: { fontFamily: Platform.select({android:'monospace', ios: "ui-monospace"}), color: '#805AD5' }, // purple
-            p: { color: '#2D3748' }, // dark gray for better readability
-            a: { color: 'green' }, // lighter blue for links
-            h1: { color: '#2F855A', fontWeight: 'bold', fontSize: 32 }, // darker green
-            h2: { color: '#2C5282', fontWeight: 'bold', fontSize: 24 }, // darker blue
-            h3: { color: '#C05621', fontWeight: 'bold', fontSize: 18.72 }, // darker orange
-            h4: { color: '#553C9A', fontWeight: 'bold', fontSize: 16 }, // darker purple
-            h5: { color: '#744210', fontWeight: 'bold', fontSize: 13.28 }, // darker brown
-            h6: { color: '#4A5568', fontWeight: 'bold', fontSize: 10.72 }, // medium gray
-          }}
+          renderStyles={htmlStyles}
         >
           {htmlComingFromServer}
         </NitroText>
@@ -510,7 +536,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#495057',
     lineHeight: 30,
-    padding:16,
+    padding: 16,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#007bff',
@@ -629,7 +655,7 @@ const styles = StyleSheet.create({
   // Code syntax
   codeBlock: {
     fontSize: 14,
-    fontFamily: Platform.select({android:'monospace', ios: "ui-monospace"}),
+    fontFamily: Platform.select({ android: 'monospace', ios: 'ui-monospace' }),
     backgroundColor: '#1e1e1e',
     color: '#d4d4d4',
     padding: 16,

@@ -17,7 +17,7 @@ import com.nitrotext.*
 /**
  * Represents the React Native `ViewManager` for the "NitroText" Nitro HybridView.
  */
-class HybridNitroTextManager: SimpleViewManager<View>() {
+open class HybridNitroTextManager: SimpleViewManager<View>() {
   private val views = hashMapOf<View, HybridNitroText>()
 
   override fun getName(): String {
