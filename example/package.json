@@ -11,10 +11,13 @@
     "pod": "bundle install && bundle exec pod install --project-directory=ios"
   },
   "dependencies": {
+    "nativewind": "^4.2.1",
     "react": "19.1.0",
     "react-native": "0.81.4",
+    "react-native-nitro-modules": "^0.29.8",
+    "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "^5.5.2",
-    "react-native-nitro-modules": "^0.29.8"
+    "react-native-worklets": "^0.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -28,7 +31,9 @@
     "@react-native/metro-config": "0.81.4",
     "@react-native/typescript-config": "0.81.4",
     "@types/jest": "^29.5.13",
-    "babel-plugin-module-resolver": "^5.0.2"
+    "babel-plugin-module-resolver": "^5.0.2",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "tailwindcss": "^3.4.17"
   },
   "engines": {
     "node": ">=20"

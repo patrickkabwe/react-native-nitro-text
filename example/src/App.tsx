@@ -10,6 +10,7 @@ import {
     View,
 } from 'react-native';
 import { NitroText, TextLayoutEvent } from 'react-native-nitro-text';
+import "./global.css";
 
 const htmlComingFromServer = `
   <!-- HEADING ELEMENTS (h1-h6) -->
@@ -237,7 +238,7 @@ export default function App() {
         <NitroText style={styles.subtitle}>
           High-performance selectable text with native rendering
         </NitroText>
-        <Text style={styles.subtitle} selectable>
+        <Text style={styles.subtitle}>
           High-performance selectable text with native rendering
         </Text>
       </View>
@@ -249,6 +250,16 @@ export default function App() {
           This is a simple NitroText component with native performance. Try
           selecting this text to see the smooth selection behavior!
         </NitroText>
+      </View>
+
+      {/* NativeWind */}
+      <View style={styles.section}>
+        <NitroText className="text-xl font-semibold text-blue-500">
+          Tailwind-powered NitroText (NativeWind)
+        </NitroText>
+        <Text className="text-xl font-semibold text-blue-500">
+          Tailwind-powered RN (NativeWind)
+        </Text>
       </View>
 
       {/* Html Renderer */}

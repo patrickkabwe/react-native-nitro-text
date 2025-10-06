@@ -1,4 +1,5 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+const { withNativeWind } = require('nativewind/metro');
 const path = require('path');
 const root = path.resolve(__dirname, '..');
 
@@ -12,4 +13,8 @@ const config = {
   watchFolders: [root],
 };
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+const defaultConfig = mergeConfig(getDefaultConfig(__dirname), config);
+
+module.exports = withNativeWind(defaultConfig, {
+    input: './src/global.css',
+})

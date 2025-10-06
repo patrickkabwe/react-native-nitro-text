@@ -1,23 +1,30 @@
 import React, { useCallback } from 'react'
 import {
-  Platform,
-  Text,
-  type TextLayoutEvent,
-  type TextProps,
-  unstable_TextAncestorContext,
-  type StyleProp,
-  type TextStyle,
+    Platform,
+    Text,
+    unstable_TextAncestorContext,
+    type StyleProp,
+    type TextLayoutEvent,
+    type TextProps,
+    type TextStyle,
 } from 'react-native'
-
 import {
-  callback,
-  getHostComponent,
-  type HybridRef,
+    callback,
+    getHostComponent,
+    type HybridRef,
 } from 'react-native-nitro-modules'
 import NitroTextConfig from '../nitrogen/generated/shared/json/NitroTextConfig.json'
+import {
+    ensureNativeWindInterop,
+    useNativeWindResolvedProps,
+} from './nativewind-interop'
 import type { NitroTextMethods, NitroTextProps } from './specs/nitro-text.nitro'
-import { buildRichTextStyleRules, flattenChildrenToFragments, styleToFragment } from './utils'
 import type { NitroRenderer, RichTextStyleRule } from './types'
+import {
+    buildRichTextStyleRules,
+    flattenChildrenToFragments,
+    styleToFragment,
+} from './utils'
 
 export type NitroTextRef = HybridRef<NitroTextProps, NitroTextMethods>
 
@@ -26,10 +33,13 @@ const NitroTextView = getHostComponent<NitroTextProps, NitroTextMethods>(
   () => NitroTextConfig
 )
 
-type NitroTextPropsWithEvents =
-  Pick<NitroTextProps, 'onTextLayout' | 'onPress' | 'onPressIn' | 'onPressOut' | 'renderer'> &
+export type NitroTextComponentProps = Pick<
+  NitroTextProps,
+  'onTextLayout' | 'onPress' | 'onPressIn' | 'onPressOut' | 'renderer'
+> &
   Omit<TextProps, 'onTextLayout'> & {
     renderStyles?: Record<string, StyleProp<TextStyle>>
+    className?: string
   }
 
 let TextAncestorContext = unstable_TextAncestorContext
@@ -40,11 +50,13 @@ if (
 ) {
   TextAncestorContext = require('react-native/Libraries/Text/TextAncestor')
 }
-export const NitroText = (props: NitroTextPropsWithEvents) => {
+export const NitroText = (props: NitroTextComponentProps) => {
+  const resolvedProps = useNativeWindResolvedProps(props)
   const isInsideRNText = React.useContext(TextAncestorContext)
   const {
     children,
     style,
+    className: _className,
     selectable,
     selectionColor,
     onTextLayout,
@@ -55,7 +67,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     renderer = 'plaintext',
     renderStyles,
     ...rest
-  } = props
+  } = resolvedProps
 
   const htmlText = React.useMemo(() => {
     if (renderer !== 'html') return null
@@ -64,7 +76,11 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     }
     const array = React.Children.toArray(children)
     if (array.length === 0) return null
-    if (array.every((child) => typeof child === 'string' || typeof child === 'number')) {
+    if (
+      array.every(
+        (child) => typeof child === 'string' || typeof child === 'number'
+      )
+    ) {
       return array.map((child) => String(child)).join('')
     }
     return null
@@ -83,10 +99,11 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     return flattenChildrenToFragments(children, style as any)
   }, [children, style, isSimpleText])
 
-  const richTextStyleRules: RichTextStyleRule[] | undefined = React.useMemo(() => {
-    if (renderer !== 'html') return undefined
-    return buildRichTextStyleRules(renderStyles)
-  }, [renderStyles, renderer])
+  const richTextStyleRules: RichTextStyleRule[] | undefined =
+    React.useMemo(() => {
+      if (renderer !== 'html') return undefined
+      return buildRichTextStyleRules(renderStyles)
+    }, [renderStyles, renderer])
 
   if (isInsideRNText) {
     const onRNTextLayout = useCallback(
@@ -173,3 +190,5 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
     />
   )
 }
+
+ensureNativeWindInterop(NitroText)
