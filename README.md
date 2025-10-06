@@ -24,34 +24,33 @@ https://github.com/user-attachments/assets/57f56b3f-3988-4235-af83-a5f2cfd82121
 
 ---
 
-## Features
+## ✨ Features
 
-- Works on both iOS and Android(currently fallback to RN `Text` on Android)
-- Native iOS rendering with smooth selection.
-- Nested fragments merge into a single native text view
-- Rendering Markdown and HTML (coming soon).
-- Supports only the New Architecture
+- 📱 Works on both iOS and Android with full native support
+- ⚡️ Native iOS and Android rendering with smooth selection
+- 🌐 HTML rendering support (Markdown coming soon)
+- 🏗️ Supports only the New Architecture
 
-## Requirements
+## 📋 Requirements
 
-- React Native v0.78.0 or higher (Fabric/Nitro Views)
-- Node 18+ (Node 20+ recommended)
+- ⚛️ React Native v0.78.0 or higher (Fabric/Nitro Views)
+- 🟢 Node 18+ (Node 20+ recommended)
 
-## Installation
+## 📦 Installation
 
 ```bash
 yarn add react-native-nitro-text react-native-nitro-modules
 ```
 
-iOS
+**iOS**
 
 ```bash
 cd ios && pod install && cd ..
 ```
 
-That’s it. You can now use the `NitroText` component in your app.
+That's it! 🎉 You can now use the `NitroText` component in your app.
 
-## Usage
+## 💻 Usage
 
 ```tsx
 import { NitroText as Text } from 'react-native-nitro-text'
@@ -64,10 +63,6 @@ export function Title() {
   )
 }
 ```
-
-## Selection
-
-iOS uses native selection. On Android, NitroText currently falls back to React Native `Text`.
 
 ```tsx
 import { NitroText as Text } from 'react-native-nitro-text'
@@ -83,25 +78,27 @@ export function SelectionExample() {
 }
 ```
 
-## Platform Support
+## 🚀 Platform Support
 
-- iOS
-- Android - At the moment `NitroText` fallback to RN `Text`.
+| Platform | Text Selection | HTML Rendering | Markdown Rendering |
+|----------|----------------|----------------|-------------------|
+| 🍎 **iOS** | ✅ | ✅ | 🚧 Coming Soon |
+| 🤖 **Android** | ✅ | ✅ | 🚧 Coming Soon |
 
-## Why NitroText?
+## 💡 Why NitroText?
 
-Custom native text view with minimal JS overhead and native iOS selection. Great for heavy/nested styled text and large lists. It's a drop-in replacement for RN `Text` component.
+Custom native text view with minimal JS overhead and native selection on both iOS and Android. Great for heavy/nested styled text and large lists. It's a drop-in replacement for RN `Text` component. ⚡️
 
-## Development
+## 🛠️ Development
 
-- `bun run build` — typecheck and build the package
-- `bun run codegen` — regenerate codegen outputs
-- Example app in `example/`
+- 🔨 `bun run build` — typecheck and build the package
+- 🔄 `bun run codegen` — regenerate codegen outputs
+- 📱 Example app in `example/`
 
-## Credits
+## 🙏 Credits
 
 Bootstrapped with [create-nitro-module](https://github.com/patrickkabwe/create-nitro-module).
 
-## Contributing
+## 🤝 Contributing
 
-PRs welcome! Please open an issue first for major changes.
+PRs welcome! 💖 Please open an issue first for major changes.
