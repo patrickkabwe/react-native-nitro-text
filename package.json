@@ -71,7 +71,8 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-nitro-modules": "*"
+    "react-native-nitro-modules": "*",
+    "nativewind": "<=4.2.1"
   },
   "eslintConfig": {
     "root": true,

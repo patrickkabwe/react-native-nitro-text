@@ -83,6 +83,24 @@ export function SelectionExample() {
 }
 ```
 
+### 🌀 NativeWind Interop
+
+NitroText detects when the optional [`nativewind`](https://www.nativewind.dev/) package is installed and automatically maps `className` into the underlying style prop. No wrappers are required—just drop in Tailwind classes alongside the usual props.
+
+```tsx
+import { NitroText } from 'react-native-nitro-text'
+
+export function TailwindTitle() {
+  return (
+    <NitroText className="text-xl font-semibold text-blue-500">
+      Tailwind-powered NitroText
+    </NitroText>
+  )
+}
+```
+
+You can still combine `style` or `renderStyles` for HTML rendering with NativeWind utility classes as needed.
+
 ## Platform Support
 
 - iOS
