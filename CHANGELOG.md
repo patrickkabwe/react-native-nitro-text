@@ -1,3 +1,20 @@
+## [1.1.0-next.1](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.3...v1.1.0-next.1) (2025-10-08)
+
+### ✨ Features
+
+* add android support ([#49](https://github.com/patrickkabwe/react-native-nitro-text/issues/49)) ([369ad10](https://github.com/patrickkabwe/react-native-nitro-text/commit/369ad10ff299ba329ce275af78e7c5fb1b720607))
+* **android:** add html support ([#52](https://github.com/patrickkabwe/react-native-nitro-text/issues/52)) ([ca1ffb0](https://github.com/patrickkabwe/react-native-nitro-text/commit/ca1ffb05a0e9c29a3c4a4acf1d45e30948b3850a))
+* **ios:** add html support ([#56](https://github.com/patrickkabwe/react-native-nitro-text/issues/56)) ([02f0a9c](https://github.com/patrickkabwe/react-native-nitro-text/commit/02f0a9c4b0c4c3be63322d471b352c583ac63634))
+
+### 📚 Documentation
+
+* add CONTRIBUTING.md and issue templates for better community engagement ([#48](https://github.com/patrickkabwe/react-native-nitro-text/issues/48)) ([a213abe](https://github.com/patrickkabwe/react-native-nitro-text/commit/a213abe3ada2213f116475d4b72b4d4a0acbc797))
+* update README.md for improved clarity and formatting ([#59](https://github.com/patrickkabwe/react-native-nitro-text/issues/59)) ([dbe93aa](https://github.com/patrickkabwe/react-native-nitro-text/commit/dbe93aa11ceaba73592eda7f74987d90f6e3075f))
+
+### 🛠️ Other changes
+
+* bum up nitro 0.29.8 ([#57](https://github.com/patrickkabwe/react-native-nitro-text/issues/57)) ([e550832](https://github.com/patrickkabwe/react-native-nitro-text/commit/e55083284ee14705bc959b8efc0fc14129bca33d))
+
 ## [1.0.3](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.2...v1.0.3) (2025-09-22)
 
 ### 🛠️ Other changes
