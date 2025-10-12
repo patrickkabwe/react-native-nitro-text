@@ -19,6 +19,7 @@ final class NitroTextView: UITextView {
     var tkLayoutManager: NSLayoutManager?
     weak var nitroTextDelegate: NitroTextViewDelegate?
     private var tapRecognizer: UITapGestureRecognizer?
+    private weak var windowTapRecognizer: UITapGestureRecognizer?
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         if let provided = textContainer {
@@ -37,6 +38,10 @@ final class NitroTextView: UITextView {
         setupView()
     }
 
+    deinit {
+        removeWindowTapRecognizer()
+    }
+
     private func setupView() {
         isEditable = false
         isSelectable = false
@@ -46,6 +51,7 @@ final class NitroTextView: UITextView {
         textContainerInset = .zero
         textContainer.lineFragmentPadding = 0
         layoutManager.usesFontLeading = false
+        textColor = .black
         contentInset = .zero
         clipsToBounds = true
 
@@ -76,6 +82,11 @@ final class NitroTextView: UITextView {
         if let layout = computeTextLayoutEvent() {
             delegate.onNitroTextLayout(layout)
         }
+    }
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateWindowTapRecognizer()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -168,9 +179,22 @@ final class NitroTextView: UITextView {
         nitroTextDelegate?.onNitroTextPress()
     }
 
+    @objc private func handleWindowTap(_ recognizer: UITapGestureRecognizer) {
+        guard recognizer === windowTapRecognizer, recognizer.state == .ended else { return }
+        guard hasActiveSelection() else { return }
+        let location = recognizer.location(in: self)
+        if point(inside: location, with: nil) { return }
+        selectedTextRange = nil
+    }
+
 }
 
 private extension NitroTextView {
+    func hasActiveSelection() -> Bool {
+        guard let currentSelection = selectedTextRange else { return false }
+        return selectionLength(currentSelection) > 0
+    }
+
     func selectionLength(_ range: UITextRange) -> Int {
         offset(from: range.start, to: range.end)
     }
@@ -191,5 +215,45 @@ private extension NitroTextView {
         if !isPoint(point, insideSelection: currentSelection) {
             selectedTextRange = nil
         }
+    }
+
+    func updateWindowTapRecognizer() {
+        guard let window = window else {
+            removeWindowTapRecognizer()
+            return
+        }
+
+        if let recognizer = windowTapRecognizer, recognizer.view !== window {
+            removeWindowTapRecognizer()
+        }
+
+        if windowTapRecognizer == nil {
+            let recognizer = UITapGestureRecognizer(target: self, action: #selector(handleWindowTap(_:)))
+            recognizer.cancelsTouchesInView = false
+            recognizer.delegate = self
+            window.addGestureRecognizer(recognizer)
+            windowTapRecognizer = recognizer
+        }
+    }
+
+    func removeWindowTapRecognizer() {
+        guard let recognizer = windowTapRecognizer else { return }
+        recognizer.view?.removeGestureRecognizer(recognizer)
+        windowTapRecognizer = nil
+    }
+}
+
+extension NitroTextView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard gestureRecognizer === windowTapRecognizer else { return true }
+        guard hasActiveSelection() else { return false }
+        guard let touchedView = touch.view else { return true }
+        if touchedView === self { return false }
+        if touchedView.isDescendant(of: self) { return false }
+        return true
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        gestureRecognizer === windowTapRecognizer
     }
 }
