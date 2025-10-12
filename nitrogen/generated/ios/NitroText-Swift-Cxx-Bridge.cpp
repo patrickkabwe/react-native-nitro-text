@@ -14,7 +14,7 @@
 namespace margelo::nitro::nitrotext::bridge::swift {
 
   // pragma MARK: std::function<void(const TextLayoutEvent& /* layout */)>
-  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* _Nonnull swiftClosureWrapper) noexcept {
+  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* NON_NULL swiftClosureWrapper) noexcept {
     auto swiftClosure = NitroText::Func_void_TextLayoutEvent::fromUnsafe(swiftClosureWrapper);
     return [swiftClosure = std::move(swiftClosure)](const TextLayoutEvent& layout) mutable -> void {
       swiftClosure.call(layout);
@@ -22,7 +22,7 @@ namespace margelo::nitro::nitrotext::bridge::swift {
   }
   
   // pragma MARK: std::function<void()>
-  Func_void create_Func_void(void* _Nonnull swiftClosureWrapper) noexcept {
+  Func_void create_Func_void(void* NON_NULL swiftClosureWrapper) noexcept {
     auto swiftClosure = NitroText::Func_void::fromUnsafe(swiftClosureWrapper);
     return [swiftClosure = std::move(swiftClosure)]() mutable -> void {
       swiftClosure.call();
@@ -30,11 +30,11 @@ namespace margelo::nitro::nitrotext::bridge::swift {
   }
   
   // pragma MARK: std::shared_ptr<HybridNitroTextSpec>
-  std::shared_ptr<HybridNitroTextSpec> create_std__shared_ptr_HybridNitroTextSpec_(void* _Nonnull swiftUnsafePointer) noexcept {
+  std::shared_ptr<HybridNitroTextSpec> create_std__shared_ptr_HybridNitroTextSpec_(void* NON_NULL swiftUnsafePointer) noexcept {
     NitroText::HybridNitroTextSpec_cxx swiftPart = NitroText::HybridNitroTextSpec_cxx::fromUnsafe(swiftUnsafePointer);
     return std::make_shared<margelo::nitro::nitrotext::HybridNitroTextSpecSwift>(swiftPart);
   }
-  void* _Nonnull get_std__shared_ptr_HybridNitroTextSpec_(std__shared_ptr_HybridNitroTextSpec_ cppType) noexcept {
+  void* NON_NULL get_std__shared_ptr_HybridNitroTextSpec_(std__shared_ptr_HybridNitroTextSpec_ cppType) {
     std::shared_ptr<margelo::nitro::nitrotext::HybridNitroTextSpecSwift> swiftWrapper = std::dynamic_pointer_cast<margelo::nitro::nitrotext::HybridNitroTextSpecSwift>(cppType);
     #ifdef NITRO_DEBUG
     if (swiftWrapper == nullptr) [[unlikely]] {

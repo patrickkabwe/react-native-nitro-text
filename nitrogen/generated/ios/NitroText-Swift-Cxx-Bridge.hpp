@@ -53,6 +53,7 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "TextLayout.hpp"
 #include "TextLayoutEvent.hpp"
 #include "TextTransform.hpp"
+#include <NitroModules/FastVectorCopy.hpp>
 #include <functional>
 #include <memory>
 #include <optional>
@@ -299,7 +300,7 @@ namespace margelo::nitro::nitrotext::bridge::swift {
   private:
     std::unique_ptr<std::function<void(const TextLayoutEvent& /* layout */)>> _function;
   } SWIFT_NONCOPYABLE;
-  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* _Nonnull swiftClosureWrapper) noexcept;
+  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* NON_NULL swiftClosureWrapper) noexcept;
   inline Func_void_TextLayoutEvent_Wrapper wrap_Func_void_TextLayoutEvent(Func_void_TextLayoutEvent value) noexcept {
     return Func_void_TextLayoutEvent_Wrapper(std::move(value));
   }
@@ -336,7 +337,7 @@ namespace margelo::nitro::nitrotext::bridge::swift {
   private:
     std::unique_ptr<std::function<void()>> _function;
   } SWIFT_NONCOPYABLE;
-  Func_void create_Func_void(void* _Nonnull swiftClosureWrapper) noexcept;
+  Func_void create_Func_void(void* NON_NULL swiftClosureWrapper) noexcept;
   inline Func_void_Wrapper wrap_Func_void(Func_void value) noexcept {
     return Func_void_Wrapper(std::move(value));
   }
@@ -361,8 +362,8 @@ namespace margelo::nitro::nitrotext::bridge::swift {
    * Specialized version of `std::shared_ptr<HybridNitroTextSpec>`.
    */
   using std__shared_ptr_HybridNitroTextSpec_ = std::shared_ptr<HybridNitroTextSpec>;
-  std::shared_ptr<HybridNitroTextSpec> create_std__shared_ptr_HybridNitroTextSpec_(void* _Nonnull swiftUnsafePointer) noexcept;
-  void* _Nonnull get_std__shared_ptr_HybridNitroTextSpec_(std__shared_ptr_HybridNitroTextSpec_ cppType) noexcept;
+  std::shared_ptr<HybridNitroTextSpec> create_std__shared_ptr_HybridNitroTextSpec_(void* NON_NULL swiftUnsafePointer) noexcept;
+  void* NON_NULL get_std__shared_ptr_HybridNitroTextSpec_(std__shared_ptr_HybridNitroTextSpec_ cppType);
   
   // pragma MARK: std::weak_ptr<HybridNitroTextSpec>
   using std__weak_ptr_HybridNitroTextSpec_ = std::weak_ptr<HybridNitroTextSpec>;
