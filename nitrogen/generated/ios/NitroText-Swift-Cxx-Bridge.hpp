@@ -22,6 +22,12 @@ namespace margelo::nitro::nitrotext { struct Fragment; }
 namespace margelo::nitro::nitrotext { class HybridNitroTextSpec; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
+// Forward declaration of `NitroRenderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class NitroRenderer; }
+// Forward declaration of `RichTextStyleRule` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyleRule; }
+// Forward declaration of `RichTextStyle` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct RichTextStyle; }
 // Forward declaration of `TextAlign` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextDecorationLine` to properly resolve imports.
@@ -47,12 +53,16 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "Fragment.hpp"
 #include "HybridNitroTextSpec.hpp"
 #include "LineBreakStrategyIOS.hpp"
+#include "NitroRenderer.hpp"
+#include "RichTextStyle.hpp"
+#include "RichTextStyleRule.hpp"
 #include "TextAlign.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
 #include "TextLayout.hpp"
 #include "TextLayoutEvent.hpp"
 #include "TextTransform.hpp"
+#include <NitroModules/FastVectorCopy.hpp>
 #include <functional>
 #include <memory>
 #include <optional>
@@ -190,10 +200,11 @@ namespace margelo::nitro::nitrotext::bridge::swift {
    * Specialized version of `std::vector<Fragment>`.
    */
   using std__vector_Fragment_ = std::vector<Fragment>;
-  inline std::vector<Fragment> create_std__vector_Fragment_(size_t size) noexcept {
-    std::vector<Fragment> vector;
-    vector.reserve(size);
-    return vector;
+  inline std::vector<Fragment> copy_std__vector_Fragment_(const Fragment* CONTIGUOUS_MEMORY NON_NULL data, size_t size) noexcept {
+    return margelo::nitro::FastVectorCopy<Fragment>(data, size);
+  }
+  inline const Fragment* CONTIGUOUS_MEMORY NON_NULL get_data_std__vector_Fragment_(const std::vector<Fragment>& vector) noexcept {
+    return vector.data();
   }
   
   // pragma MARK: std::optional<std::vector<Fragment>>
@@ -208,6 +219,48 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline std::vector<Fragment> get_std__optional_std__vector_Fragment__(const std::optional<std::vector<Fragment>>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<NitroRenderer>
+  /**
+   * Specialized version of `std::optional<NitroRenderer>`.
+   */
+  using std__optional_NitroRenderer_ = std::optional<NitroRenderer>;
+  inline std::optional<NitroRenderer> create_std__optional_NitroRenderer_(const NitroRenderer& value) noexcept {
+    return std::optional<NitroRenderer>(value);
+  }
+  inline bool has_value_std__optional_NitroRenderer_(const std::optional<NitroRenderer>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline NitroRenderer get_std__optional_NitroRenderer_(const std::optional<NitroRenderer>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::vector<RichTextStyleRule>
+  /**
+   * Specialized version of `std::vector<RichTextStyleRule>`.
+   */
+  using std__vector_RichTextStyleRule_ = std::vector<RichTextStyleRule>;
+  inline std::vector<RichTextStyleRule> copy_std__vector_RichTextStyleRule_(const RichTextStyleRule* CONTIGUOUS_MEMORY NON_NULL data, size_t size) noexcept {
+    return margelo::nitro::FastVectorCopy<RichTextStyleRule>(data, size);
+  }
+  inline const RichTextStyleRule* CONTIGUOUS_MEMORY NON_NULL get_data_std__vector_RichTextStyleRule_(const std::vector<RichTextStyleRule>& vector) noexcept {
+    return vector.data();
+  }
+  
+  // pragma MARK: std::optional<std::vector<RichTextStyleRule>>
+  /**
+   * Specialized version of `std::optional<std::vector<RichTextStyleRule>>`.
+   */
+  using std__optional_std__vector_RichTextStyleRule__ = std::optional<std::vector<RichTextStyleRule>>;
+  inline std::optional<std::vector<RichTextStyleRule>> create_std__optional_std__vector_RichTextStyleRule__(const std::vector<RichTextStyleRule>& value) noexcept {
+    return std::optional<std::vector<RichTextStyleRule>>(value);
+  }
+  inline bool has_value_std__optional_std__vector_RichTextStyleRule__(const std::optional<std::vector<RichTextStyleRule>>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline std::vector<RichTextStyleRule> get_std__optional_std__vector_RichTextStyleRule__(const std::optional<std::vector<RichTextStyleRule>>& optional) noexcept {
     return *optional;
   }
   
@@ -276,10 +329,11 @@ namespace margelo::nitro::nitrotext::bridge::swift {
    * Specialized version of `std::vector<TextLayout>`.
    */
   using std__vector_TextLayout_ = std::vector<TextLayout>;
-  inline std::vector<TextLayout> create_std__vector_TextLayout_(size_t size) noexcept {
-    std::vector<TextLayout> vector;
-    vector.reserve(size);
-    return vector;
+  inline std::vector<TextLayout> copy_std__vector_TextLayout_(const TextLayout* CONTIGUOUS_MEMORY NON_NULL data, size_t size) noexcept {
+    return margelo::nitro::FastVectorCopy<TextLayout>(data, size);
+  }
+  inline const TextLayout* CONTIGUOUS_MEMORY NON_NULL get_data_std__vector_TextLayout_(const std::vector<TextLayout>& vector) noexcept {
+    return vector.data();
   }
   
   // pragma MARK: std::function<void(const TextLayoutEvent& /* layout */)>
@@ -299,7 +353,7 @@ namespace margelo::nitro::nitrotext::bridge::swift {
   private:
     std::unique_ptr<std::function<void(const TextLayoutEvent& /* layout */)>> _function;
   } SWIFT_NONCOPYABLE;
-  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* _Nonnull swiftClosureWrapper) noexcept;
+  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* NON_NULL swiftClosureWrapper) noexcept;
   inline Func_void_TextLayoutEvent_Wrapper wrap_Func_void_TextLayoutEvent(Func_void_TextLayoutEvent value) noexcept {
     return Func_void_TextLayoutEvent_Wrapper(std::move(value));
   }
@@ -336,7 +390,7 @@ namespace margelo::nitro::nitrotext::bridge::swift {
   private:
     std::unique_ptr<std::function<void()>> _function;
   } SWIFT_NONCOPYABLE;
-  Func_void create_Func_void(void* _Nonnull swiftClosureWrapper) noexcept;
+  Func_void create_Func_void(void* NON_NULL swiftClosureWrapper) noexcept;
   inline Func_void_Wrapper wrap_Func_void(Func_void value) noexcept {
     return Func_void_Wrapper(std::move(value));
   }
@@ -361,8 +415,8 @@ namespace margelo::nitro::nitrotext::bridge::swift {
    * Specialized version of `std::shared_ptr<HybridNitroTextSpec>`.
    */
   using std__shared_ptr_HybridNitroTextSpec_ = std::shared_ptr<HybridNitroTextSpec>;
-  std::shared_ptr<HybridNitroTextSpec> create_std__shared_ptr_HybridNitroTextSpec_(void* _Nonnull swiftUnsafePointer) noexcept;
-  void* _Nonnull get_std__shared_ptr_HybridNitroTextSpec_(std__shared_ptr_HybridNitroTextSpec_ cppType) noexcept;
+  std::shared_ptr<HybridNitroTextSpec> create_std__shared_ptr_HybridNitroTextSpec_(void* NON_NULL swiftUnsafePointer) noexcept;
+  void* NON_NULL get_std__shared_ptr_HybridNitroTextSpec_(std__shared_ptr_HybridNitroTextSpec_ cppType) noexcept;
   
   // pragma MARK: std::weak_ptr<HybridNitroTextSpec>
   using std__weak_ptr_HybridNitroTextSpec_ = std::weak_ptr<HybridNitroTextSpec>;

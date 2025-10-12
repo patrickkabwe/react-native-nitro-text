@@ -118,3 +118,30 @@ export type Fragment = {
      */
     textDecorationStyle?: TextDecorationStyle
 }
+
+export type NitroRenderer = 'plaintext' | 'html'
+
+export type RichTextStyle = {
+    fontColor?: string
+    fragmentBackgroundColor?: string
+    fontSize?: number
+    fontWeight?: FontWeight
+    fontStyle?: FontStyle
+    fontFamily?: string
+    lineHeight?: number
+    letterSpacing?: number
+    textAlign?: TextAlign
+    textTransform?: TextTransform
+    textDecorationLine?: TextDecorationLine
+    textDecorationColor?: string
+    textDecorationStyle?: TextDecorationStyle
+    marginTop?: number
+    marginBottom?: number
+    marginLeft?: number
+    marginRight?: number
+}
+
+export type RichTextStyleRule = {
+    selector: string
+    style: RichTextStyle
+}

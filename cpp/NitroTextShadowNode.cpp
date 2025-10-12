@@ -5,15 +5,40 @@
 
 #include "NitroTextShadowNode.hpp"
 
+#include "NitroHtmlUtils.hpp"
+#include "RichTextStyle.hpp"
+
+#include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <optional>
 #include <string>
+#include <unordered_map>
 #include <utility>
+#include <vector>
+
+#if defined(__ANDROID__)
+#include <android/log.h>
+#elif defined(__APPLE__)
+#include <os/log.h>
+#endif
+
+#if defined(__ANDROID__)
+#include <android/log.h>
+#endif
 
 #include <react/renderer/attributedstring/AttributedStringBox.h>
 
 #if __has_include(<cxxreact/ReactNativeVersion.h>)
 #include <cxxreact/ReactNativeVersion.h>
+#endif
+
+#if defined(REACT_NATIVE_VERSION_MAJOR)
+#define RN_VERSION_AT_LEAST(major, minor)                                                     \
+  ((REACT_NATIVE_VERSION_MAJOR > (major)) ||                                                  \
+   (REACT_NATIVE_VERSION_MAJOR == (major) && REACT_NATIVE_VERSION_MINOR >= (minor)))
+#else
+#define RN_VERSION_AT_LEAST(major, minor) 0
 #endif
 
 namespace margelo::nitro::nitrotext::views {
@@ -38,21 +63,23 @@ react::Size NitroTextShadowNode::measureContent(
     const react::LayoutConstraints &layoutConstraints) const
 {
   const auto &props = this->getConcreteProps();
+  using NitroRenderer = margelo::nitro::nitrotext::NitroRenderer;
+  const bool isHtmlRenderer = props.renderer.value.has_value() &&
+    props.renderer.value.value() == NitroRenderer::HTML;
+  bool usedHtmlFragmentParsing = false;
+  std::vector<margelo::nitro::nitrotext::RichTextStyle> htmlFragmentStyles;
+
+  const bool allowFontScalingProp = props.allowFontScaling.value.value_or(true);
+  const auto baseTextAttributes = react::TextAttributes::defaultTextAttributes();
 
   auto makeTextAttributes =
       [&](const std::optional<margelo::nitro::nitrotext::Fragment> &fragOpt) {
-        auto a = react::TextAttributes::defaultTextAttributes();
-
-        // backgroundColor
-//                if (props.fragmentBackgroundColor.value.has_value())
-//                {
-//                    a.backgroundColor = props.fragmentBackgroundColor.value.value();
-//                }
+        auto a = baseTextAttributes;
+        const auto *fragment = fragOpt ? &fragOpt.value() : nullptr;
 
         // allowFontScaling
-        bool allowFontScaling = props.allowFontScaling.value.value_or(true);
-        a.allowFontScaling = allowFontScaling;
-        a.fontSizeMultiplier = allowFontScaling ? layoutContext.fontSizeMultiplier : 1.0f;
+        a.allowFontScaling = allowFontScalingProp;
+        a.fontSizeMultiplier = allowFontScalingProp ? layoutContext.fontSizeMultiplier : 1.0f;
 
         if (props.dynamicTypeRamp.value.has_value())
         {
@@ -97,9 +124,9 @@ react::Size NitroTextShadowNode::measureContent(
         }
 
         // fontSize
-        if (fragOpt.has_value() && fragOpt->fontSize.has_value())
+        if (fragment && fragment->fontSize.has_value())
         {
-          a.fontSize = fragOpt->fontSize.value();
+          a.fontSize = fragment->fontSize.value();
         }
         else if (props.fontSize.value.has_value())
         {
@@ -125,9 +152,9 @@ react::Size NitroTextShadowNode::measureContent(
           }
         };
 
-        if (fragOpt.has_value() && fragOpt->fontStyle.has_value())
+        if (fragment && fragment->fontStyle.has_value())
         {
-          applyFontStyle(fragOpt->fontStyle.value());
+          applyFontStyle(fragment->fontStyle.value());
         }
         else if (props.fontStyle.value.has_value())
         {
@@ -135,9 +162,9 @@ react::Size NitroTextShadowNode::measureContent(
         }
 
         // fontFamily
-        if (fragOpt.has_value() && fragOpt->fontFamily.has_value())
+        if (fragment && fragment->fontFamily.has_value())
         {
-          a.fontFamily = fragOpt->fontFamily.value();
+          a.fontFamily = fragment->fontFamily.value();
         }
         else if (props.fontFamily.value.has_value())
         {
@@ -184,9 +211,9 @@ react::Size NitroTextShadowNode::measureContent(
           }
         };
 
-        if (fragOpt.has_value() && fragOpt->fontWeight.has_value())
+        if (fragment && fragment->fontWeight.has_value())
         {
-          applyFontWeight(fragOpt->fontWeight.value());
+          applyFontWeight(fragment->fontWeight.value());
         }
         else if (props.fontWeight.value.has_value())
         {
@@ -194,9 +221,9 @@ react::Size NitroTextShadowNode::measureContent(
         }
 
         // lineHeight
-        if (fragOpt.has_value() && fragOpt->lineHeight.has_value())
+        if (fragment && fragment->lineHeight.has_value())
         {
-          a.lineHeight = fragOpt->lineHeight.value();
+          a.lineHeight = fragment->lineHeight.value();
         }
         else if (props.lineHeight.value.has_value())
         {
@@ -204,9 +231,9 @@ react::Size NitroTextShadowNode::measureContent(
         }
 
         // letterSpacing
-        if (fragOpt.has_value() && fragOpt->letterSpacing.has_value())
+        if (fragment && fragment->letterSpacing.has_value())
         {
-          a.letterSpacing = fragOpt->letterSpacing.value();
+          a.letterSpacing = fragment->letterSpacing.value();
         }
         else if (props.letterSpacing.value.has_value())
         {
@@ -240,9 +267,9 @@ react::Size NitroTextShadowNode::measureContent(
             break;
           }
         };
-        if (fragOpt.has_value() && fragOpt->textAlign.has_value())
+        if (fragment && fragment->textAlign.has_value())
         {
-          applyAlign(fragOpt->textAlign.value());
+          applyAlign(fragment->textAlign.value());
         }
         else if (props.textAlign.value.has_value())
         {
@@ -273,9 +300,9 @@ react::Size NitroTextShadowNode::measureContent(
             break;
           }
         };
-        if (fragOpt.has_value() && fragOpt->textTransform.has_value())
+        if (fragment && fragment->textTransform.has_value())
         {
-          applyTransform(fragOpt->textTransform.value());
+          applyTransform(fragment->textTransform.value());
         }
         else if (props.textTransform.value.has_value())
         {
@@ -327,11 +354,14 @@ react::Size NitroTextShadowNode::measureContent(
         for (const auto &f : frags)
         {
           const std::string fragmentText = f.text.has_value() ? f.text.value() : std::string("");
-          if (fragmentText.empty())
+          const std::string sanitizedFragmentText =
+            isHtmlRenderer ? html::NitroHtmlUtils::stripTags(fragmentText)
+                           : fragmentText;
+          if (sanitizedFragmentText.empty())
             continue;
           auto attrs = makeTextAttributes(f);
           attributedString.appendFragment(react::AttributedString::Fragment{
-            .string = fragmentText,
+            .string = sanitizedFragmentText,
             .textAttributes = attrs,
             .parentShadowView = react::ShadowView(*this)});
         }
@@ -339,11 +369,109 @@ react::Size NitroTextShadowNode::measureContent(
       else
       {
         const std::string textToMeasure = props.text.value.has_value() ? props.text.value.value() : std::string("");
-        auto attrs = makeTextAttributes(std::nullopt);
-        attributedString.appendFragment(react::AttributedString::Fragment{
-          .string = textToMeasure,
-          .textAttributes = attrs,
-          .parentShadowView = react::ShadowView(*this)});
+        if (isHtmlRenderer)
+        {
+          std::unordered_map<std::string, margelo::nitro::nitrotext::RichTextStyle> ruleMap;
+          if (props.richTextStyleRules.value.has_value())
+          {
+            const auto &rules = props.richTextStyleRules.value.value();
+            ruleMap.reserve(rules.size());
+            for (const auto &rule : rules)
+            {
+              if (rule.selector.empty())
+              {
+                continue;
+              }
+              std::string selector = rule.selector;
+              std::transform(
+                  selector.begin(),
+                  selector.end(),
+                  selector.begin(),
+                  [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+              ruleMap[selector] = rule.style;
+            }
+          }
+
+          auto parseResult = html::NitroHtmlUtils::parseToFragments(textToMeasure, ruleMap);
+
+          const auto isWhitespaceOnly = [](const std::string &text) {
+            return text.find_first_not_of(" \t\n\r") == std::string::npos;
+          };
+
+          std::optional<size_t> lastContentIndex;
+          for (size_t idx = 0; idx < parseResult.fragments.size(); ++idx)
+          {
+            if (!isWhitespaceOnly(parseResult.fragments[idx].text))
+            {
+              lastContentIndex = idx;
+            }
+          }
+
+          if (lastContentIndex.has_value())
+          {
+            parseResult.fragments.resize(lastContentIndex.value() + 1);
+            auto &lastText = parseResult.fragments.back().text;
+            const auto pos = lastText.find_last_not_of(" \t\n\r");
+            if (pos != std::string::npos && pos + 1 < lastText.size())
+            {
+              lastText.erase(pos + 1);
+            }
+          }
+          else
+          {
+            parseResult.fragments.clear();
+          }
+
+          while (!parseResult.fragments.empty() && parseResult.fragments.back().text.empty())
+          {
+            parseResult.fragments.pop_back();
+          }
+
+          usedHtmlFragmentParsing = true;
+
+          for (const auto &htmlFrag : parseResult.fragments)
+          {
+            if (htmlFrag.text.empty())
+            {
+              continue;
+            }
+
+            htmlFragmentStyles.push_back(htmlFrag.style);
+
+            margelo::nitro::nitrotext::Fragment frag;
+            frag.text = std::make_optional(htmlFrag.text);
+            frag.fontSize = htmlFrag.style.fontSize;
+            frag.fontWeight = htmlFrag.style.fontWeight;
+            frag.fontStyle = htmlFrag.style.fontStyle;
+            frag.fontFamily = htmlFrag.style.fontFamily;
+            frag.lineHeight = htmlFrag.style.lineHeight;
+            frag.letterSpacing = htmlFrag.style.letterSpacing;
+            frag.textAlign = htmlFrag.style.textAlign;
+            frag.textTransform = htmlFrag.style.textTransform;
+            frag.textDecorationLine = htmlFrag.style.textDecorationLine;
+            frag.textDecorationColor = htmlFrag.style.textDecorationColor;
+            frag.textDecorationStyle = htmlFrag.style.textDecorationStyle;
+
+            auto attrs = makeTextAttributes(frag);
+            attributedString.appendFragment(react::AttributedString::Fragment{
+              .string = htmlFrag.text,
+              .textAttributes = attrs,
+              .parentShadowView = react::ShadowView(*this)});
+          }
+
+        }
+        else
+        {
+          const std::string sanitizedText =
+            isHtmlRenderer ? html::NitroHtmlUtils::stripTags(textToMeasure)
+                            : textToMeasure;
+          auto attrs = makeTextAttributes(std::nullopt);
+
+          attributedString.appendFragment(react::AttributedString::Fragment{
+            .string = sanitizedText,
+            .textAttributes = attrs,
+            .parentShadowView = react::ShadowView(*this)});
+        }
       }
 
       react::ParagraphAttributes paragraphAttributes;
@@ -366,14 +494,8 @@ react::Size NitroTextShadowNode::measureContent(
       // but leaving the scale here avoids over-adjusting and potential divergences.
       if (props.minimumFontScale.value.has_value())
       {
-#if defined(REACT_NATIVE_VERSION_MAJOR)
-#if (REACT_NATIVE_VERSION_MAJOR > 0) || \
-    (REACT_NATIVE_VERSION_MAJOR == 0 && REACT_NATIVE_VERSION_MINOR >= 81)
-        paragraphAttributes.minimumFontScale =
-            props.minimumFontScale.value.value();
-#else
-        // React Native < 0.81 does not expose paragraphAttributes.minimumFontScale yet.
-#endif
+#if RN_VERSION_AT_LEAST(0, 81)
+        paragraphAttributes.minimumFontScale = props.minimumFontScale.value.value();
 #endif
       }
 
@@ -411,13 +533,29 @@ react::Size NitroTextShadowNode::measureContent(
       // Measure using given constraints (Yoga already accounts for padding/border).
       react::TextLayoutContext textLayoutContext{
         .pointScaleFactor = layoutContext.pointScaleFactor,
-        // TODO: investigate why surfaceId is not working for react-native <= 0.79
-//        .surfaceId = this->getSurfaceId(),
+#if RN_VERSION_AT_LEAST(0, 81)
+        // Older React Native versions didn't surface `surfaceId` on TextLayoutContext.
+        .surfaceId = this->getSurfaceId(),
+#endif
       };
 
+      // 8: hand measurement off to the shared RN text layout manager.
       const auto measurement = textLayoutManager_->measure(
         react::AttributedStringBox{attributedString}, paragraphAttributes,
         textLayoutContext, layoutConstraints);
+
+      // If we're not using HTML renderer, return the measurement as-is
+      if (!isHtmlRenderer)
+      {
+        return layoutConstraints.clamp(measurement.size);
+      }
+
+      // If we used the new HTML fragment parsing with proper styling,
+      // the measurement is already accurate - no need for extra padding
+      if (usedHtmlFragmentParsing)
+      {
+        return layoutConstraints.clamp(measurement.size);
+      }
 
       return layoutConstraints.clamp(measurement.size);
     }
