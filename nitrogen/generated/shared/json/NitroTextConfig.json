@@ -14,6 +14,7 @@
     "maxFontSizeMultiplier": true,
     "adjustsFontSizeToFit": true,
     "minimumFontScale": true,
+    "menus": true,
     "onTextLayout": true,
     "onPress": true,
     "onPressIn": true,

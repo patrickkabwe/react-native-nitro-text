@@ -224,6 +224,10 @@ final class NitroTextImpl {
 
         setText(result)
     }
+
+    func setMenus(_ menus: [MenuItem]) {
+        nitroTextView?.customMenus = menus
+    }
 }
 
 extension NitroTextImpl {

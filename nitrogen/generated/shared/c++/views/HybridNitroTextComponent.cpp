@@ -125,6 +125,16 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.minimumFontScale: ") + exc.what());
       }
     }()),
+    menus([&]() -> CachedProp<std::optional<std::vector<MenuItem>>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("menus", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.menus;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::vector<MenuItem>>>::fromRawValue(*runtime, value, sourceProps.menus);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.menus: ") + exc.what());
+      }
+    }()),
     onTextLayout([&]() -> CachedProp<std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("onTextLayout", nullptr, nullptr);
@@ -338,6 +348,7 @@ namespace margelo::nitro::nitrotext::views {
     maxFontSizeMultiplier(other.maxFontSizeMultiplier),
     adjustsFontSizeToFit(other.adjustsFontSizeToFit),
     minimumFontScale(other.minimumFontScale),
+    menus(other.menus),
     onTextLayout(other.onTextLayout),
     onPress(other.onPress),
     onPressIn(other.onPressIn),
@@ -371,6 +382,7 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("maxFontSizeMultiplier"): return true;
       case hashString("adjustsFontSizeToFit"): return true;
       case hashString("minimumFontScale"): return true;
+      case hashString("menus"): return true;
       case hashString("onTextLayout"): return true;
       case hashString("onPress"): return true;
       case hashString("onPressIn"): return true;

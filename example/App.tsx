@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { NitroText, TextLayoutEvent } from 'react-native-nitro-text';
 
@@ -16,6 +16,14 @@ export default function App() {
     // console.log('height', height);
     // setLayoutInfo(`Lines: ${lines.length}`);
   };
+
+  const menus = useMemo(
+    () => [
+      { title: 'Ask ChatGPT', action: () => console.log('Ask ChatGPT') },
+      { title: 'Paste', action: () => console.log('Paste') },
+    ],
+    [],
+  );
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -61,7 +69,7 @@ export default function App() {
       {/* Rich Text Formatting */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Rich Text Formatting</NitroText>
-        <NitroText style={styles.richText}>
+        <NitroText selectable menus={menus} style={styles.richText}>
           Welcome to the world of{' '}
           <NitroText style={styles.bold}>bold text</NitroText>,{' '}
           <NitroText style={styles.italic}>beautiful italics</NitroText>, and{' '}
@@ -129,7 +137,11 @@ export default function App() {
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Line Limiting</NitroText>
         <NitroText style={styles.description}>Two lines maximum:</NitroText>
-        <NitroText style={styles.limitedText} numberOfLines={2} ellipsizeMode='tail'>
+        <NitroText
+          style={styles.limitedText}
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
           This is a very long text that would normally span multiple lines, but
           we're limiting it to just two lines. The text will be truncated with
           an ellipsis when it exceeds the specified number of lines. This is

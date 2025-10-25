@@ -22,6 +22,8 @@ namespace margelo::nitro::nitrotext { struct Fragment; }
 namespace margelo::nitro::nitrotext { class HybridNitroTextSpec; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
+// Forward declaration of `MenuItem` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct MenuItem; }
 // Forward declaration of `TextAlign` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextDecorationLine` to properly resolve imports.
@@ -47,13 +49,13 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "Fragment.hpp"
 #include "HybridNitroTextSpec.hpp"
 #include "LineBreakStrategyIOS.hpp"
+#include "MenuItem.hpp"
 #include "TextAlign.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
 #include "TextLayout.hpp"
 #include "TextLayoutEvent.hpp"
 #include "TextTransform.hpp"
-#include <NitroModules/FastVectorCopy.hpp>
 #include <functional>
 #include <memory>
 #include <optional>
@@ -272,6 +274,54 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return *optional;
   }
   
+  // pragma MARK: std::function<void()>
+  /**
+   * Specialized version of `std::function<void()>`.
+   */
+  using Func_void = std::function<void()>;
+  /**
+   * Wrapper class for a `std::function<void()>`, this can be used from Swift.
+   */
+  class Func_void_Wrapper final {
+  public:
+    explicit Func_void_Wrapper(std::function<void()>&& func): _function(std::make_unique<std::function<void()>>(std::move(func))) {}
+    inline void call() const noexcept {
+      _function->operator()();
+    }
+  private:
+    std::unique_ptr<std::function<void()>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void create_Func_void(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_Wrapper wrap_Func_void(Func_void value) noexcept {
+    return Func_void_Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::vector<MenuItem>
+  /**
+   * Specialized version of `std::vector<MenuItem>`.
+   */
+  using std__vector_MenuItem_ = std::vector<MenuItem>;
+  inline std::vector<MenuItem> create_std__vector_MenuItem_(size_t size) noexcept {
+    std::vector<MenuItem> vector;
+    vector.reserve(size);
+    return vector;
+  }
+  
+  // pragma MARK: std::optional<std::vector<MenuItem>>
+  /**
+   * Specialized version of `std::optional<std::vector<MenuItem>>`.
+   */
+  using std__optional_std__vector_MenuItem__ = std::optional<std::vector<MenuItem>>;
+  inline std::optional<std::vector<MenuItem>> create_std__optional_std__vector_MenuItem__(const std::vector<MenuItem>& value) noexcept {
+    return std::optional<std::vector<MenuItem>>(value);
+  }
+  inline bool has_value_std__optional_std__vector_MenuItem__(const std::optional<std::vector<MenuItem>>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline std::vector<MenuItem> get_std__optional_std__vector_MenuItem__(const std::optional<std::vector<MenuItem>>& optional) noexcept {
+    return *optional;
+  }
+  
   // pragma MARK: std::vector<TextLayout>
   /**
    * Specialized version of `std::vector<TextLayout>`.
@@ -318,28 +368,6 @@ namespace margelo::nitro::nitrotext::bridge::swift {
   }
   inline std::function<void(const TextLayoutEvent& /* layout */)> get_std__optional_std__function_void_const_TextLayoutEvent_____layout______(const std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>& optional) noexcept {
     return *optional;
-  }
-  
-  // pragma MARK: std::function<void()>
-  /**
-   * Specialized version of `std::function<void()>`.
-   */
-  using Func_void = std::function<void()>;
-  /**
-   * Wrapper class for a `std::function<void()>`, this can be used from Swift.
-   */
-  class Func_void_Wrapper final {
-  public:
-    explicit Func_void_Wrapper(std::function<void()>&& func): _function(std::make_unique<std::function<void()>>(std::move(func))) {}
-    inline void call() const noexcept {
-      _function->operator()();
-    }
-  private:
-    std::unique_ptr<std::function<void()>> _function;
-  } SWIFT_NONCOPYABLE;
-  Func_void create_Func_void(void* NON_NULL swiftClosureWrapper) noexcept;
-  inline Func_void_Wrapper wrap_Func_void(Func_void value) noexcept {
-    return Func_void_Wrapper(std::move(value));
   }
   
   // pragma MARK: std::optional<std::function<void()>>

@@ -9,6 +9,7 @@ import type {
     Fragment,
     LineBreakStrategyIOS,
     TextLayoutEvent,
+    MenuItem,
 } from '../types'
 
 export interface NitroTextProps extends HybridViewProps, Fragment {
@@ -72,6 +73,11 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
      * Range 0.01–1.0. Only used when `adjustsFontSizeToFit` is true.
      */
     minimumFontScale?: number
+
+    /**
+     * Add custom menu items to the selection menu.
+     */
+    menus?: MenuItem[]
 
     /**
      * The onTextLayout callback. Used to measure the layout of the text.
