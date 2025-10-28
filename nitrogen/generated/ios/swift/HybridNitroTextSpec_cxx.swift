@@ -149,7 +149,14 @@ open class HybridNitroTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.selectable = newValue.value
+      self.__implementation.selectable = { () -> Bool? in
+        if bridge.has_value_std__optional_bool_(newValue) {
+          let __unwrapped = bridge.get_std__optional_bool_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -166,7 +173,14 @@ open class HybridNitroTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.allowFontScaling = newValue.value
+      self.__implementation.allowFontScaling = { () -> Bool? in
+        if bridge.has_value_std__optional_bool_(newValue) {
+          let __unwrapped = bridge.get_std__optional_bool_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -268,7 +282,14 @@ open class HybridNitroTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.adjustsFontSizeToFit = newValue.value
+      self.__implementation.adjustsFontSizeToFit = { () -> Bool? in
+        if bridge.has_value_std__optional_bool_(newValue) {
+          let __unwrapped = bridge.get_std__optional_bool_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -286,6 +307,36 @@ open class HybridNitroTextSpec_cxx {
     @inline(__always)
     set {
       self.__implementation.minimumFontScale = newValue.value
+    }
+  }
+  
+  public final var menus: bridge.std__optional_std__vector_MenuItem__ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__vector_MenuItem__ in
+        if let __unwrappedValue = self.__implementation.menus {
+          return bridge.create_std__optional_std__vector_MenuItem__({ () -> bridge.std__vector_MenuItem_ in
+            var __vector = bridge.create_std__vector_MenuItem_(__unwrappedValue.count)
+            for __item in __unwrappedValue {
+              __vector.push_back(__item)
+            }
+            return __vector
+          }())
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.menus = { () -> [MenuItem]? in
+        if bridge.has_value_std__optional_std__vector_MenuItem__(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__vector_MenuItem__(newValue)
+          return __unwrapped.map({ __item in __item })
+        } else {
+          return nil
+        }
+      }()
     }
   }
   

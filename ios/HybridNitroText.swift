@@ -177,6 +177,12 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
             markNeedsApply()
         }
     }
+    
+    var menus: [MenuItem]? {
+        didSet {
+            nitroTextImpl.setMenus(menus ?? [])
+        }
+    }
 
     // Merge per-fragment props with top-level fallbacks and apply (delegated to NitroTextImpl)
     private func applyFragmentsAndProps() {

@@ -21,6 +21,7 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var maxFontSizeMultiplier: Double? { get set }
   var adjustsFontSizeToFit: Bool? { get set }
   var minimumFontScale: Double? { get set }
+  var menus: [MenuItem]? { get set }
   var onTextLayout: ((_ layout: TextLayoutEvent) -> Void)? { get set }
   var onPress: (() -> Void)? { get set }
   var onPressIn: (() -> Void)? { get set }

@@ -118,3 +118,8 @@ export type Fragment = {
      */
     textDecorationStyle?: TextDecorationStyle
 }
+
+export type MenuItem = {
+    title: string
+    action: () => void
+}

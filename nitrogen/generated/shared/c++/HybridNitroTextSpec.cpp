@@ -34,6 +34,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("adjustsFontSizeToFit", &HybridNitroTextSpec::setAdjustsFontSizeToFit);
       prototype.registerHybridGetter("minimumFontScale", &HybridNitroTextSpec::getMinimumFontScale);
       prototype.registerHybridSetter("minimumFontScale", &HybridNitroTextSpec::setMinimumFontScale);
+      prototype.registerHybridGetter("menus", &HybridNitroTextSpec::getMenus);
+      prototype.registerHybridSetter("menus", &HybridNitroTextSpec::setMenus);
       prototype.registerHybridGetter("onTextLayout", &HybridNitroTextSpec::getOnTextLayout);
       prototype.registerHybridSetter("onTextLayout", &HybridNitroTextSpec::setOnTextLayout);
       prototype.registerHybridGetter("onPress", &HybridNitroTextSpec::getOnPress);

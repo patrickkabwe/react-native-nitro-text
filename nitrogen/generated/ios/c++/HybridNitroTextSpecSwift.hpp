@@ -32,6 +32,8 @@ namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
+// Forward declaration of `MenuItem` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct MenuItem; }
 // Forward declaration of `TextLayoutEvent` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
 // Forward declaration of `TextLayout` to properly resolve imports.
@@ -50,8 +52,9 @@ namespace margelo::nitro::nitrotext { struct TextLayout; }
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
-#include "TextLayoutEvent.hpp"
+#include "MenuItem.hpp"
 #include <functional>
+#include "TextLayoutEvent.hpp"
 #include "TextLayout.hpp"
 
 #include "NitroText-Swift-Cxx-Umbrella.hpp"
@@ -160,6 +163,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setMinimumFontScale(std::optional<double> minimumFontScale) noexcept override {
       _swiftPart.setMinimumFontScale(minimumFontScale);
+    }
+    inline std::optional<std::vector<MenuItem>> getMenus() noexcept override {
+      auto __result = _swiftPart.getMenus();
+      return __result;
+    }
+    inline void setMenus(const std::optional<std::vector<MenuItem>>& menus) noexcept override {
+      _swiftPart.setMenus(menus);
     }
     inline std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> getOnTextLayout() noexcept override {
       auto __result = _swiftPart.getOnTextLayout();

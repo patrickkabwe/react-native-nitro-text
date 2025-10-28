@@ -121,6 +121,11 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setMinimumFontScale(newViewProps.minimumFontScale.value);
     newViewProps.minimumFontScale.isDirty = false;
   }
+  // menus: optional
+  if (newViewProps.menus.isDirty) {
+    swiftPart.setMenus(newViewProps.menus.value);
+    newViewProps.menus.isDirty = false;
+  }
   // onTextLayout: optional
   if (newViewProps.onTextLayout.isDirty) {
     swiftPart.setOnTextLayout(newViewProps.onTextLayout.value);

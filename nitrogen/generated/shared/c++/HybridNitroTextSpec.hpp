@@ -21,6 +21,8 @@ namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
+// Forward declaration of `MenuItem` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct MenuItem; }
 // Forward declaration of `TextLayoutEvent` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
 // Forward declaration of `FontWeight` to properly resolve imports.
@@ -42,6 +44,7 @@ namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
+#include "MenuItem.hpp"
 #include "TextLayoutEvent.hpp"
 #include <functional>
 #include <string>
@@ -99,6 +102,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setAdjustsFontSizeToFit(std::optional<bool> adjustsFontSizeToFit) = 0;
       virtual std::optional<double> getMinimumFontScale() = 0;
       virtual void setMinimumFontScale(std::optional<double> minimumFontScale) = 0;
+      virtual std::optional<std::vector<MenuItem>> getMenus() = 0;
+      virtual void setMenus(const std::optional<std::vector<MenuItem>>& menus) = 0;
       virtual std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> getOnTextLayout() = 0;
       virtual void setOnTextLayout(const std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>& onTextLayout) = 0;
       virtual std::optional<std::function<void()>> getOnPress() = 0;

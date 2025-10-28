@@ -13,19 +13,19 @@
 
 namespace margelo::nitro::nitrotext::bridge::swift {
 
-  // pragma MARK: std::function<void(const TextLayoutEvent& /* layout */)>
-  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* NON_NULL swiftClosureWrapper) noexcept {
-    auto swiftClosure = NitroText::Func_void_TextLayoutEvent::fromUnsafe(swiftClosureWrapper);
-    return [swiftClosure = std::move(swiftClosure)](const TextLayoutEvent& layout) mutable -> void {
-      swiftClosure.call(layout);
-    };
-  }
-  
   // pragma MARK: std::function<void()>
   Func_void create_Func_void(void* NON_NULL swiftClosureWrapper) noexcept {
     auto swiftClosure = NitroText::Func_void::fromUnsafe(swiftClosureWrapper);
     return [swiftClosure = std::move(swiftClosure)]() mutable -> void {
       swiftClosure.call();
+    };
+  }
+  
+  // pragma MARK: std::function<void(const TextLayoutEvent& /* layout */)>
+  Func_void_TextLayoutEvent create_Func_void_TextLayoutEvent(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = NitroText::Func_void_TextLayoutEvent::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](const TextLayoutEvent& layout) mutable -> void {
+      swiftClosure.call(layout);
     };
   }
   

@@ -25,7 +25,7 @@ const NitroTextView = getHostComponent<NitroTextProps, NitroTextMethods>(
 
 type NitroTextPropsWithEvents = Pick<
   NitroTextProps,
-  'onTextLayout' | 'onPress' | 'onPressIn' | 'onPressOut'
+  'onTextLayout' | 'onPress' | 'onPressIn' | 'onPressOut' | 'menus'
 > &
   Omit<TextProps, 'onTextLayout'>
 
@@ -42,7 +42,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
   const {
     children,
     style,
-    selectable = true,
+    selectable,
     selectionColor,
     onTextLayout,
     onPress,
