@@ -53,7 +53,7 @@ export default defineConfig([
         {
             "quoteProps": "consistent",
             "singleQuote": true,
-            "tabWidth": 4,
+            "tabWidth": 3,
             "trailingComma": "es5",
             "useTabs": false,
             "semi": false
