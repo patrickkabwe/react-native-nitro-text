@@ -4,6 +4,7 @@
 //
 
 #include "NitroTextShadowNode.hpp"
+#include "NitroTextUtil.hpp"
 
 #include <cmath>
 #include <optional>
@@ -366,14 +367,9 @@ react::Size NitroTextShadowNode::measureContent(
       // but leaving the scale here avoids over-adjusting and potential divergences.
       if (props.minimumFontScale.value.has_value())
       {
-#if defined(REACT_NATIVE_VERSION_MAJOR)
-#if (REACT_NATIVE_VERSION_MAJOR > 0) || \
-    (REACT_NATIVE_VERSION_MAJOR == 0 && REACT_NATIVE_VERSION_MINOR >= 81)
+#if RN_VERSION_AT_LEAST(0, 81)
         paragraphAttributes.minimumFontScale =
             props.minimumFontScale.value.value();
-#else
-        // React Native < 0.81 does not expose paragraphAttributes.minimumFontScale yet.
-#endif
 #endif
       }
 
