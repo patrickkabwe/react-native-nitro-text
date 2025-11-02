@@ -1,7 +1,11 @@
 type TextAlign = 'auto' | 'left' | 'right' | 'center' | 'justify'
 type TextTransform = 'none' | 'uppercase' | 'lowercase' | 'capitalize'
 export type EllipsizeMode = 'head' | 'middle' | 'tail' | 'clip'
-export type LineBreakStrategyIOS = 'none' | 'standard' | 'hangul-word' | 'push-out'
+export type LineBreakStrategyIOS =
+    | 'none'
+    | 'standard'
+    | 'hangul-word'
+    | 'push-out'
 export type DynamicTypeRamp =
     | 'caption2'
     | 'caption1'
@@ -16,21 +20,37 @@ export type DynamicTypeRamp =
     | 'largeTitle'
 
 // '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'  - Nitro does not support these
-type FontWeight = 'normal' | 'bold' | 'ultralight' | 'thin' | 'light' | 'medium' | 'regular' | 'semibold' | 'condensedBold' | 'condensed' | 'heavy' | 'black'
+type FontWeight =
+    | 'normal'
+    | 'bold'
+    | 'ultralight'
+    | 'thin'
+    | 'light'
+    | 'medium'
+    | 'regular'
+    | 'semibold'
+    | 'condensedBold'
+    | 'condensed'
+    | 'heavy'
+    | 'black'
 type FontStyle = 'normal' | 'italic' | 'oblique'
 
-type TextDecorationLine = 'none' | 'underline' | 'line-through' | 'underline line-through'
+type TextDecorationLine =
+    | 'none'
+    | 'underline'
+    | 'line-through'
+    | 'underline line-through'
 type TextDecorationStyle = 'solid' | 'double' | 'dotted' | 'dashed'
 
 export type TextLayout = {
-    text: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    descender: number,
-    capHeight: number,
-    ascender: number,
+    text: string
+    x: number
+    y: number
+    width: number
+    height: number
+    descender: number
+    capHeight: number
+    ascender: number
     xHeight: number
 }
 
@@ -43,7 +63,7 @@ export type Fragment = {
      * The text of the text.
      */
     text?: string
-    
+
     /**
      * iOS: Color for text selection highlight/caret.
      */

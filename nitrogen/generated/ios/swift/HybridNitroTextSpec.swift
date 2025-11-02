@@ -46,6 +46,13 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   
 }
 
+public extension HybridNitroTextSpec_protocol {
+  /// Default implementation of ``HybridObject.toString``
+  func toString() -> String {
+    return "[HybridObject NitroText]"
+  }
+}
+
 /// See ``HybridNitroTextSpec``
 open class HybridNitroTextSpec_base {
   private weak var cxxWrapper: HybridNitroTextSpec_cxx? = nil

@@ -1,124 +1,114 @@
 {
-  "name": "react-native-nitro-text",
-  "version": "1.0.3",
-  "description": "A Text component that is much richer and performant for both iOS and Android.",
-  "main": "./lib/commonjs/index.js",
-  "module": "./lib/module/index.js",
-  "types": "./lib/typescript/src/index.d.ts",
-  "react-native": "src/index",
-  "source": "src/index",
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "clean": "git clean -dfX",
-    "release": "semantic-release",
-    "build": "bun run typecheck && bob build",
-    "codegen": "nitrogen --logLevel=\"debug\" && bun run build",
-    "postcodegen": "bun --cwd example pod"
-  },
-  "keywords": [
-    "react-native",
-    "react-native-nitro-text"
-  ],
-  "files": [
-    "src",
-    "react-native.config.js",
-    "lib",
-    "nitrogen",
-    "cpp",
-    "nitro.json",
-    "android/build.gradle",
-    "android/fix-prefab.gradle",
-    "android/gradle.properties",
-    "android/CMakeLists.txt",
-    "android/src",
-    "ios/**/*.h",
-    "ios/**/*.hpp",
-    "ios/**/*.m",
-    "ios/**/*.mm",
-    "ios/**/*.cpp",
-    "ios/**/*.swift",
-    "app.plugin.js",
-    "*.podspec",
-    "README.md"
-  ],
-  "workspaces": [
-    "example"
-  ],
-  "repository": "https://github.com/patrickkabwe/react-native-nitro-text.git",
-  "author": "Patrick Kabwe",
-  "license": "MIT",
-  "bugs": "https://github.com/patrickkabwe/react-native-nitro-text/issues",
-  "homepage": "https://github.com/patrickkabwe/react-native-nitro-text#readme",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "devDependencies": {
-    "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@types/jest": "^29.5.12",
-    "@types/react": "19.1.0",
-    "nitrogen": "^0.31.2",
-    "react": "19.1.0",
-    "react-native": "0.81.4",
-    "react-native-builder-bob": "^0.37.0",
-    "react-native-nitro-modules": "^0.31.2",
-    "conventional-changelog-conventionalcommits": "^9.1.0",
-    "semantic-release": "^24.2.8",
-    "typescript": "^5.8.3"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
-    "react-native-nitro-modules": "*"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@react-native",
-      "prettier"
+    "name": "react-native-nitro-text",
+    "version": "1.0.3",
+    "description": "A Text component that is much richer and performant for both iOS and Android.",
+    "main": "./lib/commonjs/index.js",
+    "module": "./lib/module/index.js",
+    "types": "./lib/typescript/src/index.d.ts",
+    "react-native": "src/index",
+    "source": "src/index",
+    "scripts": {
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint src",
+        "lint:fix": "eslint src --fix",
+        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+        "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+        "clean": "git clean -dfX",
+        "release": "semantic-release",
+        "build": "bun run typecheck && bob build",
+        "codegen": "nitrogen --logLevel=\"debug\" && bun run build",
+        "postcodegen": "bun --cwd example pod"
+    },
+    "keywords": [
+        "react-native",
+        "react-native-nitro-text"
     ],
-    "plugins": [
-      "prettier"
+    "files": [
+        "src",
+        "react-native.config.js",
+        "lib",
+        "nitrogen",
+        "cpp",
+        "nitro.json",
+        "android/build.gradle",
+        "android/fix-prefab.gradle",
+        "android/gradle.properties",
+        "android/CMakeLists.txt",
+        "android/src",
+        "ios/**/*.h",
+        "ios/**/*.hpp",
+        "ios/**/*.m",
+        "ios/**/*.mm",
+        "ios/**/*.cpp",
+        "ios/**/*.swift",
+        "app.plugin.js",
+        "*.podspec",
+        "README.md"
     ],
-    "rules": {
-      "prettier/prettier": [
-        "warn",
-        {
-          "quoteProps": "consistent",
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "es5",
-          "useTabs": false
-        }
-      ]
+    "workspaces": [
+        "example"
+    ],
+    "repository": "https://github.com/patrickkabwe/react-native-nitro-text.git",
+    "author": "Patrick Kabwe",
+    "license": "MIT",
+    "bugs": "https://github.com/patrickkabwe/react-native-nitro-text/issues",
+    "homepage": "https://github.com/patrickkabwe/react-native-nitro-text#readme",
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.38.0",
+        "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
+        "@react-native/eslint-config": "0.81.4",
+        "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/git": "^10.0.1",
+        "@types/jest": "^29.5.12",
+        "@types/react": "19.1.0",
+        "@typescript-eslint/eslint-plugin": "^8.46.2",
+        "@typescript-eslint/parser": "^8.46.2",
+        "conventional-changelog-conventionalcommits": "^9.1.0",
+        "eslint": "^9.38.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-native": "^5.0.0",
+        "nitrogen": "^0.31.4",
+        "prettier": "^3.6.2",
+        "react": "19.1.0",
+        "react-native": "0.81.4",
+        "react-native-builder-bob": "^0.37.0",
+        "react-native-nitro-modules": "^0.31.4",
+        "semantic-release": "^24.2.8",
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.46.2"
+    },
+    "peerDependencies": {
+        "react": "*",
+        "react-native": "*",
+        "react-native-nitro-modules": "*"
+    },
+    "prettier": {
+        "quoteProps": "consistent",
+        "singleQuote": true,
+        "tabWidth": 4,
+        "trailingComma": "es5",
+        "useTabs": false,
+        "semi": false
+    },
+    "react-native-builder-bob": {
+        "source": "src",
+        "output": "lib",
+        "targets": [
+            "commonjs",
+            "module",
+            [
+                "typescript",
+                {
+                    "project": "tsconfig.json"
+                }
+            ]
+        ]
     }
-  },
-  "eslintIgnore": [
-    "node_modules/",
-    "lib/"
-  ],
-  "prettier": {
-    "quoteProps": "consistent",
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false,
-    "semi": false
-  },
-  "react-native-builder-bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      "commonjs",
-      "module",
-      [
-        "typescript",
-        {
-          "project": "tsconfig.json"
-        }
-      ]
-    ]
-  }
 }

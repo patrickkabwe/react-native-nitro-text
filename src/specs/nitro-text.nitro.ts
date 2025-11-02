@@ -100,7 +100,7 @@ export interface NitroTextProps extends HybridViewProps, Fragment {
     onPressOut?: () => void
 }
 
-export interface NitroTextMethods extends HybridViewMethods { }
+export interface NitroTextMethods extends HybridViewMethods {}
 
 export type NitroText = HybridView<
     NitroTextProps,

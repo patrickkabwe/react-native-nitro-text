@@ -1,45 +1,51 @@
-import React from "react";
-import { StyleSheet, type StyleProp, type TextStyle } from "react-native";
-import type { Fragment } from "./types";
+import React from 'react'
+import {
+    StyleSheet,
+    type StyleProp,
+    type TextProps,
+    type TextStyle,
+} from 'react-native'
+import type { Fragment } from './types'
 
 export function normalizeWeight(
     w?: TextStyle['fontWeight']
 ): Fragment['fontWeight'] | undefined {
-    if (!w) return undefined;
+    if (!w) return undefined
 
     if (typeof w === 'string' && isNaN(Number(w))) {
-        return w as Fragment['fontWeight'];
+        return w as Fragment['fontWeight']
     }
 
-    const n = Number(w);
+    const n = Number(w)
 
     switch (n) {
         case 100:
-            return 'ultralight';
+            return 'ultralight'
         case 200:
-            return 'light';
+            return 'light'
         case 300:
-            return 'thin';
+            return 'thin'
         case 400:
-            return 'regular';
+            return 'regular'
         case 500:
-            return 'medium';
+            return 'medium'
         case 600:
-            return 'semibold';
+            return 'semibold'
         case 700:
-            return 'bold';
+            return 'bold'
         case 800:
-            return 'heavy';
+            return 'heavy'
         case 900:
-            return 'black';
+            return 'black'
         default:
-            return 'regular';
+            return 'regular'
     }
-
 }
 
-export function styleToFragment(style: StyleProp<TextStyle> | undefined): Partial<Fragment> {
-    const s = StyleSheet.flatten(style) || {};
+export function styleToFragment(
+    style: StyleProp<TextStyle> | undefined
+): Partial<Fragment> {
+    const s = StyleSheet.flatten(style) || {}
     return {
         fontColor: s.color as string | undefined,
         fragmentBackgroundColor: s.backgroundColor as string | undefined,
@@ -54,21 +60,20 @@ export function styleToFragment(style: StyleProp<TextStyle> | undefined): Partia
         textDecorationLine: s.textDecorationLine,
         textDecorationColor: s.textDecorationColor as string | undefined,
         textDecorationStyle: s.textDecorationStyle,
-    };
+    }
 }
 
-
-function getFragmentConfig(style: TextStyle): {
-    shouldApplyBackground: boolean;
-    shouldApplyBorder: boolean;
+function getFragmentConfig(style: StyleProp<TextStyle>): {
+    shouldApplyBackground: boolean
+    shouldApplyBorder: boolean
 } {
-    const flat = StyleSheet.flatten(style) || {};
-    const hasBackground = !!flat.backgroundColor;
-    const hasBorder = !!flat.borderColor || !!flat.borderWidth;
+    const flat = StyleSheet.flatten(style) || {}
+    const hasBackground = !!flat.backgroundColor
+    const hasBorder = !!flat.borderColor || !!flat.borderWidth
     return {
         shouldApplyBackground: hasBackground,
         shouldApplyBorder: hasBorder,
-    };
+    }
 }
 
 // Keys used to determine whether two adjacent fragments can be merged
@@ -87,69 +92,85 @@ const MERGE_KEYS: (keyof Fragment)[] = [
     'textDecorationLine',
     'textDecorationColor',
     'textDecorationStyle',
-];
+]
 
 // Pick fragment-like props from an element's props (outside of style)
-function pickFragmentOverrides(props: any): Partial<Fragment> {
-    if (!props || typeof props !== 'object') return {};
-    const out: Partial<Fragment> = {};
+function pickFragmentOverrides(
+    props: Record<string, unknown>
+): Partial<Fragment> {
+    if (!props || typeof props !== 'object') return {}
+    const out: Partial<Fragment> = {}
     for (const k of MERGE_KEYS) {
-        if (props[k] !== undefined) (out as any)[k] = props[k];
+        if (props[k] !== undefined)
+            (out as Record<string, unknown>)[k] = props[k]
     }
-    return out;
+    return out
 }
 
 function canMerge(a: Partial<Fragment>, b: Partial<Fragment>): boolean {
     for (const k of MERGE_KEYS) {
-        if (a[k] !== b[k]) return false;
+        if (a[k] !== b[k]) return false
     }
-    return true;
+    return true
 }
 
 function pushFragment(out: Fragment[], text: string, attrs: Partial<Fragment>) {
-    if (!text) return;
-    const last = out[out.length - 1];
+    if (!text) return
+    const last = out[out.length - 1]
     if (last && canMerge(last, attrs)) {
-        last.text = (last.text || "") + text;
-        return;
+        last.text = (last.text || '') + text
+        return
     }
-    out.push({ text, ...attrs });
+    out.push({ text, ...attrs })
 }
 
 function flattenInto(
     out: Fragment[],
     children: React.ReactNode,
-    parentStyle?: TextStyle,
+    parentStyle?: StyleProp<TextStyle>,
     fragmentConfig?: ReturnType<typeof getFragmentConfig>,
     inheritedOverrides: Partial<Fragment> = {}
 ) {
     React.Children.forEach(children, (child) => {
-        if (child == null || child === false) return;
+        if (child == null || child === false) return
         if (typeof child === 'string' || typeof child === 'number') {
-            const base = styleToFragment(parentStyle);
-            const merged: Partial<Fragment> = { ...base, ...inheritedOverrides };
-            if (!fragmentConfig?.shouldApplyBackground && merged.fragmentBackgroundColor) {
-                delete merged.fragmentBackgroundColor;
+            const base = styleToFragment(parentStyle)
+            const merged: Partial<Fragment> = { ...base, ...inheritedOverrides }
+            if (
+                !fragmentConfig?.shouldApplyBackground &&
+                merged.fragmentBackgroundColor
+            ) {
+                delete merged.fragmentBackgroundColor
             }
-            pushFragment(out, String(child), merged);
-            return;
+            pushFragment(out, String(child), merged)
+            return
         }
         if (React.isValidElement(child)) {
-            const { children: nested, style: childStyle, ...restProps } = child.props as any;
-            const mergedStyle = [parentStyle, childStyle];
-            const ownOverrides = pickFragmentOverrides(restProps);
-            const mergedOverrides = { ...inheritedOverrides, ...ownOverrides };
-            flattenInto(out, nested, mergedStyle as any, getFragmentConfig(childStyle), mergedOverrides);
+            const {
+                children: nested,
+                style: childStyle,
+                ...restProps
+            } = child.props as TextProps
+            const mergedStyle = [parentStyle, childStyle]
+            const ownOverrides = pickFragmentOverrides(restProps)
+            const mergedOverrides = { ...inheritedOverrides, ...ownOverrides }
+            flattenInto(
+                out,
+                nested,
+                mergedStyle,
+                getFragmentConfig(childStyle),
+                mergedOverrides
+            )
         }
-    });
+    })
 }
 
 export function flattenChildrenToFragments(
     children: React.ReactNode,
-    parentStyle?: TextStyle,
+    parentStyle?: StyleProp<TextStyle>,
     fragmentConfig?: ReturnType<typeof getFragmentConfig>
 ): Fragment[] {
-    const out: Fragment[] = [];
-    flattenInto(out, children, parentStyle, fragmentConfig, {});
-    return out;
+    const out: Fragment[] = []
+    flattenInto(out, children, parentStyle, fragmentConfig, {})
+    return out
 }
