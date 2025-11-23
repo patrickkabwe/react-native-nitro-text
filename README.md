@@ -103,6 +103,41 @@ export function HtmlExample() {
 }
 ```
 
+## Custom selection menu
+
+NitroText supports custom menu items that appear when text is selected. Pass a `menus` prop with an array of menu items, each containing a `title` and `action` callback.
+
+```tsx
+import { NitroText } from 'react-native-nitro-text'
+import { useMemo } from 'react'
+
+export function MenuExample() {
+  const menus = useMemo(
+    () => [
+      { 
+        title: 'Copy', 
+        action: () => console.log('Copy action') 
+      },
+      { 
+        title: 'Share', 
+        action: () => console.log('Share action') 
+      },
+      { 
+        title: 'Translate', 
+        action: () => console.log('Translate action') 
+      },
+    ],
+    []
+  )
+
+  return (
+    <NitroText selectable menus={menus} style={{ fontSize: 16 }}>
+      Select this text to see custom menu options appear in the selection menu.
+    </NitroText>
+  )
+}
+```
+
 ## Platform Support
 
 - iOS
