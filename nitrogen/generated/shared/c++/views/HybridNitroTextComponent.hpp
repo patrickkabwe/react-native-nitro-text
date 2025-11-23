@@ -23,6 +23,8 @@
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
+#include <NitroModules/Null.hpp>
+#include <variant>
 #include "MenuItem.hpp"
 #include "TextLayoutEvent.hpp"
 #include <functional>
@@ -65,7 +67,7 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<double>> numberOfLines;
     CachedProp<std::optional<LineBreakStrategyIOS>> lineBreakStrategyIOS;
     CachedProp<std::optional<DynamicTypeRamp>> dynamicTypeRamp;
-    CachedProp<std::optional<double>> maxFontSizeMultiplier;
+    CachedProp<std::optional<std::variant<nitro::NullType, double>>> maxFontSizeMultiplier;
     CachedProp<std::optional<bool>> adjustsFontSizeToFit;
     CachedProp<std::optional<double>> minimumFontScale;
     CachedProp<std::optional<std::vector<MenuItem>>> menus;

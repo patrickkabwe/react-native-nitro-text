@@ -55,6 +55,8 @@ namespace margelo::nitro::nitrotext { struct TextLayout; }
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
+#include <NitroModules/Null.hpp>
+#include <variant>
 #include "MenuItem.hpp"
 #include <functional>
 #include "TextLayoutEvent.hpp"
@@ -156,11 +158,11 @@ namespace margelo::nitro::nitrotext {
     inline void setDynamicTypeRamp(std::optional<DynamicTypeRamp> dynamicTypeRamp) noexcept override {
       _swiftPart.setDynamicTypeRamp(dynamicTypeRamp);
     }
-    inline std::optional<double> getMaxFontSizeMultiplier() noexcept override {
+    inline std::optional<std::variant<nitro::NullType, double>> getMaxFontSizeMultiplier() noexcept override {
       auto __result = _swiftPart.getMaxFontSizeMultiplier();
       return __result;
     }
-    inline void setMaxFontSizeMultiplier(std::optional<double> maxFontSizeMultiplier) noexcept override {
+    inline void setMaxFontSizeMultiplier(const std::optional<std::variant<nitro::NullType, double>>& maxFontSizeMultiplier) noexcept override {
       _swiftPart.setMaxFontSizeMultiplier(maxFontSizeMultiplier);
     }
     inline std::optional<bool> getAdjustsFontSizeToFit() noexcept override {
