@@ -16,6 +16,7 @@ https://github.com/user-attachments/assets/57f56b3f-3988-4235-af83-a5f2cfd82121
 <div align="center">
 
 [![npm version](https://img.shields.io/npm/v/react-native-nitro-text?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/7KXUyHjz)
 [![npm downloads](https://img.shields.io/npm/dt/react-native-nitro-text.svg?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
 [![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/patrickkabwe/react-native-nitro-text/blob/main/LICENSE)
@@ -160,3 +161,5 @@ Bootstrapped with [create-nitro-module](https://github.com/patrickkabwe/create-n
 ## Contributing
 
 PRs welcome! Please open an issue first for major changes.
+
+> 💬 For quick support, join our [Discord channel](https://discord.gg/7KXUyHjz)
