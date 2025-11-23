@@ -10,6 +10,7 @@
 // Include C++ implementation defined types
 #include "HybridNitroTextSpecSwift.hpp"
 #include "NitroText-Swift-Cxx-Umbrella.hpp"
+#include <NitroModules/NitroDefines.hpp>
 
 namespace margelo::nitro::nitrotext::bridge::swift {
 

@@ -36,6 +36,7 @@ type NitroTextPropsWithEvents = Pick<
    | 'onPressOut'
    | 'menus'
    | 'renderer'
+   | 'maxFontSizeMultiplier'
 > &
    Omit<TextProps, 'onTextLayout'>
 
@@ -49,16 +50,17 @@ if (
 export const NitroText = (props: NitroTextPropsWithEvents) => {
    const isInsideRNText = useContext(TextAncestorContext)
    const {
-      children,
       style,
+      renderer,
+      children,
       selectable,
       selectionColor,
+      maxFontSizeMultiplier,
       onTextLayout,
       onPress,
       onPressIn,
       onPressOut,
       onLongPress,
-      renderer,
       ...rest
    } = props
 
@@ -114,6 +116,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          <NitroTextView
             {...rest}
             selectable={selectable}
+            maxFontSizeMultiplier={maxFontSizeMultiplier}
             fragments={parsedFragments}
             selectionColor={selectionColor as string}
             style={style}
@@ -131,6 +134,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          <NitroTextView
             {...rest}
             selectable={selectable}
+            maxFontSizeMultiplier={maxFontSizeMultiplier}
             selectionColor={selectionColor as string}
             text={String(children)}
             style={style}
@@ -148,6 +152,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          {...rest}
          selectable={selectable}
          fragments={fragments}
+         maxFontSizeMultiplier={maxFontSizeMultiplier}
          selectionColor={selectionColor as string}
          style={style}
          {...styleProps}
