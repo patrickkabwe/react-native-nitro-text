@@ -78,7 +78,7 @@
         "nitrogen": "^0.31.4",
         "prettier": "^3.6.2",
         "react": "19.1.0",
-        "react-native": "0.81.4",
+        "react-native": "0.82.1",
         "react-native-builder-bob": "^0.37.0",
         "react-native-nitro-modules": "^0.31.4",
         "semantic-release": "^24.2.8",
