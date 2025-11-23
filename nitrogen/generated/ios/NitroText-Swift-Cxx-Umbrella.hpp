@@ -55,12 +55,10 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "TextLayout.hpp"
 #include "TextLayoutEvent.hpp"
 #include "TextTransform.hpp"
-#include <NitroModules/Null.hpp>
 #include <functional>
 #include <memory>
 #include <optional>
 #include <string>
-#include <variant>
 #include <vector>
 
 // C++ helpers for Swift

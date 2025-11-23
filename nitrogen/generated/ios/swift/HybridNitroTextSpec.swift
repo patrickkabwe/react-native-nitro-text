@@ -19,7 +19,7 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var numberOfLines: Double? { get set }
   var lineBreakStrategyIOS: LineBreakStrategyIOS? { get set }
   var dynamicTypeRamp: DynamicTypeRamp? { get set }
-  var maxFontSizeMultiplier: Variant_NullType_Double? { get set }
+  var maxFontSizeMultiplier: Double? { get set }
   var adjustsFontSizeToFit: Bool? { get set }
   var minimumFontScale: Double? { get set }
   var menus: [MenuItem]? { get set }

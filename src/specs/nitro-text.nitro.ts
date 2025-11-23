@@ -104,7 +104,7 @@ export interface NitroTextProps
     * Caps the Dynamic Type scaling factor when `allowFontScaling` is true.
     * >= 1 to enforce a maximum multiplier; omit/undefined means no cap.
     */
-   maxFontSizeMultiplier?: number | null
+   maxFontSizeMultiplier?: number
 
    /**
     * iOS: Shrink text to fit within the container width.

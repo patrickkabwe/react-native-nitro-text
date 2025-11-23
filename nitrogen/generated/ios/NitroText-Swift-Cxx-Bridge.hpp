@@ -59,12 +59,10 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "TextLayout.hpp"
 #include "TextLayoutEvent.hpp"
 #include "TextTransform.hpp"
-#include <NitroModules/Null.hpp>
 #include <functional>
 #include <memory>
 #include <optional>
 #include <string>
-#include <variant>
 #include <vector>
 
 /**
@@ -291,50 +289,6 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline DynamicTypeRamp get_std__optional_DynamicTypeRamp_(const std::optional<DynamicTypeRamp>& optional) noexcept {
-    return *optional;
-  }
-  
-  // pragma MARK: std::variant<nitro::NullType, double>
-  /**
-   * Wrapper struct for `std::variant<nitro::NullType, double>`.
-   * std::variant cannot be used in Swift because of a Swift bug.
-   * Not even specializing it works. So we create a wrapper struct.
-   */
-  struct std__variant_nitro__NullType__double_ {
-    std::variant<nitro::NullType, double> variant;
-    std__variant_nitro__NullType__double_(std::variant<nitro::NullType, double> variant): variant(variant) { }
-    operator std::variant<nitro::NullType, double>() const noexcept {
-      return variant;
-    }
-    inline size_t index() const noexcept {
-      return variant.index();
-    }
-    inline nitro::NullType get_0() const noexcept {
-      return std::get<0>(variant);
-    }
-    inline double get_1() const noexcept {
-      return std::get<1>(variant);
-    }
-  };
-  inline std__variant_nitro__NullType__double_ create_std__variant_nitro__NullType__double_(nitro::NullType value) noexcept {
-    return std__variant_nitro__NullType__double_(value);
-  }
-  inline std__variant_nitro__NullType__double_ create_std__variant_nitro__NullType__double_(double value) noexcept {
-    return std__variant_nitro__NullType__double_(value);
-  }
-  
-  // pragma MARK: std::optional<std::variant<nitro::NullType, double>>
-  /**
-   * Specialized version of `std::optional<std::variant<nitro::NullType, double>>`.
-   */
-  using std__optional_std__variant_nitro__NullType__double__ = std::optional<std::variant<nitro::NullType, double>>;
-  inline std::optional<std::variant<nitro::NullType, double>> create_std__optional_std__variant_nitro__NullType__double__(const std::variant<nitro::NullType, double>& value) noexcept {
-    return std::optional<std::variant<nitro::NullType, double>>(value);
-  }
-  inline bool has_value_std__optional_std__variant_nitro__NullType__double__(const std::optional<std::variant<nitro::NullType, double>>& optional) noexcept {
-    return optional.has_value();
-  }
-  inline std::variant<nitro::NullType, double> get_std__optional_std__variant_nitro__NullType__double__(const std::optional<std::variant<nitro::NullType, double>>& optional) noexcept {
     return *optional;
   }
   

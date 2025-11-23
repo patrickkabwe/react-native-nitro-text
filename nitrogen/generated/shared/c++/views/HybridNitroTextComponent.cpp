@@ -105,12 +105,12 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.dynamicTypeRamp: ") + exc.what());
       }
     }()),
-    maxFontSizeMultiplier([&]() -> CachedProp<std::optional<std::variant<nitro::NullType, double>>> {
+    maxFontSizeMultiplier([&]() -> CachedProp<std::optional<double>> {
       try {
         const react::RawValue* rawValue = rawProps.at("maxFontSizeMultiplier", nullptr, nullptr);
         if (rawValue == nullptr) return sourceProps.maxFontSizeMultiplier;
         const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
-        return CachedProp<std::optional<std::variant<nitro::NullType, double>>>::fromRawValue(*runtime, value, sourceProps.maxFontSizeMultiplier);
+        return CachedProp<std::optional<double>>::fromRawValue(*runtime, value, sourceProps.maxFontSizeMultiplier);
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.maxFontSizeMultiplier: ") + exc.what());
       }

@@ -47,8 +47,6 @@ namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
-#include <NitroModules/Null.hpp>
-#include <variant>
 #include "MenuItem.hpp"
 #include "TextLayoutEvent.hpp"
 #include <functional>
@@ -103,8 +101,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setLineBreakStrategyIOS(std::optional<LineBreakStrategyIOS> lineBreakStrategyIOS) = 0;
       virtual std::optional<DynamicTypeRamp> getDynamicTypeRamp() = 0;
       virtual void setDynamicTypeRamp(std::optional<DynamicTypeRamp> dynamicTypeRamp) = 0;
-      virtual std::optional<std::variant<nitro::NullType, double>> getMaxFontSizeMultiplier() = 0;
-      virtual void setMaxFontSizeMultiplier(const std::optional<std::variant<nitro::NullType, double>>& maxFontSizeMultiplier) = 0;
+      virtual std::optional<double> getMaxFontSizeMultiplier() = 0;
+      virtual void setMaxFontSizeMultiplier(std::optional<double> maxFontSizeMultiplier) = 0;
       virtual std::optional<bool> getAdjustsFontSizeToFit() = 0;
       virtual void setAdjustsFontSizeToFit(std::optional<bool> adjustsFontSizeToFit) = 0;
       virtual std::optional<double> getMinimumFontScale() = 0;
