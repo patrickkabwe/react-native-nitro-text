@@ -81,7 +81,7 @@ jobs:
       - name: Cache CocoaPods
         uses: actions/cache@v4
         with:
-          path: Pods
+          path: example/ios/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile*') }}
           restore-keys: |
             ${{ runner.os }}-pods-
