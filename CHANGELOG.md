@@ -1,3 +1,22 @@
+## [1.1.0](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.3...v1.1.0) (2025-11-15)
+
+### ✨ Features
+
+* **ios:** support custom selection menus ([#92](https://github.com/patrickkabwe/react-native-nitro-text/issues/92)) ([f88aee7](https://github.com/patrickkabwe/react-native-nitro-text/commit/f88aee7204001117cbe664cf1697b278ef383172))
+
+### 🐛 Bug Fixes
+
+* **ios:** dismiss selection when tapping outside textview ([#70](https://github.com/patrickkabwe/react-native-nitro-text/issues/70)) ([f6eddb2](https://github.com/patrickkabwe/react-native-nitro-text/commit/f6eddb27a407c61f993d329adffdcecec092acd3))
+
+### 📚 Documentation
+
+* add CONTRIBUTING.md and issue templates for better community engagement ([#48](https://github.com/patrickkabwe/react-native-nitro-text/issues/48)) ([a213abe](https://github.com/patrickkabwe/react-native-nitro-text/commit/a213abe3ada2213f116475d4b72b4d4a0acbc797))
+
+### 🛠️ Other changes
+
+* code linting formating ([#101](https://github.com/patrickkabwe/react-native-nitro-text/issues/101)) ([e49a5d3](https://github.com/patrickkabwe/react-native-nitro-text/commit/e49a5d39d514459a20072d4d54cfb5d66d52267c))
+* prepare android support ([#102](https://github.com/patrickkabwe/react-native-nitro-text/issues/102)) ([7a2c2bd](https://github.com/patrickkabwe/react-native-nitro-text/commit/7a2c2bde0084bc7c93f60e0007655213f6289252))
+
 ## [1.0.3](https://github.com/patrickkabwe/react-native-nitro-text/compare/v1.0.2...v1.0.3) (2025-09-22)
 
 ### 🛠️ Other changes
