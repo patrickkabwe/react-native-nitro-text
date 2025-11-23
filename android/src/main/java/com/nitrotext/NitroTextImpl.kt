@@ -195,9 +195,14 @@ class NitroTextImpl(private val view: AppCompatTextView) {
       val end = builder.length
       if (start == end) continue
 
-      frag.fontColor?.let { parseColorSafe(it)?.let { c ->
-        builder.setSpan(ForegroundColorSpan(c), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-      }}
+      // Apply font color for non-link fragments, or store for links to apply after URLSpan
+      val hasLink = frag.linkUrl?.isNotEmpty() == true
+      if (!hasLink) {
+        frag.fontColor?.let { parseColorSafe(it)?.let { c ->
+          builder.setSpan(ForegroundColorSpan(c), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }}
+      }
+      
       frag.fragmentBackgroundColor?.let { parseColorSafe(it)?.let { c ->
         builder.setSpan(BackgroundColorSpan(c), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
       }}
@@ -224,11 +229,16 @@ class NitroTextImpl(private val view: AppCompatTextView) {
         if (url.isNotEmpty()) {
           builder.setSpan(UrlSpanNoUnderline(url), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
           hasLinks = true
-          // Apply default link color if fragment doesn't have explicit color
-          if (frag.fontColor == null) {
-            // Use system link color (typically blue)
-            val linkColor = android.graphics.Color.parseColor("#007AFF")
-            builder.setSpan(ForegroundColorSpan(linkColor), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+          // Apply link color - use custom color if provided, otherwise use default
+          // This must be applied AFTER the URLSpan to ensure it takes precedence
+          val linkColor = if (frag.fontColor != null) {
+            parseColorSafe(frag.fontColor)
+          } else {
+            // Use system link color (typically blue) as default
+            android.graphics.Color.parseColor("#007AFF")
+          }
+          linkColor?.let { c ->
+            builder.setSpan(ForegroundColorSpan(c), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
           }
         }
       }

@@ -5,7 +5,8 @@ import android.text.style.URLSpan
 
 internal class UrlSpanNoUnderline(url: String) : URLSpan(url) {
     override fun updateDrawState(ds: TextPaint) {
-        super.updateDrawState(ds)
+        // Don't call super.updateDrawState() to avoid default link color
+        // This allows custom colors from ForegroundColorSpan to be applied
         ds.isUnderlineText = false
     }
 }
