@@ -10,8 +10,7 @@ package com.margelo.nitro.nitrotext
 import androidx.annotation.Keep
 import com.facebook.jni.HybridData
 import com.facebook.proguard.annotations.DoNotStrip
-import com.margelo.nitro.core.*
-import com.margelo.nitro.views.*
+import com.margelo.nitro.views.HybridView
 
 /**
  * A Kotlin class representing the NitroText HybridObject.
@@ -37,6 +36,11 @@ abstract class HybridNitroTextSpec: HybridView() {
     super.updateNative(hybridData)
   }
 
+  // Default implementation of `HybridObject.toString()`
+  override fun toString(): String {
+    return "[HybridObject NitroText]"
+  }
+
   // Properties
   @get:DoNotStrip
   @get:Keep
@@ -48,13 +52,7 @@ abstract class HybridNitroTextSpec: HybridView() {
   @get:Keep
   @set:DoNotStrip
   @set:Keep
-  abstract var renderer: NitroRenderer?
-  
-  @get:DoNotStrip
-  @get:Keep
-  @set:DoNotStrip
-  @set:Keep
-  abstract var richTextStyleRules: Array<RichTextStyleRule>?
+  abstract var renderer: Renderer?
   
   @get:DoNotStrip
   @get:Keep
@@ -109,6 +107,12 @@ abstract class HybridNitroTextSpec: HybridView() {
   @set:DoNotStrip
   @set:Keep
   abstract var minimumFontScale: Double?
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var menus: Array<MenuItem>?
   
   abstract var onTextLayout: ((layout: TextLayoutEvent) -> Unit)?
   
@@ -262,6 +266,6 @@ abstract class HybridNitroTextSpec: HybridView() {
   private external fun initHybrid(): HybridData
 
   companion object {
-    private const val TAG = "HybridNitroTextSpec"
+    protected const val TAG = "HybridNitroTextSpec"
   }
 }

@@ -9,7 +9,6 @@ package com.margelo.nitro.nitrotext
 
 import androidx.annotation.Keep
 import com.facebook.proguard.annotations.DoNotStrip
-import com.margelo.nitro.core.*
 
 
 /**
@@ -17,37 +16,47 @@ import com.margelo.nitro.core.*
  */
 @DoNotStrip
 @Keep
-data class TextLayout
+data class TextLayout(
   @DoNotStrip
   @Keep
-  constructor(
+  val text: String,
+  @DoNotStrip
+  @Keep
+  val x: Double,
+  @DoNotStrip
+  @Keep
+  val y: Double,
+  @DoNotStrip
+  @Keep
+  val width: Double,
+  @DoNotStrip
+  @Keep
+  val height: Double,
+  @DoNotStrip
+  @Keep
+  val descender: Double,
+  @DoNotStrip
+  @Keep
+  val capHeight: Double,
+  @DoNotStrip
+  @Keep
+  val ascender: Double,
+  @DoNotStrip
+  @Keep
+  val xHeight: Double
+) {
+  /* primary constructor */
+
+  private companion object {
+    /**
+     * Constructor called from C++
+     */
     @DoNotStrip
     @Keep
-    val text: String,
-    @DoNotStrip
-    @Keep
-    val x: Double,
-    @DoNotStrip
-    @Keep
-    val y: Double,
-    @DoNotStrip
-    @Keep
-    val width: Double,
-    @DoNotStrip
-    @Keep
-    val height: Double,
-    @DoNotStrip
-    @Keep
-    val descender: Double,
-    @DoNotStrip
-    @Keep
-    val capHeight: Double,
-    @DoNotStrip
-    @Keep
-    val ascender: Double,
-    @DoNotStrip
-    @Keep
-    val xHeight: Double
-  ) {
-  /* main constructor */
+    @Suppress("unused")
+    @JvmStatic
+    private fun fromCpp(text: String, x: Double, y: Double, width: Double, height: Double, descender: Double, capHeight: Double, ascender: Double, xHeight: Double): TextLayout {
+      return TextLayout(text, x, y, width, height, descender, capHeight, ascender, xHeight)
+    }
+  }
 }

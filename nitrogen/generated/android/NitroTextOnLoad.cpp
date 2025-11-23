@@ -16,8 +16,8 @@
 #include <NitroModules/HybridObjectRegistry.hpp>
 
 #include "JHybridNitroTextSpec.hpp"
-#include "JFunc_void_TextLayoutEvent.hpp"
 #include "JFunc_void.hpp"
+#include "JFunc_void_TextLayoutEvent.hpp"
 #include "views/JHybridNitroTextStateUpdater.hpp"
 #include <NitroModules/DefaultConstructableObject.hpp>
 
@@ -31,15 +31,15 @@ int initialize(JavaVM* vm) {
   return facebook::jni::initialize(vm, [] {
     // Register native JNI methods
     margelo::nitro::nitrotext::JHybridNitroTextSpec::registerNatives();
-    margelo::nitro::nitrotext::JFunc_void_TextLayoutEvent_cxx::registerNatives();
     margelo::nitro::nitrotext::JFunc_void_cxx::registerNatives();
+    margelo::nitro::nitrotext::JFunc_void_TextLayoutEvent_cxx::registerNatives();
     margelo::nitro::nitrotext::views::JHybridNitroTextStateUpdater::registerNatives();
 
     // Register Nitro Hybrid Objects
     HybridObjectRegistry::registerHybridObjectConstructor(
       "NitroText",
       []() -> std::shared_ptr<HybridObject> {
-        static DefaultConstructableObject<JHybridNitroTextSpec::javaobject> object("com/nitrotext/HybridNitroText");
+        static DefaultConstructableObject<JHybridNitroTextSpec::javaobject> object("com/margelo/nitro/nitrotext/HybridNitroText");
         auto instance = object.create();
         return instance->cthis()->shared();
       }

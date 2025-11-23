@@ -44,10 +44,6 @@ void JHybridNitroTextStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /
     view->setRenderer(props.renderer.value);
     // TODO: Set isDirty = false
   }
-  if (props.richTextStyleRules.isDirty) {
-    view->setRichTextStyleRules(props.richTextStyleRules.value);
-    // TODO: Set isDirty = false
-  }
   if (props.selectable.isDirty) {
     view->setSelectable(props.selectable.value);
     // TODO: Set isDirty = false
@@ -82,6 +78,10 @@ void JHybridNitroTextStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /
   }
   if (props.minimumFontScale.isDirty) {
     view->setMinimumFontScale(props.minimumFontScale.value);
+    // TODO: Set isDirty = false
+  }
+  if (props.menus.isDirty) {
+    view->setMenus(props.menus.value);
     // TODO: Set isDirty = false
   }
   if (props.onTextLayout.isDirty) {

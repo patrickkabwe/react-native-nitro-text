@@ -74,6 +74,8 @@ namespace margelo::nitro::nitrotext {
       jni::local_ref<jni::JString> textDecorationColor = this->getFieldValue(fieldTextDecorationColor);
       static const auto fieldTextDecorationStyle = clazz->getField<JTextDecorationStyle>("textDecorationStyle");
       jni::local_ref<JTextDecorationStyle> textDecorationStyle = this->getFieldValue(fieldTextDecorationStyle);
+      static const auto fieldLinkUrl = clazz->getField<jni::JString>("linkUrl");
+      jni::local_ref<jni::JString> linkUrl = this->getFieldValue(fieldLinkUrl);
       return Fragment(
         text != nullptr ? std::make_optional(text->toStdString()) : std::nullopt,
         selectionColor != nullptr ? std::make_optional(selectionColor->toStdString()) : std::nullopt,
@@ -89,7 +91,8 @@ namespace margelo::nitro::nitrotext {
         textTransform != nullptr ? std::make_optional(textTransform->toCpp()) : std::nullopt,
         textDecorationLine != nullptr ? std::make_optional(textDecorationLine->toCpp()) : std::nullopt,
         textDecorationColor != nullptr ? std::make_optional(textDecorationColor->toStdString()) : std::nullopt,
-        textDecorationStyle != nullptr ? std::make_optional(textDecorationStyle->toCpp()) : std::nullopt
+        textDecorationStyle != nullptr ? std::make_optional(textDecorationStyle->toCpp()) : std::nullopt,
+        linkUrl != nullptr ? std::make_optional(linkUrl->toStdString()) : std::nullopt
       );
     }
 
@@ -99,7 +102,11 @@ namespace margelo::nitro::nitrotext {
      */
     [[maybe_unused]]
     static jni::local_ref<JFragment::javaobject> fromCpp(const Fragment& value) {
-      return newInstance(
+      using JSignature = JFragment(jni::alias_ref<jni::JString>, jni::alias_ref<jni::JString>, jni::alias_ref<jni::JDouble>, jni::alias_ref<JFontWeight>, jni::alias_ref<jni::JString>, jni::alias_ref<jni::JString>, jni::alias_ref<JFontStyle>, jni::alias_ref<jni::JString>, jni::alias_ref<jni::JDouble>, jni::alias_ref<jni::JDouble>, jni::alias_ref<JTextAlign>, jni::alias_ref<JTextTransform>, jni::alias_ref<JTextDecorationLine>, jni::alias_ref<jni::JString>, jni::alias_ref<JTextDecorationStyle>, jni::alias_ref<jni::JString>);
+      static const auto clazz = javaClassStatic();
+      static const auto create = clazz->getStaticMethod<JSignature>("fromCpp");
+      return create(
+        clazz,
         value.text.has_value() ? jni::make_jstring(value.text.value()) : nullptr,
         value.selectionColor.has_value() ? jni::make_jstring(value.selectionColor.value()) : nullptr,
         value.fontSize.has_value() ? jni::JDouble::valueOf(value.fontSize.value()) : nullptr,
@@ -114,7 +121,8 @@ namespace margelo::nitro::nitrotext {
         value.textTransform.has_value() ? JTextTransform::fromCpp(value.textTransform.value()) : nullptr,
         value.textDecorationLine.has_value() ? JTextDecorationLine::fromCpp(value.textDecorationLine.value()) : nullptr,
         value.textDecorationColor.has_value() ? jni::make_jstring(value.textDecorationColor.value()) : nullptr,
-        value.textDecorationStyle.has_value() ? JTextDecorationStyle::fromCpp(value.textDecorationStyle.value()) : nullptr
+        value.textDecorationStyle.has_value() ? JTextDecorationStyle::fromCpp(value.textDecorationStyle.value()) : nullptr,
+        value.linkUrl.has_value() ? jni::make_jstring(value.linkUrl.value()) : nullptr
       );
     }
   };

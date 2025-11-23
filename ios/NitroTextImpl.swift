@@ -441,6 +441,6 @@ extension NitroTextImpl {
                a.textDecorationStyle == b.textDecorationStyle &&
                a.fragmentBackgroundColor == b.fragmentBackgroundColor &&
                a.selectionColor == b.selectionColor &&
-               a.linkUrl == b.linkUrl  // Important: links must match for fragments to be identical
+               a.linkUrl == b.linkUrl
     }
 }

@@ -12,6 +12,7 @@
 
 #include "TextLayoutEvent.hpp"
 #include <functional>
+#include <NitroModules/JNICallable.hpp>
 #include "JTextLayoutEvent.hpp"
 #include "TextLayout.hpp"
 #include <vector>
@@ -43,7 +44,7 @@ namespace margelo::nitro::nitrotext {
   /**
    * An implementation of Func_void_TextLayoutEvent that is backed by a C++ implementation (using `std::function<...>`)
    */
-  struct JFunc_void_TextLayoutEvent_cxx final: public jni::HybridClass<JFunc_void_TextLayoutEvent_cxx, JFunc_void_TextLayoutEvent> {
+  class JFunc_void_TextLayoutEvent_cxx final: public jni::HybridClass<JFunc_void_TextLayoutEvent_cxx, JFunc_void_TextLayoutEvent> {
   public:
     static jni::local_ref<JFunc_void_TextLayoutEvent::javaobject> fromCpp(const std::function<void(const TextLayoutEvent& /* layout */)>& func) {
       return JFunc_void_TextLayoutEvent_cxx::newObjectCxxArgs(func);

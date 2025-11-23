@@ -4,7 +4,7 @@
 //
 
 #include <react/renderer/textlayoutmanager/TextLayoutManager.h>
-#import "../cpp/NitroTextComponentDescriptor.hpp"
+#include "NitroTextComponentDescriptor.hpp"
 
 using namespace facebook;
 using namespace margelo::nitro::nitrotext::views;

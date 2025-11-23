@@ -22,16 +22,10 @@ class HybridNitroText(val context: ThemedReactContext) : HybridNitroTextSpec(), 
       impl.setFragments(value)
     }
 
-  override var renderer: NitroRenderer?
+  override var renderer: Renderer?
     get() = null
     set(value) {
-      impl.setRenderer(value)
-    }
-
-  override var richTextStyleRules: Array<RichTextStyleRule>?
-    get() = null
-    set(value) {
-      impl.setRichTextStyleRules(value)
+      // HTML parsing is now done in JS/TS layer, renderer is ignored
     }
 
   override var selectable: Boolean?
@@ -85,6 +79,12 @@ class HybridNitroText(val context: ThemedReactContext) : HybridNitroTextSpec(), 
   override var minimumFontScale: Double?
     get() = null
     set(value) { value }
+
+  override var menus: Array<MenuItem>?
+    get() = null
+    set(value) {
+      view.customMenus = value
+    }
 
   override var onTextLayout: ((TextLayoutEvent) -> Unit)?
     get() = onTextLayoutCallback

@@ -21,18 +21,16 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
 // Forward declaration of `TextDecorationStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
-// Forward declaration of `NitroRenderer` to properly resolve imports.
-namespace margelo::nitro::nitrotext { enum class NitroRenderer; }
-// Forward declaration of `RichTextStyleRule` to properly resolve imports.
-namespace margelo::nitro::nitrotext { struct RichTextStyleRule; }
-// Forward declaration of `RichTextStyle` to properly resolve imports.
-namespace margelo::nitro::nitrotext { struct RichTextStyle; }
+// Forward declaration of `Renderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class Renderer; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
+// Forward declaration of `MenuItem` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct MenuItem; }
 // Forward declaration of `TextLayoutEvent` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
 // Forward declaration of `TextLayout` to properly resolve imports.
@@ -55,25 +53,24 @@ namespace margelo::nitro::nitrotext { struct TextLayout; }
 #include "JTextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
 #include "JTextDecorationStyle.hpp"
-#include "NitroRenderer.hpp"
-#include "JNitroRenderer.hpp"
-#include "RichTextStyleRule.hpp"
-#include "JRichTextStyleRule.hpp"
-#include "RichTextStyle.hpp"
-#include "JRichTextStyle.hpp"
+#include "Renderer.hpp"
+#include "JRenderer.hpp"
 #include "EllipsizeMode.hpp"
 #include "JEllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "JLineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
 #include "JDynamicTypeRamp.hpp"
-#include "TextLayoutEvent.hpp"
+#include "MenuItem.hpp"
+#include "JMenuItem.hpp"
 #include <functional>
+#include "JFunc_void.hpp"
+#include <NitroModules/JNICallable.hpp>
+#include "TextLayoutEvent.hpp"
 #include "JFunc_void_TextLayoutEvent.hpp"
 #include "JTextLayoutEvent.hpp"
 #include "TextLayout.hpp"
 #include "JTextLayout.hpp"
-#include "JFunc_void.hpp"
 
 namespace margelo::nitro::nitrotext {
 
@@ -95,6 +92,12 @@ namespace margelo::nitro::nitrotext {
   void JHybridNitroTextSpec::dispose() noexcept {
     static const auto method = javaClassStatic()->getMethod<void()>("dispose");
     method(_javaPart);
+  }
+
+  std::string JHybridNitroTextSpec::toString() {
+    static const auto method = javaClassStatic()->getMethod<jni::JString()>("toString");
+    auto javaString = method(_javaPart);
+    return javaString->toStdString();
   }
 
   // Properties
@@ -119,45 +122,20 @@ namespace margelo::nitro::nitrotext {
       jni::local_ref<jni::JArrayClass<JFragment>> __array = jni::JArrayClass<JFragment>::newArray(__size);
       for (size_t __i = 0; __i < __size; __i++) {
         const auto& __element = fragments.value()[__i];
-        __array->setElement(__i, *JFragment::fromCpp(__element));
+        auto __elementJni = JFragment::fromCpp(__element);
+        __array->setElement(__i, *__elementJni);
       }
       return __array;
     }() : nullptr);
   }
-  std::optional<NitroRenderer> JHybridNitroTextSpec::getRenderer() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JNitroRenderer>()>("getRenderer");
+  std::optional<Renderer> JHybridNitroTextSpec::getRenderer() {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JRenderer>()>("getRenderer");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->toCpp()) : std::nullopt;
   }
-  void JHybridNitroTextSpec::setRenderer(std::optional<NitroRenderer> renderer) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<JNitroRenderer> /* renderer */)>("setRenderer");
-    method(_javaPart, renderer.has_value() ? JNitroRenderer::fromCpp(renderer.value()) : nullptr);
-  }
-  std::optional<std::vector<RichTextStyleRule>> JHybridNitroTextSpec::getRichTextStyleRules() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JArrayClass<JRichTextStyleRule>>()>("getRichTextStyleRules");
-    auto __result = method(_javaPart);
-    return __result != nullptr ? std::make_optional([&]() {
-      size_t __size = __result->size();
-      std::vector<RichTextStyleRule> __vector;
-      __vector.reserve(__size);
-      for (size_t __i = 0; __i < __size; __i++) {
-        auto __element = __result->getElement(__i);
-        __vector.push_back(__element->toCpp());
-      }
-      return __vector;
-    }()) : std::nullopt;
-  }
-  void JHybridNitroTextSpec::setRichTextStyleRules(const std::optional<std::vector<RichTextStyleRule>>& richTextStyleRules) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JArrayClass<JRichTextStyleRule>> /* richTextStyleRules */)>("setRichTextStyleRules");
-    method(_javaPart, richTextStyleRules.has_value() ? [&]() {
-      size_t __size = richTextStyleRules.value().size();
-      jni::local_ref<jni::JArrayClass<JRichTextStyleRule>> __array = jni::JArrayClass<JRichTextStyleRule>::newArray(__size);
-      for (size_t __i = 0; __i < __size; __i++) {
-        const auto& __element = richTextStyleRules.value()[__i];
-        __array->setElement(__i, *JRichTextStyleRule::fromCpp(__element));
-      }
-      return __array;
-    }() : nullptr);
+  void JHybridNitroTextSpec::setRenderer(std::optional<Renderer> renderer) {
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<JRenderer> /* renderer */)>("setRenderer");
+    method(_javaPart, renderer.has_value() ? JRenderer::fromCpp(renderer.value()) : nullptr);
   }
   std::optional<bool> JHybridNitroTextSpec::getSelectable() {
     static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JBoolean>()>("getSelectable");
@@ -240,6 +218,33 @@ namespace margelo::nitro::nitrotext {
     static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* minimumFontScale */)>("setMinimumFontScale");
     method(_javaPart, minimumFontScale.has_value() ? jni::JDouble::valueOf(minimumFontScale.value()) : nullptr);
   }
+  std::optional<std::vector<MenuItem>> JHybridNitroTextSpec::getMenus() {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JArrayClass<JMenuItem>>()>("getMenus");
+    auto __result = method(_javaPart);
+    return __result != nullptr ? std::make_optional([&]() {
+      size_t __size = __result->size();
+      std::vector<MenuItem> __vector;
+      __vector.reserve(__size);
+      for (size_t __i = 0; __i < __size; __i++) {
+        auto __element = __result->getElement(__i);
+        __vector.push_back(__element->toCpp());
+      }
+      return __vector;
+    }()) : std::nullopt;
+  }
+  void JHybridNitroTextSpec::setMenus(const std::optional<std::vector<MenuItem>>& menus) {
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JArrayClass<JMenuItem>> /* menus */)>("setMenus");
+    method(_javaPart, menus.has_value() ? [&]() {
+      size_t __size = menus.value().size();
+      jni::local_ref<jni::JArrayClass<JMenuItem>> __array = jni::JArrayClass<JMenuItem>::newArray(__size);
+      for (size_t __i = 0; __i < __size; __i++) {
+        const auto& __element = menus.value()[__i];
+        auto __elementJni = JMenuItem::fromCpp(__element);
+        __array->setElement(__i, *__elementJni);
+      }
+      return __array;
+    }() : nullptr);
+  }
   std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> JHybridNitroTextSpec::getOnTextLayout() {
     static const auto method = javaClassStatic()->getMethod<jni::local_ref<JFunc_void_TextLayoutEvent::javaobject>()>("getOnTextLayout_cxx");
     auto __result = method(_javaPart);
@@ -249,9 +254,7 @@ namespace margelo::nitro::nitrotext {
         return downcast->cthis()->getFunction();
       } else {
         auto __resultRef = jni::make_global(__result);
-        return [__resultRef](TextLayoutEvent layout) -> void {
-          return __resultRef->invoke(layout);
-        };
+        return JNICallable<JFunc_void_TextLayoutEvent, void(TextLayoutEvent)>(std::move(__resultRef));
       }
     }()) : std::nullopt;
   }
@@ -268,9 +271,7 @@ namespace margelo::nitro::nitrotext {
         return downcast->cthis()->getFunction();
       } else {
         auto __resultRef = jni::make_global(__result);
-        return [__resultRef]() -> void {
-          return __resultRef->invoke();
-        };
+        return JNICallable<JFunc_void, void()>(std::move(__resultRef));
       }
     }()) : std::nullopt;
   }
@@ -287,9 +288,7 @@ namespace margelo::nitro::nitrotext {
         return downcast->cthis()->getFunction();
       } else {
         auto __resultRef = jni::make_global(__result);
-        return [__resultRef]() -> void {
-          return __resultRef->invoke();
-        };
+        return JNICallable<JFunc_void, void()>(std::move(__resultRef));
       }
     }()) : std::nullopt;
   }
@@ -306,9 +305,7 @@ namespace margelo::nitro::nitrotext {
         return downcast->cthis()->getFunction();
       } else {
         auto __resultRef = jni::make_global(__result);
-        return [__resultRef]() -> void {
-          return __resultRef->invoke();
-        };
+        return JNICallable<JFunc_void, void()>(std::move(__resultRef));
       }
     }()) : std::nullopt;
   }

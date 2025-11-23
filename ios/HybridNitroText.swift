@@ -32,19 +32,6 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
         }
     }
 
-    var renderer: NitroRenderer? {
-        didSet {
-            // HTML rendering is currently implemented on Android only.
-            // Keep tracking the requested renderer to avoid dropping the prop.
-        }
-    }
-
-    var richTextStyleRules: [RichTextStyleRule]? {
-        didSet {
-            // No-op on iOS for now.
-        }
-    }
-
     var selectable: Bool? {
         didSet {
             nitroTextImpl.setSelectable(selectable)

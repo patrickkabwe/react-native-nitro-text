@@ -9,7 +9,6 @@ package com.margelo.nitro.nitrotext
 
 import androidx.annotation.Keep
 import com.facebook.proguard.annotations.DoNotStrip
-import com.margelo.nitro.core.*
 
 
 /**
@@ -17,55 +16,68 @@ import com.margelo.nitro.core.*
  */
 @DoNotStrip
 @Keep
-data class Fragment
+data class Fragment(
   @DoNotStrip
   @Keep
-  constructor(
+  val text: String?,
+  @DoNotStrip
+  @Keep
+  val selectionColor: String?,
+  @DoNotStrip
+  @Keep
+  val fontSize: Double?,
+  @DoNotStrip
+  @Keep
+  val fontWeight: FontWeight?,
+  @DoNotStrip
+  @Keep
+  val fontColor: String?,
+  @DoNotStrip
+  @Keep
+  val fragmentBackgroundColor: String?,
+  @DoNotStrip
+  @Keep
+  val fontStyle: FontStyle?,
+  @DoNotStrip
+  @Keep
+  val fontFamily: String?,
+  @DoNotStrip
+  @Keep
+  val lineHeight: Double?,
+  @DoNotStrip
+  @Keep
+  val letterSpacing: Double?,
+  @DoNotStrip
+  @Keep
+  val textAlign: TextAlign?,
+  @DoNotStrip
+  @Keep
+  val textTransform: TextTransform?,
+  @DoNotStrip
+  @Keep
+  val textDecorationLine: TextDecorationLine?,
+  @DoNotStrip
+  @Keep
+  val textDecorationColor: String?,
+  @DoNotStrip
+  @Keep
+  val textDecorationStyle: TextDecorationStyle?,
+  @DoNotStrip
+  @Keep
+  val linkUrl: String?
+) {
+  /* primary constructor */
+
+  private companion object {
+    /**
+     * Constructor called from C++
+     */
     @DoNotStrip
     @Keep
-    val text: String?,
-    @DoNotStrip
-    @Keep
-    val selectionColor: String?,
-    @DoNotStrip
-    @Keep
-    val fontSize: Double?,
-    @DoNotStrip
-    @Keep
-    val fontWeight: FontWeight?,
-    @DoNotStrip
-    @Keep
-    val fontColor: String?,
-    @DoNotStrip
-    @Keep
-    val fragmentBackgroundColor: String?,
-    @DoNotStrip
-    @Keep
-    val fontStyle: FontStyle?,
-    @DoNotStrip
-    @Keep
-    val fontFamily: String?,
-    @DoNotStrip
-    @Keep
-    val lineHeight: Double?,
-    @DoNotStrip
-    @Keep
-    val letterSpacing: Double?,
-    @DoNotStrip
-    @Keep
-    val textAlign: TextAlign?,
-    @DoNotStrip
-    @Keep
-    val textTransform: TextTransform?,
-    @DoNotStrip
-    @Keep
-    val textDecorationLine: TextDecorationLine?,
-    @DoNotStrip
-    @Keep
-    val textDecorationColor: String?,
-    @DoNotStrip
-    @Keep
-    val textDecorationStyle: TextDecorationStyle?
-  ) {
-  /* main constructor */
+    @Suppress("unused")
+    @JvmStatic
+    private fun fromCpp(text: String?, selectionColor: String?, fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fragmentBackgroundColor: String?, fontStyle: FontStyle?, fontFamily: String?, lineHeight: Double?, letterSpacing: Double?, textAlign: TextAlign?, textTransform: TextTransform?, textDecorationLine: TextDecorationLine?, textDecorationColor: String?, textDecorationStyle: TextDecorationStyle?, linkUrl: String?): Fragment {
+      return Fragment(text, selectionColor, fontSize, fontWeight, fontColor, fragmentBackgroundColor, fontStyle, fontFamily, lineHeight, letterSpacing, textAlign, textTransform, textDecorationLine, textDecorationColor, textDecorationStyle, linkUrl)
+    }
+  }
 }

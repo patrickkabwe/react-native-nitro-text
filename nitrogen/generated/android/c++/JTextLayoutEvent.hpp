@@ -56,13 +56,18 @@ namespace margelo::nitro::nitrotext {
      */
     [[maybe_unused]]
     static jni::local_ref<JTextLayoutEvent::javaobject> fromCpp(const TextLayoutEvent& value) {
-      return newInstance(
+      using JSignature = JTextLayoutEvent(jni::alias_ref<jni::JArrayClass<JTextLayout>>);
+      static const auto clazz = javaClassStatic();
+      static const auto create = clazz->getStaticMethod<JSignature>("fromCpp");
+      return create(
+        clazz,
         [&]() {
           size_t __size = value.lines.size();
           jni::local_ref<jni::JArrayClass<JTextLayout>> __array = jni::JArrayClass<JTextLayout>::newArray(__size);
           for (size_t __i = 0; __i < __size; __i++) {
             const auto& __element = value.lines[__i];
-            __array->setElement(__i, *JTextLayout::fromCpp(__element));
+            auto __elementJni = JTextLayout::fromCpp(__element);
+            __array->setElement(__i, *__elementJni);
           }
           return __array;
         }()

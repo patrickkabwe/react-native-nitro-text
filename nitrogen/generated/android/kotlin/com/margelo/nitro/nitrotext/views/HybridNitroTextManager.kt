@@ -12,12 +12,12 @@ import com.facebook.react.uimanager.ReactStylesDiffMap
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.StateWrapper
 import com.facebook.react.uimanager.ThemedReactContext
-import com.nitrotext.*
+import com.nitrotext.HybridNitroText
 
 /**
  * Represents the React Native `ViewManager` for the "NitroText" Nitro HybridView.
  */
-class HybridNitroTextManager: SimpleViewManager<View>() {
+open class HybridNitroTextManager: SimpleViewManager<View>() {
   private val views = hashMapOf<View, HybridNitroText>()
 
   override fun getName(): String {

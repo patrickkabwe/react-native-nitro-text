@@ -41,6 +41,7 @@ namespace margelo::nitro::nitrotext {
   public:
     size_t getExternalMemorySize() noexcept override;
     void dispose() noexcept override;
+    std::string toString() override;
 
   public:
     inline const jni::global_ref<JHybridNitroTextSpec::javaobject>& getJavaPart() const noexcept {
@@ -51,10 +52,8 @@ namespace margelo::nitro::nitrotext {
     // Properties
     std::optional<std::vector<Fragment>> getFragments() override;
     void setFragments(const std::optional<std::vector<Fragment>>& fragments) override;
-    std::optional<NitroRenderer> getRenderer() override;
-    void setRenderer(std::optional<NitroRenderer> renderer) override;
-    std::optional<std::vector<RichTextStyleRule>> getRichTextStyleRules() override;
-    void setRichTextStyleRules(const std::optional<std::vector<RichTextStyleRule>>& richTextStyleRules) override;
+    std::optional<Renderer> getRenderer() override;
+    void setRenderer(std::optional<Renderer> renderer) override;
     std::optional<bool> getSelectable() override;
     void setSelectable(std::optional<bool> selectable) override;
     std::optional<bool> getAllowFontScaling() override;
@@ -73,6 +72,8 @@ namespace margelo::nitro::nitrotext {
     void setAdjustsFontSizeToFit(std::optional<bool> adjustsFontSizeToFit) override;
     std::optional<double> getMinimumFontScale() override;
     void setMinimumFontScale(std::optional<double> minimumFontScale) override;
+    std::optional<std::vector<MenuItem>> getMenus() override;
+    void setMenus(const std::optional<std::vector<MenuItem>>& menus) override;
     std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> getOnTextLayout() override;
     void setOnTextLayout(const std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>& onTextLayout) override;
     std::optional<std::function<void()>> getOnPress() override;
