@@ -15,16 +15,16 @@
 
 // Forward declaration of `Fragment` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct Fragment; }
-// Forward declaration of `NitroRenderer` to properly resolve imports.
-namespace margelo::nitro::nitrotext { enum class NitroRenderer; }
-// Forward declaration of `RichTextStyleRule` to properly resolve imports.
-namespace margelo::nitro::nitrotext { struct RichTextStyleRule; }
+// Forward declaration of `Renderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class Renderer; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
+// Forward declaration of `MenuItem` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct MenuItem; }
 // Forward declaration of `TextLayoutEvent` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
 // Forward declaration of `FontWeight` to properly resolve imports.
@@ -43,11 +43,11 @@ namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
-#include "NitroRenderer.hpp"
-#include "RichTextStyleRule.hpp"
+#include "Renderer.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
+#include "MenuItem.hpp"
 #include "TextLayoutEvent.hpp"
 #include <functional>
 #include <string>
@@ -87,10 +87,8 @@ namespace margelo::nitro::nitrotext {
       // Properties
       virtual std::optional<std::vector<Fragment>> getFragments() = 0;
       virtual void setFragments(const std::optional<std::vector<Fragment>>& fragments) = 0;
-      virtual std::optional<NitroRenderer> getRenderer() = 0;
-      virtual void setRenderer(std::optional<NitroRenderer> renderer) = 0;
-      virtual std::optional<std::vector<RichTextStyleRule>> getRichTextStyleRules() = 0;
-      virtual void setRichTextStyleRules(const std::optional<std::vector<RichTextStyleRule>>& richTextStyleRules) = 0;
+      virtual std::optional<Renderer> getRenderer() = 0;
+      virtual void setRenderer(std::optional<Renderer> renderer) = 0;
       virtual std::optional<bool> getSelectable() = 0;
       virtual void setSelectable(std::optional<bool> selectable) = 0;
       virtual std::optional<bool> getAllowFontScaling() = 0;
@@ -109,6 +107,8 @@ namespace margelo::nitro::nitrotext {
       virtual void setAdjustsFontSizeToFit(std::optional<bool> adjustsFontSizeToFit) = 0;
       virtual std::optional<double> getMinimumFontScale() = 0;
       virtual void setMinimumFontScale(std::optional<double> minimumFontScale) = 0;
+      virtual std::optional<std::vector<MenuItem>> getMenus() = 0;
+      virtual void setMenus(const std::optional<std::vector<MenuItem>>& menus) = 0;
       virtual std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> getOnTextLayout() = 0;
       virtual void setOnTextLayout(const std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>& onTextLayout) = 0;
       virtual std::optional<std::function<void()>> getOnPress() = 0;

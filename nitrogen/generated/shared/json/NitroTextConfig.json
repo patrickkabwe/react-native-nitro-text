@@ -6,7 +6,6 @@
   "validAttributes": {
     "fragments": true,
     "renderer": true,
-    "richTextStyleRules": true,
     "selectable": true,
     "allowFontScaling": true,
     "ellipsizeMode": true,
@@ -16,6 +15,7 @@
     "maxFontSizeMultiplier": true,
     "adjustsFontSizeToFit": true,
     "minimumFontScale": true,
+    "menus": true,
     "onTextLayout": true,
     "onPress": true,
     "onPressIn": true,

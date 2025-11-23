@@ -16,6 +16,7 @@ https://github.com/user-attachments/assets/57f56b3f-3988-4235-af83-a5f2cfd82121
 <div align="center">
 
 [![npm version](https://img.shields.io/npm/v/react-native-nitro-text?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/7KXUyHjz)
 [![npm downloads](https://img.shields.io/npm/dt/react-native-nitro-text.svg?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-nitro-text.svg?style=for-the-badge)](https://www.npmjs.org/package/react-native-nitro-text)
 [![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/patrickkabwe/react-native-nitro-text/blob/main/LICENSE)
@@ -83,6 +84,61 @@ export function SelectionExample() {
 }
 ```
 
+## HTML rendering
+
+NitroText can parse HTML string children and inline CSS when you pass `renderer="html"`.
+
+```tsx
+import { NitroText } from 'react-native-nitro-text'
+
+export function HtmlExample() {
+  const html = `
+    <div>
+      <h2>Renderer demo</h2>
+      <p>This text comes from <strong>HTML</strong> with <em>semantic</em> tags.</p>
+      <p><span style="color: #ff6347; font-weight: bold;">Inline CSS works too.</span></p>
+    </div>
+  `
+
+  return <NitroText renderer="html">{html}</NitroText>
+}
+```
+
+## Custom selection menu
+
+NitroText supports custom menu items that appear when text is selected. Pass a `menus` prop with an array of menu items, each containing a `title` and `action` callback.
+
+```tsx
+import { NitroText } from 'react-native-nitro-text'
+import { useMemo } from 'react'
+
+export function MenuExample() {
+  const menus = useMemo(
+    () => [
+      { 
+        title: 'Copy', 
+        action: () => console.log('Copy action') 
+      },
+      { 
+        title: 'Share', 
+        action: () => console.log('Share action') 
+      },
+      { 
+        title: 'Translate', 
+        action: () => console.log('Translate action') 
+      },
+    ],
+    []
+  )
+
+  return (
+    <NitroText selectable menus={menus} style={{ fontSize: 16 }}>
+      Select this text to see custom menu options appear in the selection menu.
+    </NitroText>
+  )
+}
+```
+
 ## Platform Support
 
 - iOS
@@ -105,3 +161,5 @@ Bootstrapped with [create-nitro-module](https://github.com/patrickkabwe/create-n
 ## Contributing
 
 PRs welcome! Please open an issue first for major changes.
+
+> 💬 For quick support, join our [Discord channel](https://discord.gg/7KXUyHjz)

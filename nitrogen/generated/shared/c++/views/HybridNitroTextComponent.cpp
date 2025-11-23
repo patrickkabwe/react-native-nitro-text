@@ -35,24 +35,14 @@ namespace margelo::nitro::nitrotext::views {
         throw std::runtime_error(std::string("NitroText.fragments: ") + exc.what());
       }
     }()),
-    renderer([&]() -> CachedProp<std::optional<NitroRenderer>> {
+    renderer([&]() -> CachedProp<std::optional<Renderer>> {
       try {
         const react::RawValue* rawValue = rawProps.at("renderer", nullptr, nullptr);
         if (rawValue == nullptr) return sourceProps.renderer;
         const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
-        return CachedProp<std::optional<NitroRenderer>>::fromRawValue(*runtime, value, sourceProps.renderer);
+        return CachedProp<std::optional<Renderer>>::fromRawValue(*runtime, value, sourceProps.renderer);
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.renderer: ") + exc.what());
-      }
-    }()),
-    richTextStyleRules([&]() -> CachedProp<std::optional<std::vector<RichTextStyleRule>>> {
-      try {
-        const react::RawValue* rawValue = rawProps.at("richTextStyleRules", nullptr, nullptr);
-        if (rawValue == nullptr) return sourceProps.richTextStyleRules;
-        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
-        return CachedProp<std::optional<std::vector<RichTextStyleRule>>>::fromRawValue(*runtime, value, sourceProps.richTextStyleRules);
-      } catch (const std::exception& exc) {
-        throw std::runtime_error(std::string("NitroText.richTextStyleRules: ") + exc.what());
       }
     }()),
     selectable([&]() -> CachedProp<std::optional<bool>> {
@@ -143,6 +133,16 @@ namespace margelo::nitro::nitrotext::views {
         return CachedProp<std::optional<double>>::fromRawValue(*runtime, value, sourceProps.minimumFontScale);
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.minimumFontScale: ") + exc.what());
+      }
+    }()),
+    menus([&]() -> CachedProp<std::optional<std::vector<MenuItem>>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("menus", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.menus;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::vector<MenuItem>>>::fromRawValue(*runtime, value, sourceProps.menus);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("NitroText.menus: ") + exc.what());
       }
     }()),
     onTextLayout([&]() -> CachedProp<std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>> {
@@ -350,7 +350,6 @@ namespace margelo::nitro::nitrotext::views {
     react::ViewProps(),
     fragments(other.fragments),
     renderer(other.renderer),
-    richTextStyleRules(other.richTextStyleRules),
     selectable(other.selectable),
     allowFontScaling(other.allowFontScaling),
     ellipsizeMode(other.ellipsizeMode),
@@ -360,6 +359,7 @@ namespace margelo::nitro::nitrotext::views {
     maxFontSizeMultiplier(other.maxFontSizeMultiplier),
     adjustsFontSizeToFit(other.adjustsFontSizeToFit),
     minimumFontScale(other.minimumFontScale),
+    menus(other.menus),
     onTextLayout(other.onTextLayout),
     onPress(other.onPress),
     onPressIn(other.onPressIn),
@@ -385,7 +385,6 @@ namespace margelo::nitro::nitrotext::views {
     switch (hashString(propName)) {
       case hashString("fragments"): return true;
       case hashString("renderer"): return true;
-      case hashString("richTextStyleRules"): return true;
       case hashString("selectable"): return true;
       case hashString("allowFontScaling"): return true;
       case hashString("ellipsizeMode"): return true;
@@ -395,6 +394,7 @@ namespace margelo::nitro::nitrotext::views {
       case hashString("maxFontSizeMultiplier"): return true;
       case hashString("adjustsFontSizeToFit"): return true;
       case hashString("minimumFontScale"): return true;
+      case hashString("menus"): return true;
       case hashString("onTextLayout"): return true;
       case hashString("onPress"): return true;
       case hashString("onPressIn"): return true;

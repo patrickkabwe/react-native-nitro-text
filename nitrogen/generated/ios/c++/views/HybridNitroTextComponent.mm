@@ -81,11 +81,6 @@ using namespace margelo::nitro::nitrotext::views;
     swiftPart.setRenderer(newViewProps.renderer.value);
     newViewProps.renderer.isDirty = false;
   }
-  // richTextStyleRules: optional
-  if (newViewProps.richTextStyleRules.isDirty) {
-    swiftPart.setRichTextStyleRules(newViewProps.richTextStyleRules.value);
-    newViewProps.richTextStyleRules.isDirty = false;
-  }
   // selectable: optional
   if (newViewProps.selectable.isDirty) {
     swiftPart.setSelectable(newViewProps.selectable.value);
@@ -130,6 +125,11 @@ using namespace margelo::nitro::nitrotext::views;
   if (newViewProps.minimumFontScale.isDirty) {
     swiftPart.setMinimumFontScale(newViewProps.minimumFontScale.value);
     newViewProps.minimumFontScale.isDirty = false;
+  }
+  // menus: optional
+  if (newViewProps.menus.isDirty) {
+    swiftPart.setMenus(newViewProps.menus.value);
+    newViewProps.menus.isDirty = false;
   }
   // onTextLayout: optional
   if (newViewProps.onTextLayout.isDirty) {

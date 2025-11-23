@@ -3,9 +3,8 @@
 // Shared implementation for custom ComponentDescriptor
 //
 
-#include "NitroTextComponentDescriptor.hpp"
-
 #include <react/renderer/textlayoutmanager/TextLayoutManager.h>
+#import "../cpp/NitroTextComponentDescriptor.hpp"
 
 using namespace facebook;
 using namespace margelo::nitro::nitrotext::views;

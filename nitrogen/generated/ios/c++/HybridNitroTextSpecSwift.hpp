@@ -26,18 +26,16 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
 // Forward declaration of `TextDecorationStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
-// Forward declaration of `NitroRenderer` to properly resolve imports.
-namespace margelo::nitro::nitrotext { enum class NitroRenderer; }
-// Forward declaration of `RichTextStyleRule` to properly resolve imports.
-namespace margelo::nitro::nitrotext { struct RichTextStyleRule; }
-// Forward declaration of `RichTextStyle` to properly resolve imports.
-namespace margelo::nitro::nitrotext { struct RichTextStyle; }
+// Forward declaration of `Renderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class Renderer; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `DynamicTypeRamp` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class DynamicTypeRamp; }
+// Forward declaration of `MenuItem` to properly resolve imports.
+namespace margelo::nitro::nitrotext { struct MenuItem; }
 // Forward declaration of `TextLayoutEvent` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct TextLayoutEvent; }
 // Forward declaration of `TextLayout` to properly resolve imports.
@@ -53,14 +51,13 @@ namespace margelo::nitro::nitrotext { struct TextLayout; }
 #include "TextTransform.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
-#include "NitroRenderer.hpp"
-#include "RichTextStyleRule.hpp"
-#include "RichTextStyle.hpp"
+#include "Renderer.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
-#include "TextLayoutEvent.hpp"
+#include "MenuItem.hpp"
 #include <functional>
+#include "TextLayoutEvent.hpp"
 #include "TextLayout.hpp"
 
 #include "NitroText-Swift-Cxx-Umbrella.hpp"
@@ -97,6 +94,9 @@ namespace margelo::nitro::nitrotext {
     void dispose() noexcept override {
       _swiftPart.dispose();
     }
+    std::string toString() override {
+      return _swiftPart.toString();
+    }
 
   public:
     // Properties
@@ -107,19 +107,12 @@ namespace margelo::nitro::nitrotext {
     inline void setFragments(const std::optional<std::vector<Fragment>>& fragments) noexcept override {
       _swiftPart.setFragments(fragments);
     }
-    inline std::optional<NitroRenderer> getRenderer() noexcept override {
+    inline std::optional<Renderer> getRenderer() noexcept override {
       auto __result = _swiftPart.getRenderer();
       return __result;
     }
-    inline void setRenderer(std::optional<NitroRenderer> renderer) noexcept override {
+    inline void setRenderer(std::optional<Renderer> renderer) noexcept override {
       _swiftPart.setRenderer(renderer);
-    }
-    inline std::optional<std::vector<RichTextStyleRule>> getRichTextStyleRules() noexcept override {
-      auto __result = _swiftPart.getRichTextStyleRules();
-      return __result;
-    }
-    inline void setRichTextStyleRules(const std::optional<std::vector<RichTextStyleRule>>& richTextStyleRules) noexcept override {
-      _swiftPart.setRichTextStyleRules(richTextStyleRules);
     }
     inline std::optional<bool> getSelectable() noexcept override {
       auto __result = _swiftPart.getSelectable();
@@ -183,6 +176,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setMinimumFontScale(std::optional<double> minimumFontScale) noexcept override {
       _swiftPart.setMinimumFontScale(minimumFontScale);
+    }
+    inline std::optional<std::vector<MenuItem>> getMenus() noexcept override {
+      auto __result = _swiftPart.getMenus();
+      return __result;
+    }
+    inline void setMenus(const std::optional<std::vector<MenuItem>>& menus) noexcept override {
+      _swiftPart.setMenus(menus);
     }
     inline std::optional<std::function<void(const TextLayoutEvent& /* layout */)>> getOnTextLayout() noexcept override {
       auto __result = _swiftPart.getOnTextLayout();

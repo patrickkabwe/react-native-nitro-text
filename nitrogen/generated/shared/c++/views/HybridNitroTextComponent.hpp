@@ -19,11 +19,11 @@
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
-#include "NitroRenderer.hpp"
-#include "RichTextStyleRule.hpp"
+#include "Renderer.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
+#include "MenuItem.hpp"
 #include "TextLayoutEvent.hpp"
 #include <functional>
 #include <string>
@@ -58,8 +58,7 @@ namespace margelo::nitro::nitrotext::views {
 
   public:
     CachedProp<std::optional<std::vector<Fragment>>> fragments;
-    CachedProp<std::optional<NitroRenderer>> renderer;
-    CachedProp<std::optional<std::vector<RichTextStyleRule>>> richTextStyleRules;
+    CachedProp<std::optional<Renderer>> renderer;
     CachedProp<std::optional<bool>> selectable;
     CachedProp<std::optional<bool>> allowFontScaling;
     CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
@@ -69,6 +68,7 @@ namespace margelo::nitro::nitrotext::views {
     CachedProp<std::optional<double>> maxFontSizeMultiplier;
     CachedProp<std::optional<bool>> adjustsFontSizeToFit;
     CachedProp<std::optional<double>> minimumFontScale;
+    CachedProp<std::optional<std::vector<MenuItem>>> menus;
     CachedProp<std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>> onTextLayout;
     CachedProp<std::optional<std::function<void()>>> onPress;
     CachedProp<std::optional<std::function<void()>>> onPressIn;

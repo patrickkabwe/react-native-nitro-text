@@ -76,7 +76,7 @@ open class HybridNitroTextSpec_cxx {
    */
   public func getCxxPart() -> bridge.std__shared_ptr_HybridNitroTextSpec_ {
     let cachedCxxPart = self.__cxxPart.lock()
-    if cachedCxxPart.__convertToBool() {
+    if Bool(fromCxx: cachedCxxPart) {
       return cachedCxxPart
     } else {
       let newCxxPart = bridge.create_std__shared_ptr_HybridNitroTextSpec_(self.toUnsafe())
@@ -103,6 +103,14 @@ open class HybridNitroTextSpec_cxx {
   @inline(__always)
   public func dispose() {
     self.__implementation.dispose()
+  }
+
+  /**
+   * Call toString() on the Swift class.
+   */
+  @inline(__always)
+  public func toString() -> String {
+    return self.__implementation.toString()
   }
 
   // Properties
@@ -136,12 +144,12 @@ open class HybridNitroTextSpec_cxx {
     }
   }
   
-  public final var renderer: bridge.std__optional_NitroRenderer_ {
+  public final var renderer: bridge.std__optional_Renderer_ {
     @inline(__always)
     get {
-      return { () -> bridge.std__optional_NitroRenderer_ in
+      return { () -> bridge.std__optional_Renderer_ in
         if let __unwrappedValue = self.__implementation.renderer {
-          return bridge.create_std__optional_NitroRenderer_(__unwrappedValue)
+          return bridge.create_std__optional_Renderer_(__unwrappedValue)
         } else {
           return .init()
         }
@@ -150,36 +158,6 @@ open class HybridNitroTextSpec_cxx {
     @inline(__always)
     set {
       self.__implementation.renderer = newValue.value
-    }
-  }
-  
-  public final var richTextStyleRules: bridge.std__optional_std__vector_RichTextStyleRule__ {
-    @inline(__always)
-    get {
-      return { () -> bridge.std__optional_std__vector_RichTextStyleRule__ in
-        if let __unwrappedValue = self.__implementation.richTextStyleRules {
-          return bridge.create_std__optional_std__vector_RichTextStyleRule__({ () -> bridge.std__vector_RichTextStyleRule_ in
-            var __vector = bridge.create_std__vector_RichTextStyleRule_(__unwrappedValue.count)
-            for __item in __unwrappedValue {
-              __vector.push_back(__item)
-            }
-            return __vector
-          }())
-        } else {
-          return .init()
-        }
-      }()
-    }
-    @inline(__always)
-    set {
-      self.__implementation.richTextStyleRules = { () -> [RichTextStyleRule]? in
-        if bridge.has_value_std__optional_std__vector_RichTextStyleRule__(newValue) {
-          let __unwrapped = bridge.get_std__optional_std__vector_RichTextStyleRule__(newValue)
-          return __unwrapped.map({ __item in __item })
-        } else {
-          return nil
-        }
-      }()
     }
   }
   
@@ -196,7 +174,14 @@ open class HybridNitroTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.selectable = newValue.value
+      self.__implementation.selectable = { () -> Bool? in
+        if bridge.has_value_std__optional_bool_(newValue) {
+          let __unwrapped = bridge.get_std__optional_bool_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -213,7 +198,14 @@ open class HybridNitroTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.allowFontScaling = newValue.value
+      self.__implementation.allowFontScaling = { () -> Bool? in
+        if bridge.has_value_std__optional_bool_(newValue) {
+          let __unwrapped = bridge.get_std__optional_bool_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -315,7 +307,14 @@ open class HybridNitroTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.adjustsFontSizeToFit = newValue.value
+      self.__implementation.adjustsFontSizeToFit = { () -> Bool? in
+        if bridge.has_value_std__optional_bool_(newValue) {
+          let __unwrapped = bridge.get_std__optional_bool_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -333,6 +332,36 @@ open class HybridNitroTextSpec_cxx {
     @inline(__always)
     set {
       self.__implementation.minimumFontScale = newValue.value
+    }
+  }
+  
+  public final var menus: bridge.std__optional_std__vector_MenuItem__ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__vector_MenuItem__ in
+        if let __unwrappedValue = self.__implementation.menus {
+          return bridge.create_std__optional_std__vector_MenuItem__({ () -> bridge.std__vector_MenuItem_ in
+            var __vector = bridge.create_std__vector_MenuItem_(__unwrappedValue.count)
+            for __item in __unwrappedValue {
+              __vector.push_back(__item)
+            }
+            return __vector
+          }())
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.menus = { () -> [MenuItem]? in
+        if bridge.has_value_std__optional_std__vector_MenuItem__(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__vector_MenuItem__(newValue)
+          return __unwrapped.map({ __item in __item })
+        } else {
+          return nil
+        }
+      }()
     }
   }
   

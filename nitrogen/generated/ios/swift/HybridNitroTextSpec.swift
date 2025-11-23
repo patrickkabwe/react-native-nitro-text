@@ -12,8 +12,7 @@ import NitroModules
 public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   // Properties
   var fragments: [Fragment]? { get set }
-  var renderer: NitroRenderer? { get set }
-  var richTextStyleRules: [RichTextStyleRule]? { get set }
+  var renderer: Renderer? { get set }
   var selectable: Bool? { get set }
   var allowFontScaling: Bool? { get set }
   var ellipsizeMode: EllipsizeMode? { get set }
@@ -23,6 +22,7 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
   var maxFontSizeMultiplier: Double? { get set }
   var adjustsFontSizeToFit: Bool? { get set }
   var minimumFontScale: Double? { get set }
+  var menus: [MenuItem]? { get set }
   var onTextLayout: ((_ layout: TextLayoutEvent) -> Void)? { get set }
   var onPress: (() -> Void)? { get set }
   var onPressIn: (() -> Void)? { get set }
@@ -45,6 +45,13 @@ public protocol HybridNitroTextSpec_protocol: HybridObject, HybridView {
 
   // Methods
   
+}
+
+public extension HybridNitroTextSpec_protocol {
+  /// Default implementation of ``HybridObject.toString``
+  func toString() -> String {
+    return "[HybridObject NitroText]"
+  }
 }
 
 /// See ``HybridNitroTextSpec``

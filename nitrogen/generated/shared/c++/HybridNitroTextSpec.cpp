@@ -18,8 +18,6 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("fragments", &HybridNitroTextSpec::setFragments);
       prototype.registerHybridGetter("renderer", &HybridNitroTextSpec::getRenderer);
       prototype.registerHybridSetter("renderer", &HybridNitroTextSpec::setRenderer);
-      prototype.registerHybridGetter("richTextStyleRules", &HybridNitroTextSpec::getRichTextStyleRules);
-      prototype.registerHybridSetter("richTextStyleRules", &HybridNitroTextSpec::setRichTextStyleRules);
       prototype.registerHybridGetter("selectable", &HybridNitroTextSpec::getSelectable);
       prototype.registerHybridSetter("selectable", &HybridNitroTextSpec::setSelectable);
       prototype.registerHybridGetter("allowFontScaling", &HybridNitroTextSpec::getAllowFontScaling);
@@ -38,6 +36,8 @@ namespace margelo::nitro::nitrotext {
       prototype.registerHybridSetter("adjustsFontSizeToFit", &HybridNitroTextSpec::setAdjustsFontSizeToFit);
       prototype.registerHybridGetter("minimumFontScale", &HybridNitroTextSpec::getMinimumFontScale);
       prototype.registerHybridSetter("minimumFontScale", &HybridNitroTextSpec::setMinimumFontScale);
+      prototype.registerHybridGetter("menus", &HybridNitroTextSpec::getMenus);
+      prototype.registerHybridSetter("menus", &HybridNitroTextSpec::setMenus);
       prototype.registerHybridGetter("onTextLayout", &HybridNitroTextSpec::getOnTextLayout);
       prototype.registerHybridSetter("onTextLayout", &HybridNitroTextSpec::setOnTextLayout);
       prototype.registerHybridGetter("onPress", &HybridNitroTextSpec::getOnPress);
