@@ -137,9 +137,23 @@ export type Fragment = {
     * Text decoration style (solid, double, dotted, dashed).
     */
    textDecorationStyle?: TextDecorationStyle
+
+   /**
+    * Link URL (href attribute from <a> tag).
+    * When present, this fragment represents clickable link text.
+    */
+   linkUrl?: string
 }
 
+/**
+ * A menu item for the selection menu.
+ */
 export type MenuItem = {
    title: string
    action: () => void
 }
+
+/**
+ * Supported renderers for rich text parsing.
+ */
+export type Renderer = 'html' | 'plaintext'

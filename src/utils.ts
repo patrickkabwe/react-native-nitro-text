@@ -7,6 +7,8 @@ import {
 } from 'react-native'
 import type { Fragment } from './types'
 
+const STYLE_CACHE = new WeakMap<object, Partial<Fragment>>()
+
 export function normalizeWeight(
    w?: TextStyle['fontWeight']
 ): Fragment['fontWeight'] | undefined {
@@ -43,24 +45,79 @@ export function normalizeWeight(
 }
 
 export function styleToFragment(
-   style: StyleProp<TextStyle> | undefined
+   style: StyleProp<TextStyle> | TextStyle | undefined,
+   alreadyFlattened?: boolean
 ): Partial<Fragment> {
-   const s = StyleSheet.flatten(style) || {}
-   return {
-      fontColor: s.color as string | undefined,
-      fragmentBackgroundColor: s.backgroundColor as string | undefined,
-      fontSize: s.fontSize,
-      fontWeight: normalizeWeight(s.fontWeight),
-      fontStyle: s.fontStyle,
-      fontFamily: s.fontFamily,
-      lineHeight: s.lineHeight,
-      letterSpacing: s.letterSpacing,
-      textAlign: s.textAlign,
-      textTransform: s.textTransform,
-      textDecorationLine: s.textDecorationLine,
-      textDecorationColor: s.textDecorationColor as string | undefined,
-      textDecorationStyle: s.textDecorationStyle,
+   if (!style) return {}
+
+   // Check cache first for non-array object styles
+   if (
+      !alreadyFlattened &&
+      typeof style === 'object' &&
+      !Array.isArray(style)
+   ) {
+      const cached = STYLE_CACHE.get(style)
+      if (cached) return cached
    }
+
+   const s = alreadyFlattened
+      ? (style as TextStyle)
+      : StyleSheet.flatten(style as StyleProp<TextStyle>)
+
+   if (!s || Object.keys(s).length === 0) return {}
+
+   const result: Partial<Fragment> = {}
+
+   if (s.color !== undefined) {
+      result.fontColor = s.color as string
+   }
+   if (s.backgroundColor !== undefined) {
+      result.fragmentBackgroundColor = s.backgroundColor as string
+   }
+   if (s.fontSize !== undefined) {
+      result.fontSize = s.fontSize
+   }
+   if (s.fontWeight !== undefined) {
+      result.fontWeight = normalizeWeight(s.fontWeight)
+   }
+   if (s.fontStyle !== undefined) {
+      result.fontStyle = s.fontStyle
+   }
+   if (s.fontFamily !== undefined) {
+      result.fontFamily = s.fontFamily
+   }
+   if (s.lineHeight !== undefined) {
+      result.lineHeight = s.lineHeight
+   }
+   if (s.letterSpacing !== undefined) {
+      result.letterSpacing = s.letterSpacing
+   }
+   if (s.textAlign !== undefined) {
+      result.textAlign = s.textAlign
+   }
+   if (s.textTransform !== undefined) {
+      result.textTransform = s.textTransform
+   }
+   if (s.textDecorationLine !== undefined) {
+      result.textDecorationLine = s.textDecorationLine
+   }
+   if (s.textDecorationColor !== undefined) {
+      result.textDecorationColor = s.textDecorationColor as string
+   }
+   if (s.textDecorationStyle !== undefined) {
+      result.textDecorationStyle = s.textDecorationStyle
+   }
+
+   // Cache the result for non-array object styles
+   if (
+      !alreadyFlattened &&
+      typeof style === 'object' &&
+      !Array.isArray(style)
+   ) {
+      STYLE_CACHE.set(style, result)
+   }
+
+   return result
 }
 
 function getFragmentConfig(style: StyleProp<TextStyle>): {
@@ -172,4 +229,35 @@ export function flattenChildrenToFragments(
    const out: Fragment[] = []
    flattenInto(out, children, parentStyle, fragmentConfig, {})
    return out
+}
+
+export function getStyleProps(styles: Partial<Fragment>) {
+   // Early return if no styles
+   const keys = Object.keys(styles)
+   if (keys.length === 0) return {}
+
+   const props: Partial<Fragment> = {}
+
+   // Optimized: only iterate through properties that exist
+   for (const key of keys) {
+      const value = styles[key as keyof Fragment]
+      if (value === undefined) continue
+
+      // Skip empty strings for string properties
+      if (
+         typeof value === 'string' &&
+         value === '' &&
+         (key === 'fontFamily' ||
+            key === 'fontColor' ||
+            key === 'textDecorationColor' ||
+            key === 'selectionColor')
+      ) {
+         continue
+      }
+
+      // Type-safe assignment using Record
+      ;(props as Record<string, unknown>)[key] = value
+   }
+
+   return props
 }
