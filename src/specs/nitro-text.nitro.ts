@@ -148,5 +148,5 @@ export interface NitroTextMethods extends HybridViewMethods {}
 export type NitroText = HybridView<
    NitroTextProps,
    NitroTextMethods,
-   { ios: 'swift'; android: 'kotlin' }
+   { ios: 'swift', android: 'kotlin' }
 >

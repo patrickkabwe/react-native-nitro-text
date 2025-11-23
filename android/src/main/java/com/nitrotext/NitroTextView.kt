@@ -54,10 +54,10 @@ class NitroTextView(ctx: Context) : ReactViewGroup(ctx) {
    
    private fun updateActionModeCallback() {
       textView.customSelectionActionModeCallback = customMenus?.takeIf { it.isNotEmpty() }
-         ?.let { createCustomActionModeCallback(it) }
+         ?.let { configureActionModeCallback(it) }
    }
    
-   private fun createCustomActionModeCallback(menus: Array<MenuItem>): ActionMode.Callback {
+   private fun configureActionModeCallback(menus: Array<MenuItem>): ActionMode.Callback {
       val menuItemMap = menus.mapIndexedNotNull { index, item ->
          if (item.title.isNotEmpty()) { Menu.FIRST + index to item } else null
       }.toMap()
