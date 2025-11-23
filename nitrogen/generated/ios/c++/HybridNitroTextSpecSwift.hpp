@@ -26,6 +26,8 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 namespace margelo::nitro::nitrotext { enum class TextDecorationLine; }
 // Forward declaration of `TextDecorationStyle` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextDecorationStyle; }
+// Forward declaration of `Renderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class Renderer; }
 // Forward declaration of `EllipsizeMode` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class EllipsizeMode; }
 // Forward declaration of `LineBreakStrategyIOS` to properly resolve imports.
@@ -49,6 +51,7 @@ namespace margelo::nitro::nitrotext { struct TextLayout; }
 #include "TextTransform.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
+#include "Renderer.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
@@ -103,6 +106,13 @@ namespace margelo::nitro::nitrotext {
     }
     inline void setFragments(const std::optional<std::vector<Fragment>>& fragments) noexcept override {
       _swiftPart.setFragments(fragments);
+    }
+    inline std::optional<Renderer> getRenderer() noexcept override {
+      auto __result = _swiftPart.getRenderer();
+      return __result;
+    }
+    inline void setRenderer(std::optional<Renderer> renderer) noexcept override {
+      _swiftPart.setRenderer(renderer);
     }
     inline std::optional<bool> getSelectable() noexcept override {
       auto __result = _swiftPart.getSelectable();

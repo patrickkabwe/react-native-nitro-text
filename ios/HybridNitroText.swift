@@ -20,18 +20,16 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
         self.textView.nitroTextDelegate = self
     }
 
-    func onNitroTextLayout(_ layout: TextLayoutEvent) {
-        onTextLayout?(layout)
-    }
-
-    func onNitroTextPressIn() { onPressIn?() }
-    func onNitroTextPressOut() { onPressOut?() }
-    func onNitroTextPress() { onPress?() }
-
     // Props
 
     var fragments: [Fragment]? {
         didSet { markNeedsApply() }
+    }
+    
+    var renderer: Renderer? {
+        didSet {
+            markNeedsApply()
+        }
     }
 
     var selectable: Bool? {
@@ -183,6 +181,11 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
             nitroTextImpl.setMenus(menus ?? [])
         }
     }
+    
+    func onNitroTextLayout(_ layout: TextLayoutEvent) { onTextLayout?(layout) }
+    func onNitroTextPressIn() { onPressIn?() }
+    func onNitroTextPressOut() { onPressOut?() }
+    func onNitroTextPress() { onPress?() }
 
     // Merge per-fragment props with top-level fallbacks and apply (delegated to NitroTextImpl)
     private func applyFragmentsAndProps() {
@@ -208,8 +211,8 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
         if needsApply {
             applyFragmentsAndProps()
             needsApply = false
+            textView.setNeedsLayout()
         }
-        textView.setNeedsLayout()
     }
 
     private func markNeedsApply() { needsApply = true }

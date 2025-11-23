@@ -16,6 +16,8 @@ namespace margelo::nitro::nitrotext {
     registerHybrids(this, [](Prototype& prototype) {
       prototype.registerHybridGetter("fragments", &HybridNitroTextSpec::getFragments);
       prototype.registerHybridSetter("fragments", &HybridNitroTextSpec::setFragments);
+      prototype.registerHybridGetter("renderer", &HybridNitroTextSpec::getRenderer);
+      prototype.registerHybridSetter("renderer", &HybridNitroTextSpec::setRenderer);
       prototype.registerHybridGetter("selectable", &HybridNitroTextSpec::getSelectable);
       prototype.registerHybridSetter("selectable", &HybridNitroTextSpec::setSelectable);
       prototype.registerHybridGetter("allowFontScaling", &HybridNitroTextSpec::getAllowFontScaling);

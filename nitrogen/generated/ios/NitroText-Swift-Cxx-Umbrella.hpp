@@ -24,6 +24,8 @@ namespace margelo::nitro::nitrotext { class HybridNitroTextSpec; }
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `MenuItem` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct MenuItem; }
+// Forward declaration of `Renderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class Renderer; }
 // Forward declaration of `TextAlign` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextDecorationLine` to properly resolve imports.
@@ -46,6 +48,7 @@ namespace margelo::nitro::nitrotext { enum class TextTransform; }
 #include "HybridNitroTextSpec.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "MenuItem.hpp"
+#include "Renderer.hpp"
 #include "TextAlign.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"

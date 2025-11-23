@@ -19,6 +19,7 @@
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
+#include "Renderer.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
@@ -57,6 +58,7 @@ namespace margelo::nitro::nitrotext::views {
 
   public:
     CachedProp<std::optional<std::vector<Fragment>>> fragments;
+    CachedProp<std::optional<Renderer>> renderer;
     CachedProp<std::optional<bool>> selectable;
     CachedProp<std::optional<bool>> allowFontScaling;
     CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;

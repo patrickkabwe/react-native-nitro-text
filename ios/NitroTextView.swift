@@ -72,8 +72,13 @@ final class NitroTextView: UITextView {
 
         if #available(iOS 11.0, *) { textDragInteraction?.isEnabled = true }
 
+        // Clear default linkTextAttributes so per-fragment colors aren't overridden by system blue
+        linkTextAttributes = [:]
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tap.cancelsTouchesInView = false
+        tap.delegate = self
+        tap.requiresExclusiveTouchType = false
         addGestureRecognizer(tap)
         self.tapRecognizer = tap
 
@@ -200,6 +205,17 @@ final class NitroTextView: UITextView {
     @objc private func handleTap(_ recognizer: UITapGestureRecognizer) {
         guard recognizer.state == .ended else { return }
         let location = recognizer.location(in: self)
+        
+        if isSelectable, let textPosition = closestPosition(to: location) {
+            let offset = offset(from: beginningOfDocument, to: textPosition)
+            if let attrText = attributedText, offset >= 0 && offset < attrText.length {
+                let attributes = attrText.attributes(at: offset, effectiveRange: nil)
+                if attributes[.link] != nil {
+                    return
+                }
+            }
+        }
+        
         clearSelectionIfNeeded(at: location)
         nitroTextDelegate?.onNitroTextPress()
     }
@@ -380,17 +396,23 @@ private extension NitroTextView {
 // MARK: - UIGestureRecognizerDelegate
 extension NitroTextView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        guard gestureRecognizer === windowTapRecognizer else { return true }
-        guard hasActiveSelection() else { return false }
-        guard let touchedView = touch.view else { return true }
-        if isTouchInsideMenu(touchedView) { return false }
-        if touchedView === self { return false }
-        if touchedView.isDescendant(of: self) { return false }
+        if gestureRecognizer === windowTapRecognizer {
+            guard hasActiveSelection() else { return false }
+            guard let touchedView = touch.view else { return true }
+            if isTouchInsideMenu(touchedView) { return false }
+            if touchedView === self { return false }
+            if touchedView.isDescendant(of: self) { return false }
+            return true
+        }
+                
         return true
     }
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        gestureRecognizer === windowTapRecognizer
+        if gestureRecognizer === tapRecognizer {
+            return true
+        }
+        return gestureRecognizer === windowTapRecognizer
     }
 
     // Detect touches that originate from UIKit's edit menu chrome to avoid dismissing selection.
