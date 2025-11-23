@@ -25,8 +25,10 @@ extension NitroTextImpl {
         attrs[.foregroundColor] = color
 
         // Background highlight per-fragment (to match RN Text backgroundColor on runs)
-        if let bgColorString = fragment.fragmentBackgroundColor, let bgParsed = ColorParser.parse(bgColorString) {
-            attrs[.backgroundColor] = bgParsed
+        if let bgColorString = fragment.fragmentBackgroundColor {
+            if let bgParsed = parseColorCached(bgColorString) {
+                attrs[.backgroundColor] = bgParsed
+            }
         }
 
         if let spacing = fragment.letterSpacing {
@@ -50,19 +52,52 @@ extension NitroTextImpl {
         }
 
         // Decoration color (applies to underline/strikethrough if present)
-        if let decoColor = fragment.textDecorationColor, let parsed = ColorParser.parse(decoColor) {
-            attrs[.underlineColor] = parsed
-            attrs[.strikethroughColor] = parsed
+        if let decoColor = fragment.textDecorationColor {
+            if let parsed = parseColorCached(decoColor) {
+                attrs[.underlineColor] = parsed
+                attrs[.strikethroughColor] = parsed
+            }
+        }
+
+        if let urlString = fragment.linkUrl, !urlString.isEmpty {
+            if let url = URL(string: urlString) {
+                attrs[.link] = url
+            }
+
+            if fragment.fontColor == nil {
+                if let fontColorString = fragment.fontColor, !fontColorString.isEmpty {
+                    if let customColor = parseColorCached(fontColorString) {
+                        attrs[.foregroundColor] = customColor
+                    } else {
+                        attrs[.foregroundColor] = UIColor.systemBlue
+                    }
+                } else {
+                    attrs[.foregroundColor] = UIColor.systemBlue
+                }
+            }
         }
 
         return attrs
     }
     
     func resolveColor(for fragment: Fragment, defaultColor: UIColor) -> UIColor {
-        if let value = fragment.fontColor, let parsed = ColorParser.parse(value) {
-            return parsed
+        if let value = fragment.fontColor {
+            return parseColorCached(value) ?? defaultColor
         }
         return defaultColor
+    }
+    
+    func parseColorCached(_ colorString: String) -> UIColor? {
+        if let cached = colorCache[colorString] {
+            return cached
+        }
+        
+        if let parsed = ColorParser.parse(colorString) {
+            colorCache[colorString] = parsed
+            return parsed
+        }
+        
+        return nil
     }
 
     private func nsUnderlineStyle(from style: TextDecorationStyle?) -> Int {

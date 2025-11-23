@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import {
    Platform,
    Text,
@@ -14,7 +14,12 @@ import {
 } from 'react-native-nitro-modules'
 import NitroTextConfig from '../nitrogen/generated/shared/json/NitroTextConfig.json'
 import type { NitroTextMethods, NitroTextProps } from './specs/nitro-text.nitro'
-import { flattenChildrenToFragments, styleToFragment } from './utils'
+import {
+   flattenChildrenToFragments,
+   getStyleProps,
+   styleToFragment,
+} from './utils'
+import { renderStringChildren } from './renderers'
 
 export type NitroTextRef = HybridRef<NitroTextProps, NitroTextMethods>
 
@@ -25,20 +30,24 @@ const NitroTextView = getHostComponent<NitroTextProps, NitroTextMethods>(
 
 type NitroTextPropsWithEvents = Pick<
    NitroTextProps,
-   'onTextLayout' | 'onPress' | 'onPressIn' | 'onPressOut' | 'menus'
+   | 'onTextLayout'
+   | 'onPress'
+   | 'onPressIn'
+   | 'onPressOut'
+   | 'menus'
+   | 'renderer'
 > &
    Omit<TextProps, 'onTextLayout'>
 
 let TextAncestorContext = unstable_TextAncestorContext
 if (
-   Platform.constants.reactNativeVersion.major > 0 ||
-   (Platform.constants.reactNativeVersion.major === 0 &&
-      Platform.constants.reactNativeVersion.minor < 81)
+   Platform.constants.reactNativeVersion.major === 0 &&
+   Platform.constants.reactNativeVersion.minor < 81
 ) {
    TextAncestorContext = require('react-native/Libraries/Text/TextAncestor')
 }
 export const NitroText = (props: NitroTextPropsWithEvents) => {
-   const isInsideRNText = React.useContext(TextAncestorContext)
+   const isInsideRNText = useContext(TextAncestorContext)
    const {
       children,
       style,
@@ -49,16 +58,31 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       onPressIn,
       onPressOut,
       onLongPress,
+      renderer,
       ...rest
    } = props
 
-   const isSimpleText =
-      typeof children === 'string' || typeof children === 'number'
+   const isStringChildren = typeof children === 'string'
+   const isSimpleText = isStringChildren || typeof children === 'number'
 
-   const fragments = React.useMemo(() => {
+   const topStyles = useMemo(() => {
+      if (!style) return {}
+      return styleToFragment(style)
+   }, [style])
+
+   const parsedFragments = useMemo(() => {
+      if (!renderer || !isStringChildren) return undefined
+      const result = renderStringChildren(children, renderer, topStyles)
+      return result.fragments
+   }, [renderer, children, isStringChildren, topStyles])
+
+   const fragments = useMemo(() => {
+      if (parsedFragments !== undefined) return parsedFragments
       if (isSimpleText) return []
       return flattenChildrenToFragments(children, style)
-   }, [children, style, isSimpleText])
+   }, [parsedFragments, children, style, isSimpleText])
+
+   const styleProps = useMemo(() => getStyleProps(topStyles), [topStyles])
 
    const onRNTextLayout = useCallback(
       (e: TextLayoutEvent) => {
@@ -71,7 +95,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       return (
          <Text
             {...rest}
-            selectionColor={selectionColor as any}
+            selectionColor={selectionColor}
             onPress={onPress}
             onPressIn={onPressIn}
             onPressOut={onPressOut}
@@ -85,28 +109,32 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       )
    }
 
-   const topStyles = styleToFragment(style || undefined)
+   if (renderer && isStringChildren) {
+      return (
+         <NitroTextView
+            {...rest}
+            selectable={selectable}
+            fragments={parsedFragments}
+            selectionColor={selectionColor as string}
+            style={style}
+            {...styleProps}
+            onTextLayout={callback(onTextLayout)}
+            onPress={callback(onPress)}
+            onPressIn={callback(onPressIn)}
+            onPressOut={callback(onPressOut)}
+         />
+      )
+   }
 
    if (isSimpleText) {
       return (
          <NitroTextView
             {...rest}
             selectable={selectable}
-            fontFamily={topStyles.fontFamily}
             selectionColor={selectionColor as string}
             text={String(children)}
             style={style}
-            fontColor={topStyles.fontColor}
-            textAlign={topStyles.textAlign}
-            textTransform={topStyles.textTransform}
-            fontSize={topStyles.fontSize}
-            fontWeight={topStyles.fontWeight}
-            fontStyle={topStyles.fontStyle}
-            lineHeight={topStyles.lineHeight}
-            letterSpacing={topStyles.letterSpacing}
-            textDecorationLine={topStyles.textDecorationLine}
-            textDecorationColor={topStyles.textDecorationColor}
-            textDecorationStyle={topStyles.textDecorationStyle}
+            {...styleProps}
             onTextLayout={callback(onTextLayout)}
             onPress={callback(onPress)}
             onPressIn={callback(onPressIn)}
@@ -120,18 +148,9 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          {...rest}
          selectable={selectable}
          fragments={fragments}
-         fontFamily={topStyles.fontFamily}
          selectionColor={selectionColor as string}
          style={style}
-         fontColor={topStyles.fontColor}
-         fontWeight={topStyles.fontWeight}
-         fontStyle={topStyles.fontStyle}
-         letterSpacing={topStyles.letterSpacing}
-         textAlign={topStyles.textAlign}
-         textTransform={topStyles.textTransform}
-         textDecorationLine={topStyles.textDecorationLine}
-         textDecorationColor={topStyles.textDecorationColor}
-         textDecorationStyle={topStyles.textDecorationStyle}
+         {...styleProps}
          onTextLayout={callback(onTextLayout)}
          onPress={callback(onPress)}
          onPressIn={callback(onPressIn)}
@@ -139,3 +158,5 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       />
    )
 }
+
+NitroText.displayName = 'NitroText'

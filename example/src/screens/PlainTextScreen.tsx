@@ -1,22 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { NitroText, TextLayoutEvent } from 'react-native-nitro-text';
+import { NitroText } from 'react-native-nitro-text';
+import { styles } from './styles';
+import { NitroModules } from 'react-native-nitro-modules';
 
-export default function App() {
-  const [layoutInfo, setLayoutInfo] = useState<string>('');
-
-  const handleLayout = (event: any) => {
-    const { height, width } = event.nativeEvent.layout;
-    setLayoutInfo(`Layout: ${Math.round(width)}×${Math.round(height)}px`);
-  };
-
-  const handleTextLayout = (event: TextLayoutEvent) => {
-    // console.log('lines', lines);
-    // console.log('width', event);
-    // console.log('height', height);
-    // setLayoutInfo(`Lines: ${lines.length}`);
-  };
-
+export function PlainTextScreen() {
   const menus = useMemo(
     () => [
       { title: 'Ask ChatGPT', action: () => console.log('Ask ChatGPT') },
@@ -37,7 +25,7 @@ export default function App() {
           onLongPress={() => console.log('onLongPress')}
           onPress={() => console.log('onPress')}
         >
-          🚀 NitroText Showcase
+          🚀 NitroText Plain Text {NitroModules.buildType}
         </NitroText>
         <NitroText style={styles.subtitle}>
           High-performance selectable text with native rendering
@@ -103,51 +91,6 @@ export default function App() {
           <Text style={styles.large}>Large text</Text> mixed with{' '}
           <Text style={styles.small}>small text</Text> in the same paragraph.
         </Text>
-      </View>
-
-      {/* Layout Measurement */}
-      <View style={styles.section}>
-        <NitroText style={styles.sectionTitle}>Layout Measurement</NitroText>
-        <NitroText
-          style={styles.measuredText}
-          onLayout={handleLayout}
-          onTextLayout={handleTextLayout}
-        >
-          This text demonstrates layout measurement capabilities. The component
-          can measure its dimensions and report back to JavaScript.
-          {'\n\n'}
-          <NitroText style={styles.infoText}>
-            {layoutInfo || 'Measuring...'}
-          </NitroText>
-        </NitroText>
-      </View>
-
-      {/* Layout Measurement using RN Text */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Layout Measurement(RN Text)</Text>
-        <Text style={styles.measuredText} onLayout={handleLayout}>
-          This text demonstrates layout measurement capabilities. The component
-          can measure its dimensions and report back to JavaScript.
-          {'\n\n'}
-          <Text style={styles.infoText}>{layoutInfo || 'Measuring...'}</Text>
-        </Text>
-      </View>
-
-      {/* Line Limiting */}
-      <View style={styles.section}>
-        <NitroText style={styles.sectionTitle}>Line Limiting</NitroText>
-        <NitroText style={styles.description}>Two lines maximum:</NitroText>
-        <NitroText
-          style={styles.limitedText}
-          numberOfLines={2}
-          ellipsizeMode="tail"
-        >
-          This is a very long text that would normally span multiple lines, but
-          we're limiting it to just two lines. The text will be truncated with
-          an ellipsis when it exceeds the specified number of lines. This is
-          useful for creating consistent layouts in lists or cards where you
-          need predictable text heights.
-        </NitroText>
       </View>
 
       {/* Mixed Content */}
@@ -230,7 +173,6 @@ export default function App() {
       </View>
 
       {/* Footer */}
-      {/* Bug when applying alignItems: 'center' NitroText disappears */}
       <View style={[styles.section, styles.footer]}>
         <NitroText
           style={styles.footerText}
@@ -251,248 +193,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  content: {
-    paddingHorizontal: 16,
-    paddingTop: 60,
-    paddingBottom: 40,
-  },
-  section: {
-    marginBottom: 32,
-  },
-
-  // Headers
-  mainTitle: {
-    fontSize: 25,
-    padding: 10,
-    fontWeight: 'bold',
-    color: '#1a1a1a',
-    textAlign: 'center',
-    fontFamily: 'ui-monospace',
-    // marginBottom: 8,
-    backgroundColor: 'red',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#6c757d',
-    textAlign: 'center',
-    alignSelf: 'flex-start',
-    lineHeight: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 16,
-  },
-  description: {
-    fontSize: 14,
-    color: '#6c757d',
-    marginBottom: 8,
-  },
-
-  // Basic text styles
-  basicText: {
-    fontSize: 16,
-    color: '#495057',
-    lineHeight: 24,
-    backgroundColor: '#ffffff',
-    padding: 16,
-    borderRadius: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: '#007bff',
-  },
-
-  // Rich text styles
-  richText: {
-    fontSize: 16,
-    color: '#495057',
-    lineHeight: 26,
-    backgroundColor: '#ffffff',
-    padding: 16,
-    borderRadius: 8,
-  },
-  bold: {
-    fontWeight: 'bold',
-    color: '#2c3e50',
-  },
-  italic: {
-    fontStyle: 'italic',
-    color: '#6f42c1',
-  },
-  highlight: {
-    backgroundColor: '#fff3cd',
-    color: '#856404',
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-  },
-  underline: {
-    textDecorationLine: 'underline line-through',
-    textDecorationStyle: 'dashed',
-    textDecorationColor: '#000000',
-    textAlign: 'auto',
-  },
-  colorful: {
-    color: '#e83e8c',
-  },
-  large: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  small: {
-    fontSize: 12,
-    color: '#6c757d',
-  },
-
-  // Layout measurement
-  measuredText: {
-    fontSize: 16,
-    color: '#495057',
-    lineHeight: 24,
-    backgroundColor: '#e3f2fd',
-    padding: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#2196f3',
-    borderStyle: 'dashed',
-  },
-  infoText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#1976d2',
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#1976d2',
-  },
-
-  // Line limiting
-  limitedText: {
-    fontSize: 16,
-    color: '#495057',
-    lineHeight: 22,
-    backgroundColor: '#fff8e1',
-    padding: 16,
-    borderRadius: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: '#ff9800',
-  },
-
-  // Mixed content
-  mixedContent: {
-    fontSize: 16,
-    color: '#495057',
-    lineHeight: 26,
-    backgroundColor: '#f8f9fa',
-    padding: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#dee2e6',
-  },
-  rnText: {
-    backgroundColor: '#ffeaa7',
-    padding: 8,
-    borderRadius: 4,
-    fontSize: 15,
-    color: '#2d3436',
-  },
-  nested: {
-    fontWeight: 'bold',
-    color: '#0984e3',
-  },
-  nestedContainer: {
-    backgroundColor: '#ddd6fe',
-    padding: 8,
-    borderRadius: 4,
-  },
-  rnNested: {
-    fontStyle: 'italic',
-    color: '#7c3aed',
-    fontWeight: 'bold',
-  },
-
-  // Code syntax
-  codeBlock: {
-    fontSize: 14,
-    fontFamily: 'ui-monospace',
-    backgroundColor: '#1e1e1e',
-    color: '#d4d4d4',
-    padding: 16,
-    borderRadius: 8,
-    lineHeight: 20,
-  },
-
-  codeKeyword: {
-    color: '#569cd6',
-    fontWeight: 'bold',
-  },
-  codeString: {
-    color: '#ce9178',
-  },
-  codeFunction: {
-    color: '#dcdcaa',
-  },
-  codeTag: {
-    color: '#4ec9b0',
-  },
-  codeAttribute: {
-    color: '#9cdcfe',
-  },
-  codeValue: {
-    color: '#ce9178',
-  },
-
-  // Performance comparison
-  comparisonContainer: {
-    flexDirection: 'row',
-    gap: 16,
-  },
-  comparisonItem: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    padding: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#dee2e6',
-  },
-  comparisonLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    // marginBottom: 12,
-    textAlign: 'center',
-  },
-  performanceText: {
-    fontSize: 14,
-    color: '#495057',
-    lineHeight: 22,
-  },
-
-  // Footer
-  footer: {
-    // alignItems: 'center',
-    // paddingTop: 20,
-    borderTopWidth: 1,
-    borderTopColor: '#dee2e6',
-    // paddingBottom: 60,
-    backgroundColor: 'blue',
-  },
-  footerText: {
-    textTransform: 'uppercase',
-    // fontSize: 16,
-    fontStyle: 'italic',
-    backgroundColor: 'red',
-    textAlign: 'center',
-    marginBottom: 1,
-    letterSpacing: 10,
-    // alignSelf: 'flex-start',
-    // width: '100%',
-    // height: '100%',
-  },
-});

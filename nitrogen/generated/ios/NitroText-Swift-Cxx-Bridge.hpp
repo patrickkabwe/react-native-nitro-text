@@ -24,6 +24,8 @@ namespace margelo::nitro::nitrotext { class HybridNitroTextSpec; }
 namespace margelo::nitro::nitrotext { enum class LineBreakStrategyIOS; }
 // Forward declaration of `MenuItem` to properly resolve imports.
 namespace margelo::nitro::nitrotext { struct MenuItem; }
+// Forward declaration of `Renderer` to properly resolve imports.
+namespace margelo::nitro::nitrotext { enum class Renderer; }
 // Forward declaration of `TextAlign` to properly resolve imports.
 namespace margelo::nitro::nitrotext { enum class TextAlign; }
 // Forward declaration of `TextDecorationLine` to properly resolve imports.
@@ -50,6 +52,7 @@ namespace NitroText { class HybridNitroTextSpec_cxx; }
 #include "HybridNitroTextSpec.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "MenuItem.hpp"
+#include "Renderer.hpp"
 #include "TextAlign.hpp"
 #include "TextDecorationLine.hpp"
 #include "TextDecorationStyle.hpp"
@@ -211,6 +214,21 @@ namespace margelo::nitro::nitrotext::bridge::swift {
     return optional.has_value();
   }
   inline std::vector<Fragment> get_std__optional_std__vector_Fragment__(const std::optional<std::vector<Fragment>>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<Renderer>
+  /**
+   * Specialized version of `std::optional<Renderer>`.
+   */
+  using std__optional_Renderer_ = std::optional<Renderer>;
+  inline std::optional<Renderer> create_std__optional_Renderer_(const Renderer& value) noexcept {
+    return std::optional<Renderer>(value);
+  }
+  inline bool has_value_std__optional_Renderer_(const std::optional<Renderer>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline Renderer get_std__optional_Renderer_(const std::optional<Renderer>& optional) noexcept {
     return *optional;
   }
   

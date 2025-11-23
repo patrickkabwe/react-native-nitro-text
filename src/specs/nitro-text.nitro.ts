@@ -10,13 +10,56 @@ import type {
    LineBreakStrategyIOS,
    TextLayoutEvent,
    MenuItem,
+   Renderer,
 } from '../types'
 
-export interface NitroTextProps extends HybridViewProps, Fragment {
+export interface NitroTextProps
+   extends HybridViewProps,
+      Omit<Fragment, 'linkUrl'> {
    /**
     * The fragments of the text.
     */
    fragments?: Fragment[]
+
+   /**
+    * Renderer for parsing rich text content from string children.
+    * When specified, the string children are parsed by a purpose-built, zero-allocation parser:
+    * - 'html': Parses HTML tags, inline CSS styles, `<style>` blocks, selectors (class/id/tag), lists, and semantic tags
+    * - 'plaintext': Treats the text literally without any parsing
+
+    * HTML renderer supports by default:
+    * - HTML tags (b, i, strong, em, span, div, p, lists, etc.)
+    * - Inline CSS styles: `<span style='color: red; font-weight: bold;'>`
+    * - CSS stylesheets: `<style>` tags and styles in `<head>`
+    * - CSS selectors: classes (`.class`), IDs (`#id`), element selectors
+    *
+    * Works with string children (matching the pattern in App.tsx):
+    * @example
+    * ```tsx
+    * <NitroText renderer="html"><b>Bold</b> and <i>italic</i></NitroText>
+    * <NitroText renderer="html"><span style='color: red; font-weight: bold;'>Styled</span></NitroText>
+    *
+    * // With stylesheet support (built-in, no configuration needed)
+    * <NitroText renderer="html">
+    *   <html lang="en">
+    *       <head>
+    *           <style>
+    *               .bold { font-weight: bold; }
+    *               .red { color: red; }
+    *               #title { font-size: 24px; }
+    *           </style>
+    *       </head>
+    *       <body>
+    *           <span class="bold red">Bold and red from stylesheet</span>
+    *           <span id="title">Title text</span>
+    *       </body>
+    *   </html>
+    * </NitroText>
+    * ```
+    *
+    * When not provided, content is treated as plain text or React children (nested NitroText components).
+    */
+   renderer?: Renderer
 
    /**
     * Selectable text.

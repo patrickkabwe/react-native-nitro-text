@@ -18,7 +18,7 @@ public extension Fragment {
   /**
    * Create a new instance of `Fragment`.
    */
-  init(text: String?, selectionColor: String?, fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fragmentBackgroundColor: String?, fontStyle: FontStyle?, fontFamily: String?, lineHeight: Double?, letterSpacing: Double?, textAlign: TextAlign?, textTransform: TextTransform?, textDecorationLine: TextDecorationLine?, textDecorationColor: String?, textDecorationStyle: TextDecorationStyle?) {
+  init(text: String?, selectionColor: String?, fontSize: Double?, fontWeight: FontWeight?, fontColor: String?, fragmentBackgroundColor: String?, fontStyle: FontStyle?, fontFamily: String?, lineHeight: Double?, letterSpacing: Double?, textAlign: TextAlign?, textTransform: TextTransform?, textDecorationLine: TextDecorationLine?, textDecorationColor: String?, textDecorationStyle: TextDecorationStyle?, linkUrl: String?) {
     self.init({ () -> bridge.std__optional_std__string_ in
       if let __unwrappedValue = text {
         return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
@@ -106,6 +106,12 @@ public extension Fragment {
     }(), { () -> bridge.std__optional_TextDecorationStyle_ in
       if let __unwrappedValue = textDecorationStyle {
         return bridge.create_std__optional_TextDecorationStyle_(__unwrappedValue)
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_std__string_ in
+      if let __unwrappedValue = linkUrl {
+        return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
       } else {
         return .init()
       }
@@ -402,6 +408,30 @@ public extension Fragment {
       self.__textDecorationStyle = { () -> bridge.std__optional_TextDecorationStyle_ in
         if let __unwrappedValue = newValue {
           return bridge.create_std__optional_TextDecorationStyle_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+  }
+  
+  var linkUrl: String? {
+    @inline(__always)
+    get {
+      return { () -> String? in
+        if bridge.has_value_std__optional_std__string_(self.__linkUrl) {
+          let __unwrapped = bridge.get_std__optional_std__string_(self.__linkUrl)
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__linkUrl = { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = newValue {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
         } else {
           return .init()
         }
