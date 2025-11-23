@@ -98,7 +98,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          <Text
             {...rest}
             selectionColor={selectionColor}
-            maxFontSizeMultiplier={maxFontSizeMultiplier}
             onPress={onPress}
             onPressIn={onPressIn}
             onPressOut={onPressOut}
@@ -112,12 +111,30 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       )
    }
 
-   if (!renderer && isSimpleText) {
+   if (renderer && isStringChildren) {
       return (
          <NitroTextView
             {...rest}
-            maxFontSizeMultiplier={maxFontSizeMultiplier}
             selectable={selectable}
+            maxFontSizeMultiplier={maxFontSizeMultiplier}
+            fragments={parsedFragments}
+            selectionColor={selectionColor as string}
+            style={style}
+            {...styleProps}
+            onTextLayout={callback(onTextLayout)}
+            onPress={callback(onPress)}
+            onPressIn={callback(onPressIn)}
+            onPressOut={callback(onPressOut)}
+         />
+      )
+   }
+
+   if (isSimpleText) {
+      return (
+         <NitroTextView
+            {...rest}
+            selectable={selectable}
+            maxFontSizeMultiplier={maxFontSizeMultiplier}
             selectionColor={selectionColor as string}
             text={String(children)}
             style={style}
@@ -133,11 +150,11 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
    return (
       <NitroTextView
          {...rest}
-         style={style}
-         fragments={fragments}
          selectable={selectable}
-         selectionColor={selectionColor as string}
+         fragments={fragments}
          maxFontSizeMultiplier={maxFontSizeMultiplier}
+         selectionColor={selectionColor as string}
+         style={style}
          {...styleProps}
          onTextLayout={callback(onTextLayout)}
          onPress={callback(onPress)}
