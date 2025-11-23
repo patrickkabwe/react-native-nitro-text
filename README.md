@@ -83,6 +83,26 @@ export function SelectionExample() {
 }
 ```
 
+## HTML rendering
+
+NitroText can parse HTML string children and inline CSS when you pass `renderer="html"`.
+
+```tsx
+import { NitroText } from 'react-native-nitro-text'
+
+export function HtmlExample() {
+  const html = `
+    <div>
+      <h2>Renderer demo</h2>
+      <p>This text comes from <strong>HTML</strong> with <em>semantic</em> tags.</p>
+      <p><span style="color: #ff6347; font-weight: bold;">Inline CSS works too.</span></p>
+    </div>
+  `
+
+  return <NitroText renderer="html">{html}</NitroText>
+}
+```
+
 ## Platform Support
 
 - iOS
