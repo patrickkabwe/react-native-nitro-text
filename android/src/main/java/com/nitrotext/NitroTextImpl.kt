@@ -227,7 +227,7 @@ class NitroTextImpl(private val view: AppCompatTextView) {
           // Apply default link color if fragment doesn't have explicit color
           if (frag.fontColor == null) {
             // Use system link color (typically blue)
-            val linkColor = android.graphics.Color.parseColor("#007AFF") // iOS-like blue
+            val linkColor = android.graphics.Color.parseColor("#007AFF")
             builder.setSpan(ForegroundColorSpan(linkColor), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
           }
         }
