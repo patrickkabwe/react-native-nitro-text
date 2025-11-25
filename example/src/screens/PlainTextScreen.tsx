@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useMemo } from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StatusBar, Text, View } from 'react-native';
 import { NitroText } from 'react-native-nitro-text';
 import { styles } from './styles';
 import { NitroModules } from 'react-native-nitro-modules';

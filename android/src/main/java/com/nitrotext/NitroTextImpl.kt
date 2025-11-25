@@ -6,13 +6,16 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
+import android.text.style.AlignmentSpan
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.TypefaceSpan
 import android.text.style.UnderlineSpan
+import android.text.Layout
 import android.view.Gravity
+import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.facebook.react.uimanager.PixelUtil
 import com.margelo.nitro.nitrotext.*
@@ -159,7 +162,7 @@ class NitroTextImpl(private val view: AppCompatTextView) {
       val spansRequired = textDecorationLine != null || lineHeightPx != null
       if (spansRequired) {
         val builder = SpannableStringBuilder(content)
-        applyDecorationSpans(builder, 0, builder.length, textDecorationLine)
+        applyDecorationSpans(builder, 0, builder.length, textDecorationLine, textDecorationColor)
         lineHeightPx?.let { applyLineHeightSpan(builder, 0, builder.length, it) }
         view.text = builder
       } else {
@@ -219,8 +222,19 @@ class NitroTextImpl(private val view: AppCompatTextView) {
       frag.fontFamily?.let {
         builder.setSpan(TypefaceSpan(it), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
       }
+      // Text Alignment (per-fragment)
+      frag.textAlign?.let { align ->
+        val alignment = when (align) {
+          TextAlign.LEFT -> Layout.Alignment.ALIGN_NORMAL
+          TextAlign.RIGHT -> Layout.Alignment.ALIGN_OPPOSITE
+          TextAlign.CENTER -> Layout.Alignment.ALIGN_CENTER
+          TextAlign.JUSTIFY -> Layout.Alignment.ALIGN_CENTER // Justify not directly supported, use center
+          TextAlign.AUTO -> Layout.Alignment.ALIGN_NORMAL
+        }
+        builder.setSpan(AlignmentSpan.Standard(alignment), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+      }
       // Decorations
-      applyDecorationSpans(builder, start, end, frag.textDecorationLine)
+      applyDecorationSpans(builder, start, end, frag.textDecorationLine, frag.textDecorationColor)
       frag.lineHeight?.let { lh ->
         resolveLineHeight(lh)?.let { applyLineHeightSpan(builder, start, end, it) }
       }
@@ -261,7 +275,8 @@ class NitroTextImpl(private val view: AppCompatTextView) {
     view.setTextIsSelectable(isSelectable)
   }
 
-  private fun applyDecorationSpans(builder: SpannableStringBuilder, start: Int, end: Int, line: TextDecorationLine?) {
+  private fun applyDecorationSpans(builder: SpannableStringBuilder, start: Int, end: Int, line: TextDecorationLine?, decorationColor: String?) {
+    val underlineColor = decorationColor?.let { parseColorSafe(it) }
     when (line) {
       TextDecorationLine.UNDERLINE -> builder.setSpan(UnderlineSpan(), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
       TextDecorationLine.LINE_THROUGH -> builder.setSpan(StrikethroughSpan(), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
