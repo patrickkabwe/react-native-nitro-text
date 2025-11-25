@@ -107,9 +107,12 @@ export function HtmlScreen() {
 <p id="header">Header with ID styling</p>
 <p style="color: green; font-weight: bold;">Green bold text from inline style</p>
 <p style="font-size: 18px; line-height: 28px;">Custom font size and line height</p>
-<p style="text-align: center;">Centered text</p>
-<p style="text-transform: uppercase;">uppercase text</p>
-<p style="text-decoration: underline; text-decoration-color: purple;">Purple underline</p>`}
+<div style="display: flex; flex-direction: column; gap: 10px; border: 1px solid #000; padding: 10px;">
+    <p style="text-align: center; ">Centered text</p>
+    <p style="text-transform: uppercase;">uppercase text</p>
+    <p style="text-decoration: underline; text-decoration-color: purple;">Purple underline</p>
+</div>
+`}
         </NitroText>
       </View>
 

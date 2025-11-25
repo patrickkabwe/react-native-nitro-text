@@ -5,7 +5,11 @@
 
 #pragma once
 
+#ifdef ANDROID
+#include "views/HybridNitroTextComponent.hpp"
+#else
 #include "HybridNitroTextComponent.hpp"
+#endif
 
 #include <react/renderer/core/LayoutConstraints.h>
 #include <react/renderer/core/LayoutContext.h>

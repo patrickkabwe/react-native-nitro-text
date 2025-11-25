@@ -93,7 +93,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       [onTextLayout]
    )
 
-   if (isInsideRNText || Platform.OS === 'android') {
+   if (isInsideRNText) {
       return (
          <Text
             {...rest}

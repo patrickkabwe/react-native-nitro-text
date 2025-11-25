@@ -5,16 +5,30 @@
 #include "NitroTextShadowNode.hpp"
 #include "NitroTextUtil.hpp"
 
+#include "NitroHtmlUtils.hpp"
+
 #include <cmath>
 #include <optional>
 #include <string>
 #include <utility>
+
+#if defined(__ANDROID__)
+#include <android/log.h>
+#endif
 
 #include <react/renderer/attributedstring/AttributedStringBox.h>
 #include <react/renderer/textlayoutmanager/TextLayoutManagerExtended.h>
 
 #if __has_include(<cxxreact/ReactNativeVersion.h>)
 #include <cxxreact/ReactNativeVersion.h>
+#endif
+
+#if defined(REACT_NATIVE_VERSION_MAJOR)
+#define RN_VERSION_AT_LEAST(major, minor)                                                     \
+  ((REACT_NATIVE_VERSION_MAJOR > (major)) ||                                                  \
+   (REACT_NATIVE_VERSION_MAJOR == (major) && REACT_NATIVE_VERSION_MINOR >= (minor)))
+#else
+#define RN_VERSION_AT_LEAST(major, minor) 0
 #endif
 
 namespace margelo::nitro::nitrotext::views {

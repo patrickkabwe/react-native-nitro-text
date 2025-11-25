@@ -3,8 +3,8 @@
 // Shared implementation for custom ComponentDescriptor
 //
 
-#include "NitroTextComponentDescriptor.hpp"
 #include <react/renderer/textlayoutmanager/TextLayoutManager.h>
+#include "NitroTextComponentDescriptor.hpp"
 
 using namespace facebook;
 using namespace margelo::nitro::nitrotext::views;
@@ -38,6 +38,7 @@ NitroTextComponentDescriptor::NitroTextComponentDescriptor(const react::Componen
 
     // Inject TextLayoutManager so measurement works on Fabric (iOS/macOS/etc.).
     // Construct directly with the descriptor's ContextContainer.
+
     if (auto contextContainer = this->getContextContainer()) {
       auto textLayoutManager = std::make_shared<const react::TextLayoutManager>(contextContainer);
       concreteShadowNode.setTextLayoutManager(textLayoutManager);

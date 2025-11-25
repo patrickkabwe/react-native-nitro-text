@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useLayoutEffect, useMemo } from 'react';
+import { ScrollView, StatusBar, Text, View } from 'react-native';
 import { NitroText } from 'react-native-nitro-text';
 import { styles } from './styles';
 import { NitroModules } from 'react-native-nitro-modules';
@@ -12,6 +12,10 @@ export function PlainTextScreen() {
     ],
     [],
   );
+
+  useLayoutEffect(() => {
+    StatusBar.setBarStyle('dark-content');
+  }, []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -30,12 +34,15 @@ export function PlainTextScreen() {
         <NitroText style={styles.subtitle}>
           High-performance selectable text with native rendering
         </NitroText>
+        <Text style={styles.subtitle} selectable>
+          High-performance selectable text with native rendering
+        </Text>
       </View>
 
       {/* Basic Usage */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Basic Usage</NitroText>
-        <NitroText style={styles.basicText}>
+        <NitroText style={styles.basicText} selectable>
           This is a simple NitroText component with native performance. Try
           selecting this text to see the smooth selection behavior!
         </NitroText>
@@ -44,7 +51,7 @@ export function PlainTextScreen() {
       {/* Nested NitroText wth numberOfLines (does not work currently it only renders the first line nested text doesn't render) */}
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>
-          Nested NitroText with numberOfLines
+          Nested NitroText with numberOfLines (NitroText)
         </NitroText>
         <NitroText style={styles.basicText} numberOfLines={2}>
           This is a simple NitroText component with native performance.{' '}
@@ -52,6 +59,17 @@ export function PlainTextScreen() {
             Try selecting this text to see the smooth selection behavior!
           </NitroText>
         </NitroText>
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          Nested NitroText with numberOfLines (RN Text)
+        </Text>
+        <Text style={styles.basicText} numberOfLines={2}>
+          This is a simple NitroText component with native performance.{' '}
+          <Text style={styles.bold}>
+            Try selecting this text to see the smooth selection behavior!
+          </Text>
+        </Text>
       </View>
 
       {/* Rich Text Formatting */}
@@ -100,14 +118,14 @@ export function PlainTextScreen() {
           NitroText can seamlessly integrate with React Native's Text component:
           {'\n\n'}
           <Text style={styles.rnText}>
-            This is a React Native Text component{' '}
-            <NitroText style={styles.nested}>with nested NitroText</NitroText>{' '}
+            This is a React Native Text component
+            <NitroText style={styles.nested}> with nested NitroText </NitroText>
             inside it.
           </Text>
           {'\n\n'}And vice versa - NitroText can contain:{'\n'}
           <NitroText style={styles.nestedContainer}>
-            Regular text with{' '}
-            <Text style={styles.rnNested}>RN Text nested inside</Text>{' '}
+            Regular text with
+            <Text style={styles.rnNested}> RN Text nested inside</Text>{' '}
             NitroText.
           </NitroText>
         </NitroText>
