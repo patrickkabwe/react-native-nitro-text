@@ -84,6 +84,8 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       return flattenChildrenToFragments(children, style)
    }, [parsedFragments, children, style, isSimpleText])
 
+   const styleProps = useMemo(() => getStyleProps(topStyles), [topStyles])
+
    const onRNTextLayout = useCallback(
       (e: TextLayoutEvent) => {
          onTextLayout?.(e.nativeEvent)
@@ -101,11 +103,14 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          onPress: callback(onPress) || undefined,
          onPressIn: callback(onPressIn) || undefined,
          onPressOut: callback(onPressOut) || undefined,
-         style: style,
+         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         style: { ...(style as any), ...styleProps },
          onTextLayout: callback(onTextLayout) || undefined,
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [
       rest,
+      styleProps,
       selectable,
       maxFontSizeMultiplier,
       parsedFragments,
@@ -113,7 +118,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       onPress,
       onPressIn,
       onPressOut,
-      style,
       onTextLayout,
    ])
 
