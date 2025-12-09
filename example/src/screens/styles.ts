@@ -29,8 +29,6 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#1a1a1a',
     textAlign: 'center',
-    // fontFamily: 'Inter',
-    // marginBottom: 8,
     backgroundColor: 'red',
   },
   subtitle: {
