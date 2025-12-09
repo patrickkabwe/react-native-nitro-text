@@ -17,16 +17,7 @@ export function PlainTextScreen() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Header Section */}
       <View style={styles.section}>
-        <NitroText
-          style={styles.mainTitle}
-          selectable={false}
-          onPressIn={() => console.log('onPressIn')}
-          onPressOut={() => console.log('onPressOut')}
-          onLongPress={() => console.log('onLongPress')}
-          onPress={() => console.log('onPress')}
-        >
-          🚀 NitroText Plain Text {NitroModules.buildType}
-        </NitroText>
+        <NitroText style={styles.mainTitle}>🚀 NitroText Plain Text {NitroModules.buildType}</NitroText>
         <NitroText style={styles.subtitle}>
           High-performance selectable text with native rendering
         </NitroText>
@@ -91,6 +82,35 @@ export function PlainTextScreen() {
           <Text style={styles.large}>Large text</Text> mixed with{' '}
           <Text style={styles.small}>small text</Text> in the same paragraph.
         </Text>
+      </View>
+
+      {/* Custom Fonts */}
+      <View style={styles.section}>
+        <NitroText style={styles.sectionTitle}>Custom Fonts</NitroText>
+        <NitroText style={styles.description}>
+          NitroText supports custom fonts from your assets folder. The Tourney
+          font is loaded from @assets/fonts/ChivoMono.ttf
+        </NitroText>
+        <NitroText style={styles.customFontExample}>
+          This text uses the Tourney custom font with NitroText. You can apply
+          custom fonts using the fontFamily prop in styles or directly on the
+          component.
+        </NitroText>
+        <NitroText style={styles.customFontMixed}>
+          Mix custom fonts with{' '}
+          <NitroText style={styles.customFontBold}>bold styling</NitroText> and{' '}
+          <NitroText style={styles.customFontItalic}>italic styling</NitroText>{' '}
+          for rich typography.
+        </NitroText>
+        <NitroText style={styles.customFontNested}>
+          You can also nest custom fonts:{' '}
+          <NitroText
+            style={{ fontFamily: 'Tourney', fontSize: 24, fontWeight: 'bold' }}
+          >
+            Large Tourney Bold
+          </NitroText>{' '}
+          mixed with regular system font text.
+        </NitroText>
       </View>
 
       {/* Mixed Content */}
@@ -192,4 +212,3 @@ export function PlainTextScreen() {
     </ScrollView>
   );
 }
-

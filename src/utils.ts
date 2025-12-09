@@ -117,6 +117,8 @@ export function styleToFragment(
       STYLE_CACHE.set(style, result)
    }
 
+   console.log('result', result)
+
    return result
 }
 

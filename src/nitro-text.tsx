@@ -84,14 +84,38 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       return flattenChildrenToFragments(children, style)
    }, [parsedFragments, children, style, isSimpleText])
 
-   const styleProps = useMemo(() => getStyleProps(topStyles), [topStyles])
-
    const onRNTextLayout = useCallback(
       (e: TextLayoutEvent) => {
          onTextLayout?.(e.nativeEvent)
       },
       [onTextLayout]
    )
+
+   const textProps = useMemo(() => {
+      return {
+         ...rest,
+         selectable: selectable || false,
+         maxFontSizeMultiplier: maxFontSizeMultiplier || undefined,
+         fragments: parsedFragments || undefined,
+         selectionColor: (selectionColor as string) || undefined,
+         onPress: callback(onPress) || undefined,
+         onPressIn: callback(onPressIn) || undefined,
+         onPressOut: callback(onPressOut) || undefined,
+         style: style,
+         onTextLayout: callback(onTextLayout) || undefined,
+      }
+   }, [
+      rest,
+      selectable,
+      maxFontSizeMultiplier,
+      parsedFragments,
+      selectionColor,
+      onPress,
+      onPressIn,
+      onPressOut,
+      style,
+      onTextLayout,
+   ])
 
    if (isInsideRNText || Platform.OS === 'android') {
       return (
@@ -112,56 +136,14 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
    }
 
    if (renderer && isStringChildren) {
-      return (
-         <NitroTextView
-            {...rest}
-            selectable={selectable}
-            maxFontSizeMultiplier={maxFontSizeMultiplier}
-            fragments={parsedFragments}
-            selectionColor={selectionColor as string}
-            style={style}
-            {...styleProps}
-            onTextLayout={callback(onTextLayout)}
-            onPress={callback(onPress)}
-            onPressIn={callback(onPressIn)}
-            onPressOut={callback(onPressOut)}
-         />
-      )
+      return <NitroTextView {...textProps} />
    }
 
    if (isSimpleText) {
-      return (
-         <NitroTextView
-            {...rest}
-            selectable={selectable}
-            maxFontSizeMultiplier={maxFontSizeMultiplier}
-            selectionColor={selectionColor as string}
-            text={String(children)}
-            style={style}
-            {...styleProps}
-            onTextLayout={callback(onTextLayout)}
-            onPress={callback(onPress)}
-            onPressIn={callback(onPressIn)}
-            onPressOut={callback(onPressOut)}
-         />
-      )
+      return <NitroTextView {...textProps} text={String(children)} />
    }
 
-   return (
-      <NitroTextView
-         {...rest}
-         selectable={selectable}
-         fragments={fragments}
-         maxFontSizeMultiplier={maxFontSizeMultiplier}
-         selectionColor={selectionColor as string}
-         style={style}
-         {...styleProps}
-         onTextLayout={callback(onTextLayout)}
-         onPress={callback(onPress)}
-         onPressIn={callback(onPressIn)}
-         onPressOut={callback(onPressOut)}
-      />
-   )
+   return <NitroTextView {...textProps} fragments={fragments} />
 }
 
 NitroText.displayName = 'NitroText'

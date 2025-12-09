@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#1a1a1a',
     textAlign: 'center',
-    fontFamily: 'ui-monospace',
+    // fontFamily: 'Inter',
     // marginBottom: 8,
     backgroundColor: 'red',
   },
@@ -50,6 +50,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: '#6c757d',
     marginBottom: 8,
+    fontFamily: 'Chivo Mono',
   },
 
   // Basic text styles
@@ -72,6 +73,45 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 16,
     borderRadius: 8,
+  },
+  // Custom font styles
+  customFontExample: {
+    fontSize: 18,
+    fontFamily: 'Tourney',
+    color: '#2c3e50',
+    backgroundColor: '#ffffff',
+    padding: 16,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#9b59b6',
+    marginTop: 8,
+  },
+  customFontMixed: {
+    fontSize: 16,
+    fontFamily: 'Tourney',
+    color: '#495057',
+    backgroundColor: '#f8f9fa',
+    padding: 16,
+    borderRadius: 8,
+    marginTop: 8,
+    lineHeight: 24,
+  },
+  customFontBold: {
+    fontWeight: 'bold',
+    color: '#8e44ad',
+  },
+  customFontItalic: {
+    fontStyle: 'italic',
+    color: '#9b59b6',
+  },
+  customFontNested: {
+    fontSize: 16,
+    color: '#495057',
+    backgroundColor: '#ffffff',
+    padding: 16,
+    borderRadius: 8,
+    marginTop: 8,
+    lineHeight: 24,
   },
   bold: {
     fontWeight: 'bold',
