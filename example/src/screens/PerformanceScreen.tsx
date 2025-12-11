@@ -630,7 +630,7 @@ import React, {
           </TouchableOpacity>
   
           <View
-            style={[styles.benchmarkPreview, { height: 220, flexDirection: 'row' }]}
+            style={[styles.benchmarkPreview, { height: 320, flexDirection: 'row' }]}
             key={`list-${listRenderKey}`}
           >
             <View style={{ flex: 1, marginRight: 8 }}>

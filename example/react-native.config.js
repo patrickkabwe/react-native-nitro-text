@@ -15,4 +15,5 @@ module.exports = {
       root: path.join(__dirname, '..'),
     },
   },
+  assets: ['./assets/fonts'],
 }
