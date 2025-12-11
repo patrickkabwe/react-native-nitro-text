@@ -103,8 +103,8 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          onPress: callback(onPress) || undefined,
          onPressIn: callback(onPressIn) || undefined,
          onPressOut: callback(onPressOut) || undefined,
-         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-         style: { ...(style as any), ...styleProps },
+         style,
+         ...styleProps,
          onTextLayout: callback(onTextLayout) || undefined,
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
