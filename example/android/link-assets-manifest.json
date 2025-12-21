@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/ChivoMono.ttf",
+      "sha1": "fe260b56219f603a8aaf7fba5cfd2c898bf2bca0"
+    },
+    {
+      "path": "assets/fonts/Tourney.ttf",
+      "sha1": "1c7f16792740c9c6398692ea2149c5c3a6aaf6e5"
+    }
+  ]
+}

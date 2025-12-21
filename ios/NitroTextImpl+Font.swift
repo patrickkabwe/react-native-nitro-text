@@ -15,6 +15,8 @@ struct FontKey: Hashable {
 }
 
 extension NitroTextImpl {
+    private static let defaultFontFamily = UIFont.systemFont(ofSize: 14).familyName
+
     func makeFont(for fragment: Fragment, defaultPointSize: CGFloat?) -> (
         value: UIFont, isItalic: Bool
     ) {
@@ -28,85 +30,110 @@ extension NitroTextImpl {
             ? (resolvedSize * getScaleFactor(requestedSize: resolvedSize)) : resolvedSize
         let weightToken = fragment.fontWeight ?? FontWeight.normal
         let uiWeight = Self.uiFontWeight(for: weightToken)
-        let isItalic = fragment.fontStyle == FontStyle.italic
-        let requestedFamily = fragment.fontFamily ?? currentFontFamily
         
-        let key = FontKey(size: finalPointSize, weightRaw: uiWeight.rawValue, italic: isItalic, family: requestedFamily)
+        let hasExplicitWeight = fragment.fontWeight != nil
+        let hasExplicitStyle = fragment.fontStyle != nil
+        var isItalic = fragment.fontStyle == FontStyle.italic
+        let requestedFamily = fragment.fontFamily ?? currentFontFamily
+        let resolvedFamily: String = {
+            if let family = requestedFamily, !family.isEmpty { return family }
+            return Self.defaultFontFamily
+        }()
+        
+        let key = FontKey(size: finalPointSize, weightRaw: uiWeight.rawValue, italic: isItalic, family: resolvedFamily)
         if let cached = fontCache[key] {
             return (cached, isItalic)
         }
 
-        var base: UIFont
-        if let family = requestedFamily, !family.isEmpty {
-            let f = family.lowercased()
-            switch f {
-            case "system-ui", "ui-sans-serif":
-                // Default SF system font
-                base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
+        var targetWeight = uiWeight
+        var familyName = resolvedFamily
+        let normalizedFamilyName = familyName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let isSystemCondensed = normalizedFamilyName == "systemcondensed"
+        let isSystemFamily =
+            familyName == Self.defaultFontFamily
+            || normalizedFamilyName == "system-ui"
+            || normalizedFamilyName == "system"
+            || isSystemCondensed
+        var isCondensed = isSystemCondensed
+        var didFindFont = false
+        var base: UIFont? = nil
+
+        let systemDesign: UIFontDescriptor.SystemDesign? = {
+            switch normalizedFamilyName {
+            case "system-ui", "system":
+                return nil
             case "ui-serif":
-                let sys = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
-                if #available(iOS 13.0, *) {
-                    if let desc = sys.fontDescriptor.withDesign(UIFontDescriptor.SystemDesign.serif) {
-                        base = UIFont(descriptor: desc, size: finalPointSize)
-                    } else {
-                        base = sys
-                    }
-                } else {
-                    base = sys
-                }
+                return .serif
             case "ui-rounded":
-                let sys = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
-                if #available(iOS 13.0, *) {
-                    if let desc = sys.fontDescriptor.withDesign(UIFontDescriptor.SystemDesign.rounded) {
-                        base = UIFont(descriptor: desc, size: finalPointSize)
-                    } else {
-                        base = sys
-                    }
-                } else {
-                    base = sys
-                }
+                return .rounded
             case "ui-monospace":
-                if #available(iOS 13.0, *) {
-                    base = UIFont.monospacedSystemFont(ofSize: finalPointSize, weight: uiWeight)
-                } else {
-                    base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
-                }
+                return .monospaced
+            case "systemcondensed":
+                return .default
             default:
-                // Try to build a descriptor with family + traits
-                let baseDesc = UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.family: family])
-                var traits = [UIFontDescriptor.TraitKey: Any]()
-                traits[.weight] = uiWeight
-                var symbolic: UIFontDescriptor.SymbolicTraits = []
-                if isItalic { symbolic.insert(.traitItalic) }
-                let withTraits = baseDesc.addingAttributes([
-                    UIFontDescriptor.AttributeName.traits: traits,
-                    UIFontDescriptor.AttributeName.face: "",
-                ])
-                if let finalDesc = withTraits.withSymbolicTraits(symbolic) {
-                    base = UIFont(descriptor: finalDesc, size: finalPointSize)
-                } else if let named = UIFont(name: family, size: finalPointSize) {
-                    base = named
-                } else {
-                    base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
-                }
+                return nil
             }
-        } else {
-            base = UIFont.systemFont(ofSize: finalPointSize, weight: uiWeight)
+        }()
+
+        if isSystemFamily || systemDesign != nil
+        {
+            base = UIFont.systemFont(ofSize: finalPointSize, weight: targetWeight)
+            didFindFont = true
+
+            var descriptor = base?.fontDescriptor
+            if let design = systemDesign {
+                descriptor = descriptor?.withDesign(design)
+            }
+            if isItalic || isCondensed {
+                var traits = descriptor?.symbolicTraits ?? []
+                if isItalic { traits.insert(.traitItalic) }
+                if isCondensed { traits.insert(.traitCondensed) }
+                descriptor = descriptor?.withSymbolicTraits(traits)
+            }
+            if let descriptor = descriptor {
+                base = UIFont(descriptor: descriptor, size: finalPointSize)
+            }
         }
 
-        if isItalic, !base.fontDescriptor.symbolicTraits.contains(.traitItalic) {
-            var traits = base.fontDescriptor.symbolicTraits
-            traits.insert(.traitItalic)
-            if let italicDesc = base.fontDescriptor.withSymbolicTraits(traits) {
-                let traitsDict: [UIFontDescriptor.TraitKey: Any] = [.weight: uiWeight]
-                let finalDesc = italicDesc.addingAttributes([
-                    UIFontDescriptor.AttributeName.traits: traitsDict
-                ])
-                base = UIFont(descriptor: finalDesc, size: finalPointSize)
+        var fontsInFamily = UIFont.fontNames(forFamilyName: familyName)
+
+        // Gracefully handle being given a font name rather than a family name
+        if !didFindFont && fontsInFamily.isEmpty {
+            if let named = UIFont(name: familyName, size: finalPointSize) {
+                base = named
+                familyName = named.familyName
+                fontsInFamily = UIFont.fontNames(forFamilyName: familyName)
+                if !hasExplicitWeight { targetWeight = Self.fontWeight(from: named) }
+                if !hasExplicitStyle { isItalic = Self.isItalicFont(named) }
+                isCondensed = Self.isCondensedFont(named)
+            } else {
+                base = UIFont.systemFont(ofSize: finalPointSize, weight: targetWeight)
             }
         }
-        fontCache[key] = base
-        return (base, isItalic)
+
+        // Find closest weight match within the family respecting italic/condensed traits
+        if !didFindFont {
+            var closestWeight = CGFloat.infinity
+            for name in fontsInFamily {
+                guard let match = UIFont(name: name, size: finalPointSize) else { continue }
+                if isItalic == Self.isItalicFont(match) && isCondensed == Self.isCondensedFont(match) {
+                    let testWeight = Self.fontWeight(from: match)
+                    if abs(testWeight.rawValue - targetWeight.rawValue) < abs(closestWeight - targetWeight.rawValue) {
+                        base = match
+                        closestWeight = testWeight.rawValue
+                    }
+                }
+            }
+        }
+
+        // If no exact match, pick the first font from the family
+        if base == nil, let first = fontsInFamily.first {
+            base = UIFont(name: first, size: finalPointSize)
+        }
+
+        let finalFont = base ?? UIFont.systemFont(ofSize: finalPointSize, weight: targetWeight)
+        fontCache[key] = finalFont
+        return (finalFont, isItalic)
     }
 
     func getScaleFactor(requestedSize: CGFloat) -> CGFloat {
@@ -186,5 +213,42 @@ extension NitroTextImpl {
         default:
             return .regular
         }
+    }
+
+    private static func fontWeight(from font: UIFont) -> UIFont.Weight {
+        let suffixes: [(String, UIFont.Weight)] = [
+            ("normal", .regular),
+            ("ultralight", .ultraLight),
+            ("thin", .thin),
+            ("light", .light),
+            ("regular", .regular),
+            ("medium", .medium),
+            ("semibold", .semibold),
+            ("demibold", .semibold),
+            ("extrabold", .heavy),
+            ("ultrabold", .heavy),
+            ("bold", .bold),
+            ("heavy", .heavy),
+            ("black", .black)
+        ]
+
+        let name = font.fontName.lowercased()
+        if let match = suffixes.first(where: { name.hasSuffix($0.0) }) {
+            return match.1
+        }
+
+        if let traits = font.fontDescriptor.object(forKey: .traits) as? [UIFontDescriptor.TraitKey: Any],
+           let raw = traits[.weight] as? NSNumber {
+            return UIFont.Weight(rawValue: CGFloat(truncating: raw))
+        }
+        return .regular
+    }
+
+    private static func isItalicFont(_ font: UIFont) -> Bool {
+        font.fontDescriptor.symbolicTraits.contains(.traitItalic)
+    }
+
+    private static func isCondensedFont(_ font: UIFont) -> Bool {
+        font.fontDescriptor.symbolicTraits.contains(.traitCondensed)
     }
 }
