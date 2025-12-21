@@ -49,6 +49,11 @@ extension NitroTextImpl {
         var familyName = resolvedFamily
         let normalizedFamilyName = familyName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         let isSystemCondensed = normalizedFamilyName == "systemcondensed"
+        let isSystemFamily =
+            familyName == Self.defaultFontFamily
+            || normalizedFamilyName == "system-ui"
+            || normalizedFamilyName == "system"
+            || isSystemCondensed
         var isCondensed = isSystemCondensed
         var didFindFont = false
         var base: UIFont? = nil
@@ -70,7 +75,7 @@ extension NitroTextImpl {
             }
         }()
 
-        if familyName == Self.defaultFontFamily || systemDesign != nil
+        if isSystemFamily || systemDesign != nil
         {
             base = UIFont.systemFont(ofSize: finalPointSize, weight: targetWeight)
             didFindFont = true
