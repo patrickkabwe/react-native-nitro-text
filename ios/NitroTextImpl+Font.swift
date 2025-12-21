@@ -47,21 +47,49 @@ extension NitroTextImpl {
 
         var targetWeight = uiWeight
         var familyName = resolvedFamily
-        var isCondensed = familyName == "SystemCondensed"
+        let normalizedFamilyName = familyName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let isSystemCondensed = normalizedFamilyName == "systemcondensed" || familyName == "SystemCondensed"
+        var isCondensed = isSystemCondensed
         var didFindFont = false
         var base: UIFont? = nil
 
-        if familyName == Self.defaultFontFamily || familyName == "System" || familyName == "SystemCondensed" {
+        let systemDesign: UIFontDescriptor.SystemDesign? = {
+            switch normalizedFamilyName {
+            case "system-ui", "system":
+                return nil
+            case "ui-serif":
+                return .serif
+            case "ui-rounded":
+                return .rounded
+            case "ui-monospace":
+                return .monospaced
+            default:
+                return nil
+            }
+        }()
+
+        if familyName == Self.defaultFontFamily
+            || familyName == "System"
+            || familyName == "SystemCondensed"
+            || systemDesign != nil
+            || normalizedFamilyName == "system-ui"
+            || normalizedFamilyName == "system"
+        {
             base = UIFont.systemFont(ofSize: finalPointSize, weight: targetWeight)
             didFindFont = true
 
+            var descriptor = base?.fontDescriptor
+            if let design = systemDesign {
+                descriptor = descriptor?.withDesign(design)
+            }
             if isItalic || isCondensed {
-                var traits = base?.fontDescriptor.symbolicTraits ?? []
+                var traits = descriptor?.symbolicTraits ?? []
                 if isItalic { traits.insert(.traitItalic) }
                 if isCondensed { traits.insert(.traitCondensed) }
-                if let descriptor = base?.fontDescriptor.withSymbolicTraits(traits) {
-                    base = UIFont(descriptor: descriptor, size: finalPointSize)
-                }
+                descriptor = descriptor?.withSymbolicTraits(traits)
+            }
+            if let descriptor = descriptor {
+                base = UIFont(descriptor: descriptor, size: finalPointSize)
             }
         }
 
