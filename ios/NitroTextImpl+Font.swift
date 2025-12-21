@@ -48,7 +48,7 @@ extension NitroTextImpl {
         var targetWeight = uiWeight
         var familyName = resolvedFamily
         let normalizedFamilyName = familyName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let isSystemCondensed = normalizedFamilyName == "systemcondensed" || familyName == "SystemCondensed"
+        let isSystemCondensed = normalizedFamilyName == "systemcondensed"
         var isCondensed = isSystemCondensed
         var didFindFont = false
         var base: UIFont? = nil
@@ -63,17 +63,14 @@ extension NitroTextImpl {
                 return .rounded
             case "ui-monospace":
                 return .monospaced
+            case "systemcondensed":
+                return .default
             default:
                 return nil
             }
         }()
 
-        if familyName == Self.defaultFontFamily
-            || familyName == "System"
-            || familyName == "SystemCondensed"
-            || systemDesign != nil
-            || normalizedFamilyName == "system-ui"
-            || normalizedFamilyName == "system"
+        if familyName == Self.defaultFontFamily || systemDesign != nil
         {
             base = UIFont.systemFont(ofSize: finalPointSize, weight: targetWeight)
             didFindFont = true
