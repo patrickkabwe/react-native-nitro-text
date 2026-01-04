@@ -51,7 +51,7 @@ export function AnimationScreen() {
   const typedText = useDerivedValue(() => {
     const visible = Math.floor(typeProgress.value * (TYPE_MESSAGE.length + 1));
     const base = TYPE_MESSAGE.slice(0, visible);
-    return base;
+    return `${base}|`;
   });
 
   const typeProps = useAnimatedProps(() => ({ text: typedText.value }) as any);
