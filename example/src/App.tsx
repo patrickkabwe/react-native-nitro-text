@@ -1,10 +1,12 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { PlainTextScreen } from './screens/PlainTextScreen';
+import { AnimationScreen } from './screens/AnimationScreen';
 import { HtmlScreen } from './screens/HtmlScreen';
+import ManScreen from './screens/ManSo';
 import { PerformanceScreen } from './screens/PerformanceScreen';
+import { PlainTextScreen } from './screens/PlainTextScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +30,17 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
+        name="Animation"
+        component={AnimationScreen}
+        options={{
+          tabBarLabel: 'Animation',
+          tabBarIcon: ({ color, size }) => (
+            <Text style={{ fontSize: size }}>🏠</Text>
+          ),
+        }}
+      />
+
+      <Tab.Screen
         name="HTML"
         component={HtmlScreen}
         options={{
@@ -37,6 +50,7 @@ function MyTabs() {
           ),
         }}
       />
+      
       <Tab.Screen
         name="Performance"
         component={PerformanceScreen}

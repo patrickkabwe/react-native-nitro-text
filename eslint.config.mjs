@@ -67,6 +67,26 @@ export default defineConfig([
     },
   },
   {
+    files: ['scripts/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'script',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        Buffer: 'readonly',
+        global: 'readonly',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
     ignores: [
       'node_modules/**',
       'lib/**',

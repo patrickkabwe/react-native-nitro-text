@@ -32,6 +32,7 @@ https://github.com/user-attachments/assets/57f56b3f-3988-4235-af83-a5f2cfd82121
 - Nested fragments merge into a single native text view
 - Rendering Markdown and HTML (coming soon).
 - Supports only the New Architecture
+- Animations with React Native Reanimated (text, fontSize, fontColor, letterSpacing)
 
 ## Requirements
 
@@ -138,6 +139,134 @@ export function MenuExample() {
   )
 }
 ```
+
+## Animations with React Native Reanimated
+
+NitroText supports animating text properties using React Native Reanimated. Animations run directly on the UI thread for smooth, performant updates even when the JavaScript thread is busy.
+
+### Setup
+
+First, install the required dependencies:
+
+```bash
+yarn add react-native-reanimated react-native-worklets
+```
+
+Then, configure Babel to use the worklets plugin. Add it to your `babel.config.js`:
+
+```js
+module.exports = {
+  presets: ['module:@react-native/babel-preset'],
+  plugins: [
+    // ... other plugins
+    'react-native-worklets/plugin',
+  ],
+};
+```
+
+### Supported Animated Props
+
+The following props can be animated:
+- `text` - Animate the text content
+- `fontSize` - Animate font size
+- `fontColor` - Animate text color (as hex string, e.g., `"#FF0000"`)
+- `letterSpacing` - Animate letter spacing
+
+### Basic Example
+
+Animate text content using `animatedProps`:
+
+```tsx
+import { NitroText } from 'react-native-nitro-text'
+import Animated, { useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated'
+import { useEffect } from 'react'
+
+const AnimatedNitroText = Animated.createAnimatedComponent(NitroText)
+
+export function AnimatedTextExample() {
+  const progress = useSharedValue(0)
+  
+  useEffect(() => {
+    progress.value = withTiming(1, { duration: 1000 })
+  }, [])
+
+  const animatedProps = useAnimatedProps(() => ({
+    text: `Progress: ${Math.round(progress.value * 100)}%`,
+  }))
+
+  return (
+    <AnimatedNitroText 
+      animatedProps={animatedProps}
+      style={{ fontSize: 24, fontWeight: 'bold' }}
+    />
+  )
+}
+```
+
+### Advanced Example
+
+Animate multiple properties simultaneously:
+
+```tsx
+import { NitroText } from 'react-native-nitro-text'
+import Animated, { 
+  useAnimatedProps, 
+  useSharedValue, 
+  withRepeat,
+  withTiming,
+  Easing
+} from 'react-native-reanimated'
+import { useEffect } from 'react'
+
+const AnimatedNitroText = Animated.createAnimatedComponent(NitroText)
+
+export function AdvancedAnimationExample() {
+  const scale = useSharedValue(1)
+  const color = useSharedValue(0)
+  
+  useEffect(() => {
+    scale.value = withRepeat(
+      withTiming(1.2, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    )
+    
+    color.value = withRepeat(
+      withTiming(1, { duration: 2000, easing: Easing.linear }),
+      -1,
+      false
+    )
+  }, [])
+
+  const animatedProps = useAnimatedProps(() => {
+    const fontSize = 16 + (scale.value - 1) * 8
+    const hue = Math.round(color.value * 360)
+    
+    return {
+      fontSize,
+      fontColor: `hsl(${hue}, 70%, 50%)`,
+    } as any
+  })
+
+  return (
+    <AnimatedNitroText 
+      animatedProps={animatedProps}
+      style={{ fontWeight: '600' }}
+    >
+      Animated Text
+    </AnimatedNitroText>
+  )
+}
+```
+
+### Performance Benefits
+
+Since animations run on the UI thread, NitroText animations remain smooth even when:
+- The JavaScript thread is blocked
+- Heavy computations are running
+- The app is processing large amounts of data
+
+This makes NitroText ideal for real-time text updates, counters, and dynamic content that needs to stay responsive.
 
 ## Platform Support
 
