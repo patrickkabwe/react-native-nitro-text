@@ -17,7 +17,7 @@
         "release": "semantic-release",
         "build": "bun run typecheck && bob build",
         "codegen": "nitrogen --logLevel=\"debug\" && bun run build",
-        "postcodegen": "bun --cwd example pod",
+        "postcodegen": "node scripts/patch-generated-code.js && bun --cwd example pod",
         "test": "jest"
     },
     "keywords": [

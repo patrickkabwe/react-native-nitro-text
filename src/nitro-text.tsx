@@ -1,4 +1,5 @@
-import React, { useCallback, useContext, useMemo } from 'react'
+import React from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import {
    Platform,
    Text,
@@ -13,13 +14,13 @@ import {
    type HybridRef,
 } from 'react-native-nitro-modules'
 import NitroTextConfig from '../nitrogen/generated/shared/json/NitroTextConfig.json'
+import { renderStringChildren } from './renderers'
 import type { NitroTextMethods, NitroTextProps } from './specs/nitro-text.nitro'
 import {
    flattenChildrenToFragments,
    getStyleProps,
    styleToFragment,
 } from './utils'
-import { renderStringChildren } from './renderers'
 
 export type NitroTextRef = HybridRef<NitroTextProps, NitroTextMethods>
 
@@ -35,6 +36,7 @@ type NitroTextPropsWithEvents = Pick<
    | 'onPressIn'
    | 'onPressOut'
    | 'menus'
+   | 'text'
    | 'renderer'
    | 'maxFontSizeMultiplier'
 > &
@@ -56,6 +58,7 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       selectable,
       selectionColor,
       maxFontSizeMultiplier,
+      text: textProp,
       onTextLayout,
       onPress,
       onPressIn,
@@ -65,7 +68,10 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
    } = props
 
    const isStringChildren = typeof children === 'string'
-   const isSimpleText = isStringChildren || typeof children === 'number'
+   const hasChildren = children !== null && children !== undefined
+   const hasExplicitText = textProp !== undefined && textProp !== null
+   const isSimpleText =
+      hasExplicitText || isStringChildren || typeof children === 'number'
 
    const topStyles = useMemo(() => {
       if (!style) return {}
@@ -80,9 +86,10 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
 
    const fragments = useMemo(() => {
       if (parsedFragments !== undefined) return parsedFragments
-      if (isSimpleText) return []
+      if (isSimpleText) return undefined
+      if (!hasChildren) return undefined
       return flattenChildrenToFragments(children, style)
-   }, [parsedFragments, children, style, isSimpleText])
+   }, [parsedFragments, children, style, isSimpleText, hasChildren])
 
    const styleProps = useMemo(() => getStyleProps(topStyles), [topStyles])
 
@@ -98,7 +105,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          ...rest,
          selectable: selectable || false,
          maxFontSizeMultiplier: maxFontSizeMultiplier || undefined,
-         fragments: parsedFragments || undefined,
          selectionColor: (selectionColor as string) || undefined,
          onPress: callback(onPress) || undefined,
          onPressIn: callback(onPressIn) || undefined,
@@ -113,7 +119,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       styleProps,
       selectable,
       maxFontSizeMultiplier,
-      parsedFragments,
       selectionColor,
       onPress,
       onPressIn,
@@ -144,7 +149,8 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
    }
 
    if (isSimpleText) {
-      return <NitroTextView {...textProps} text={String(children)} />
+      const textValue = hasExplicitText ? String(textProp) : String(children)
+      return <NitroTextView {...textProps} text={textValue} />
    }
 
    return <NitroTextView {...textProps} fragments={fragments} />
