@@ -52,16 +52,6 @@ function MyTabs() {
       />
       
       <Tab.Screen
-        name="ManSo"
-        component={ManScreen}
-        options={{
-          tabBarLabel: 'ManSo',
-          tabBarIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size }}>📄</Text>
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Performance"
         component={PerformanceScreen}
         options={{

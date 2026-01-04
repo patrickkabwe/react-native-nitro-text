@@ -194,7 +194,7 @@ namespace margelo::nitro::nitrotext::views {
         // This is safe for animated props from Reanimated (folly::dynamic) and regular props (JSI)
         std::optional<std::string> decodedValue = static_cast<std::optional<std::string>>(*rawValue);
         // Construct CachedProp with aggregate initialization (no JSI value for caching optimization)
-        return CachedProp<std::optional<std::string>>{decodedValue, BorrowingReference<jsi::Value>{}, true};
+        return CachedProp<std::optional<std::string>>{std::move(decodedValue), BorrowingReference<jsi::Value>{}, true};
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.text: ") + exc.what());
       }
@@ -218,7 +218,7 @@ namespace margelo::nitro::nitrotext::views {
         // This is safe for animated props from Reanimated (folly::dynamic) and regular props (JSI)
         std::optional<double> decodedValue = static_cast<std::optional<double>>(*rawValue);
         // Construct CachedProp with aggregate initialization (no JSI value for caching optimization)
-        return CachedProp<std::optional<double>>{decodedValue, BorrowingReference<jsi::Value>{}, true};
+        return CachedProp<std::optional<double>>{std::move(decodedValue), BorrowingReference<jsi::Value>{}, true};
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.fontSize: ") + exc.what());
       }
@@ -242,7 +242,7 @@ namespace margelo::nitro::nitrotext::views {
         // This is safe for animated props from Reanimated (folly::dynamic) and regular props (JSI)
         std::optional<std::string> decodedValue = static_cast<std::optional<std::string>>(*rawValue);
         // Construct CachedProp with aggregate initialization (no JSI value for caching optimization)
-        return CachedProp<std::optional<std::string>>{decodedValue, BorrowingReference<jsi::Value>{}, true};
+        return CachedProp<std::optional<std::string>>{std::move(decodedValue), BorrowingReference<jsi::Value>{}, true};
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.fontColor: ") + exc.what());
       }
@@ -296,7 +296,7 @@ namespace margelo::nitro::nitrotext::views {
         // This is safe for animated props from Reanimated (folly::dynamic) and regular props (JSI)
         std::optional<double> decodedValue = static_cast<std::optional<double>>(*rawValue);
         // Construct CachedProp with aggregate initialization (no JSI value for caching optimization)
-        return CachedProp<std::optional<double>>{decodedValue, BorrowingReference<jsi::Value>{}, true};
+        return CachedProp<std::optional<double>>{std::move(decodedValue), BorrowingReference<jsi::Value>{}, true};
       } catch (const std::exception& exc) {
         throw std::runtime_error(std::string("NitroText.letterSpacing: ") + exc.what());
       }

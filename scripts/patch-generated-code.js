@@ -46,7 +46,7 @@ function patchProp(content, propName, propType) {
         // This is safe for animated props from Reanimated (folly::dynamic) and regular props (JSI)
         ${propType} decodedValue = static_cast<${propType}>(*rawValue);
         // Construct CachedProp with aggregate initialization (no JSI value for caching optimization)
-        return CachedProp<${propType}>{decodedValue, BorrowingReference<jsi::Value>{}, true};`;
+        return CachedProp<${propType}>{std::move(decodedValue), BorrowingReference<jsi::Value>{}, true};`;
 
   return content.replace(pattern, replacement);
 }

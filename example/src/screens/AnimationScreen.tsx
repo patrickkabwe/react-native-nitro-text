@@ -18,6 +18,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
+import { styles } from './styles';
 
 const AnimatedNitroText = Animated.createAnimatedComponent(NitroText);
 const TYPE_MESSAGE =
@@ -62,45 +63,42 @@ export function AnimationScreen() {
   });
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.header}>
-        <NitroText style={styles.headerTitle}>NitroText Animations</NitroText>
-        <NitroText style={styles.headerSubtitle}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Header Section */}
+      <View style={styles.section}>
+        <NitroText style={styles.mainTitle}>🎬 NitroText Animations</NitroText>
+        <NitroText style={styles.subtitle}>
           Powered by react-native-reanimated
         </NitroText>
       </View>
 
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>JS Thread Block Test</NitroText>
-        <NitroText style={styles.sectionDescription}>
+        <NitroText style={styles.description}>
           Tap the button to block JS for 20s. The call counter should keep
           ticking if it is running on the UI thread.
         </NitroText>
         <Pressable
           onPress={blockJsThread}
           style={({ pressed }) => [
-            styles.blockButton,
-            pressed && styles.blockButtonPressed,
+            localStyles.blockButton,
+            pressed && localStyles.blockButtonPressed,
           ]}
         >
-          <NitroText style={styles.blockButtonText}>Block JS Thread</NitroText>
+          <NitroText style={localStyles.blockButtonText}>Block JS Thread</NitroText>
         </Pressable>
       </View>
 
       <View style={styles.section}>
         <NitroText style={styles.sectionTitle}>Animated Typewriter</NitroText>
-        <NitroText style={styles.sectionDescription}>
+        <NitroText style={styles.description}>
           Text updates via animatedProps without JS-driven re-renders
         </NitroText>
 
-        <View style={styles.typeRow}>
+        <View style={localStyles.typeRow}>
           <AnimatedNitroText
             animatedProps={typeProps}
-            style={[styles.counterText, typeStyle]}
+            style={[localStyles.counterText, typeStyle]}
           />
         </View>
       </View>
@@ -108,67 +106,7 @@ export function AnimationScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f7fa',
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 80,
-  },
-  header: {
-    marginBottom: 40,
-    alignItems: 'center',
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e1e8ed',
-  },
-  headerTitle: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: '#1a202c',
-    marginBottom: 8,
-    letterSpacing: -0.5,
-  },
-  headerSubtitle: {
-    fontSize: 16,
-    color: '#718096',
-    fontWeight: '500',
-  },
-  section: {
-    marginBottom: 48,
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#2d3748',
-    marginBottom: 8,
-    letterSpacing: -0.3,
-  },
-  sectionDescription: {
-    fontSize: 14,
-    color: '#718096',
-    lineHeight: 20,
-    marginBottom: 16,
-  },
-  counterContainer: {
-    backgroundColor: '#ffffff',
-    width: '100%',
-    padding: 32,
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: '#e2e8f0',
-    position: 'relative',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
+const localStyles = StyleSheet.create({
   counterText: {
     fontSize: TYPE_FONT_SIZE,
     fontWeight: '800',
