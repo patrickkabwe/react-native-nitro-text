@@ -30,7 +30,6 @@ https://github.com/user-attachments/assets/57f56b3f-3988-4235-af83-a5f2cfd82121
 - Works on both iOS and Android(currently fallback to RN `Text` on Android)
 - Native iOS rendering with smooth selection.
 - Nested fragments merge into a single native text view
-- Rendering Markdown and HTML (coming soon).
 - Supports only the New Architecture
 
 ## Requirements
@@ -81,26 +80,6 @@ export function SelectionExample() {
       longer paragraphs.
     </Text>
   )
-}
-```
-
-## HTML rendering
-
-NitroText can parse HTML string children and inline CSS when you pass `renderer="html"`.
-
-```tsx
-import { NitroText } from 'react-native-nitro-text'
-
-export function HtmlExample() {
-  const html = `
-    <div>
-      <h2>Renderer demo</h2>
-      <p>This text comes from <strong>HTML</strong> with <em>semantic</em> tags.</p>
-      <p><span style="color: #ff6347; font-weight: bold;">Inline CSS works too.</span></p>
-    </div>
-  `
-
-  return <NitroText renderer="html">{html}</NitroText>
 }
 ```
 

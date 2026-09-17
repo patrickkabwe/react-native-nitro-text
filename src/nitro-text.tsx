@@ -19,7 +19,6 @@ import {
    getStyleProps,
    styleToFragment,
 } from './utils'
-import { renderStringChildren } from './renderers'
 
 export type NitroTextRef = HybridRef<NitroTextProps, NitroTextMethods>
 
@@ -35,7 +34,6 @@ type NitroTextPropsWithEvents = Pick<
    | 'onPressIn'
    | 'onPressOut'
    | 'menus'
-   | 'renderer'
    | 'maxFontSizeMultiplier'
 > &
    Omit<TextProps, 'onTextLayout'>
@@ -51,7 +49,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
    const isInsideRNText = useContext(TextAncestorContext)
    const {
       style,
-      renderer,
       children,
       selectable,
       selectionColor,
@@ -72,17 +69,10 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       return styleToFragment(style)
    }, [style])
 
-   const parsedFragments = useMemo(() => {
-      if (!renderer || !isStringChildren) return undefined
-      const result = renderStringChildren(children, renderer, topStyles)
-      return result.fragments
-   }, [renderer, children, isStringChildren, topStyles])
-
    const fragments = useMemo(() => {
-      if (parsedFragments !== undefined) return parsedFragments
       if (isSimpleText) return []
       return flattenChildrenToFragments(children, style)
-   }, [parsedFragments, children, style, isSimpleText])
+   }, [children, style, isSimpleText])
 
    const styleProps = useMemo(() => getStyleProps(topStyles), [topStyles])
 
@@ -98,7 +88,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
          ...rest,
          selectable: selectable || false,
          maxFontSizeMultiplier: maxFontSizeMultiplier || undefined,
-         fragments: parsedFragments || undefined,
          selectionColor: (selectionColor as string) || undefined,
          onPress: callback(onPress) || undefined,
          onPressIn: callback(onPressIn) || undefined,
@@ -113,7 +102,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
       styleProps,
       selectable,
       maxFontSizeMultiplier,
-      parsedFragments,
       selectionColor,
       onPress,
       onPressIn,
@@ -137,10 +125,6 @@ export const NitroText = (props: NitroTextPropsWithEvents) => {
             {children}
          </Text>
       )
-   }
-
-   if (renderer && isStringChildren) {
-      return <NitroTextView {...textProps} />
    }
 
    if (isSimpleText) {

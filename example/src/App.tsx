@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PlainTextScreen } from './screens/PlainTextScreen';
-import { HtmlScreen } from './screens/HtmlScreen';
 import { PerformanceScreen } from './screens/PerformanceScreen';
 
 const Tab = createBottomTabNavigator();
@@ -24,16 +23,6 @@ function MyTabs() {
           tabBarLabel: 'PlainText',
           tabBarIcon: ({ color, size }) => (
             <Text style={{ fontSize: size }}>📄</Text>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="HTML"
-        component={HtmlScreen}
-        options={{
-          tabBarLabel: 'HTML',
-          tabBarIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size }}>🌐</Text>
           ),
         }}
       />
