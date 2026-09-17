@@ -21,7 +21,6 @@ namespace margelo::nitro::nitrotext::views {
                                              const react::RawProps& rawProps):
     react::ViewProps(context, sourceProps, rawProps, filterObjectKeys),
     fragments(nitro::ReactProp<std::optional<std::vector<Fragment>>>::fromRawValue("NitroText", "fragments", rawProps, sourceProps.fragments)),
-    renderer(nitro::ReactProp<std::optional<Renderer>>::fromRawValue("NitroText", "renderer", rawProps, sourceProps.renderer)),
     selectable(nitro::ReactProp<std::optional<bool>>::fromRawValue("NitroText", "selectable", rawProps, sourceProps.selectable)),
     allowFontScaling(nitro::ReactProp<std::optional<bool>>::fromRawValue("NitroText", "allowFontScaling", rawProps, sourceProps.allowFontScaling)),
     ellipsizeMode(nitro::ReactProp<std::optional<EllipsizeMode>>::fromRawValue("NitroText", "ellipsizeMode", rawProps, sourceProps.ellipsizeMode)),
@@ -56,7 +55,6 @@ namespace margelo::nitro::nitrotext::views {
   bool HybridNitroTextProps::filterObjectKeys(const std::string& propName) {
     switch (hashString(propName)) {
       case hashString("fragments"): return true;
-      case hashString("renderer"): return true;
       case hashString("selectable"): return true;
       case hashString("allowFontScaling"): return true;
       case hashString("ellipsizeMode"): return true;

@@ -26,12 +26,6 @@ class HybridNitroText: HybridNitroTextSpec, NitroTextViewDelegate {
         didSet { markNeedsApply() }
     }
     
-    var renderer: Renderer? {
-        didSet {
-            markNeedsApply()
-        }
-    }
-
     var selectable: Bool? {
         didSet {
             nitroTextImpl.setSelectable(selectable)

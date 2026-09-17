@@ -104,12 +104,6 @@ using namespace margelo::nitro::nitrotext::views;
           : !newViewProps.fragments.hasSameValue(oldViewProps->fragments)) {
       swiftPart.setFragments(newViewProps.fragments.get());
     }
-    // renderer: optional
-    if (oldViewProps == nullptr
-          ? newViewProps.renderer.isProvided()
-          : !newViewProps.renderer.hasSameValue(oldViewProps->renderer)) {
-      swiftPart.setRenderer(newViewProps.renderer.get());
-    }
     // selectable: optional
     if (oldViewProps == nullptr
           ? newViewProps.selectable.isProvided()

@@ -139,7 +139,7 @@ export type Fragment = {
    textDecorationStyle?: TextDecorationStyle
 
    /**
-    * Link URL (href attribute from <a> tag).
+    * URL associated with this text fragment.
     * When present, this fragment represents clickable link text.
     */
    linkUrl?: string
@@ -152,8 +152,3 @@ export type MenuItem = {
    title: string
    action: () => void
 }
-
-/**
- * Supported renderers for rich text parsing.
- */
-export type Renderer = 'html' | 'plaintext'

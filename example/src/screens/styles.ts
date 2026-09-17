@@ -13,15 +13,6 @@ export const styles = StyleSheet.create({
   section: {
     marginBottom: 32,
   },
-  htmlSection: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#dee2e6',
-    marginTop: 8,
-  },
-
   // Headers
   mainTitle: {
     fontSize: 25,
@@ -418,4 +409,3 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
   },
 });
-

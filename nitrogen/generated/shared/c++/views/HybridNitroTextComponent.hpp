@@ -20,7 +20,6 @@
 #include "Fragment.hpp"
 #include <vector>
 #include <optional>
-#include "Renderer.hpp"
 #include "EllipsizeMode.hpp"
 #include "LineBreakStrategyIOS.hpp"
 #include "DynamicTypeRamp.hpp"
@@ -58,7 +57,6 @@ namespace margelo::nitro::nitrotext::views {
 
   public:
     nitro::ReactProp<std::optional<std::vector<Fragment>>> fragments;
-    nitro::ReactProp<std::optional<Renderer>> renderer;
     nitro::ReactProp<std::optional<bool>> selectable;
     nitro::ReactProp<std::optional<bool>> allowFontScaling;
     nitro::ReactProp<std::optional<EllipsizeMode>> ellipsizeMode;
@@ -93,7 +91,6 @@ namespace margelo::nitro::nitrotext::views {
     [[nodiscard]]
     bool hasSameProps(const HybridNitroTextProps& other) const noexcept {
       return fragments.hasSameValue(other.fragments) &&
-             renderer.hasSameValue(other.renderer) &&
              selectable.hasSameValue(other.selectable) &&
              allowFontScaling.hasSameValue(other.allowFontScaling) &&
              ellipsizeMode.hasSameValue(other.ellipsizeMode) &&
@@ -129,7 +126,6 @@ namespace margelo::nitro::nitrotext::views {
     [[nodiscard]]
     bool hasAnyProvidedProps() const noexcept {
       return fragments.isProvided() ||
-             renderer.isProvided() ||
              selectable.isProvided() ||
              allowFontScaling.isProvided() ||
              ellipsizeMode.isProvided() ||
