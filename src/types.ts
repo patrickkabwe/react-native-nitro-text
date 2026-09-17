@@ -152,8 +152,3 @@ export type MenuItem = {
    title: string
    action: () => void
 }
-
-/**
- * Supported renderers for rich text parsing.
- */
-export type Renderer = 'html' | 'plaintext'
