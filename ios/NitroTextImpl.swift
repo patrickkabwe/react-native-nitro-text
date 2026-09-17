@@ -404,9 +404,7 @@ extension NitroTextImpl {
                 // Check if attributes are identical (excluding text)
                 if fragmentsHaveIdenticalAttributes(existing, fragment) {
                     // Merge text by creating a new fragment with combined text
-                    var mergedFragment = existing
-                    mergedFragment.text = (existing.text ?? "") + text
-                    current = mergedFragment
+                    current = replacingText(in: existing, with: (existing.text ?? "") + text)
                     continue
                 } else {
                     // Attributes differ, save current and start new
@@ -423,6 +421,27 @@ extension NitroTextImpl {
         }
         
         return merged.isEmpty ? fragments : merged
+    }
+
+    private func replacingText(in fragment: Fragment, with text: String) -> Fragment {
+        return Fragment(
+            text: text,
+            selectionColor: fragment.selectionColor,
+            fontSize: fragment.fontSize,
+            fontWeight: fragment.fontWeight,
+            fontColor: fragment.fontColor,
+            fragmentBackgroundColor: fragment.fragmentBackgroundColor,
+            fontStyle: fragment.fontStyle,
+            fontFamily: fragment.fontFamily,
+            lineHeight: fragment.lineHeight,
+            letterSpacing: fragment.letterSpacing,
+            textAlign: fragment.textAlign,
+            textTransform: fragment.textTransform,
+            textDecorationLine: fragment.textDecorationLine,
+            textDecorationColor: fragment.textDecorationColor,
+            textDecorationStyle: fragment.textDecorationStyle,
+            linkUrl: fragment.linkUrl
+        )
     }
     
     /// Checks if two fragments have identical attributes (excluding text content)

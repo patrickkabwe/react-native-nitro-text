@@ -8,7 +8,7 @@
     "jsx": "react",
     "lib": ["esnext"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
@@ -21,6 +21,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
+    "types": ["jest"],
     "verbatimModuleSyntax": true
   },
   "exclude": [
