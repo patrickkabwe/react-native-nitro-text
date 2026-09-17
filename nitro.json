@@ -14,7 +14,10 @@
   },
   "autolinking": {
     "NitroText": {
-      "swift": "HybridNitroText"
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridNitroText"
+      }
     }
   },
   "ignorePaths": [
