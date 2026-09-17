@@ -9,6 +9,30 @@ import type { Fragment } from './types'
 
 const STYLE_CACHE = new WeakMap<object, Partial<Fragment>>()
 
+function getSupportedTextAlign(
+   textAlign: NonNullable<TextStyle['textAlign']>
+): NonNullable<Fragment['textAlign']> {
+   if (textAlign === 'start' || textAlign === 'end') {
+      throw new TypeError(
+         `NitroText does not support textAlign "${textAlign}". Supported values are auto, left, right, center, and justify.`
+      )
+   }
+
+   return textAlign
+}
+
+function getSupportedTextDecorationStyle(
+   textDecorationStyle: NonNullable<TextStyle['textDecorationStyle']>
+): NonNullable<Fragment['textDecorationStyle']> {
+   if (textDecorationStyle === 'wavy') {
+      throw new TypeError(
+         'NitroText does not support textDecorationStyle "wavy". Supported values are solid, double, dotted, and dashed.'
+      )
+   }
+
+   return textDecorationStyle
+}
+
 export function normalizeWeight(
    w?: TextStyle['fontWeight']
 ): Fragment['fontWeight'] | undefined {
@@ -93,7 +117,7 @@ export function styleToFragment(
       result.letterSpacing = s.letterSpacing
    }
    if (s.textAlign !== undefined) {
-      result.textAlign = s.textAlign
+      result.textAlign = getSupportedTextAlign(s.textAlign)
    }
    if (s.textTransform !== undefined) {
       result.textTransform = s.textTransform
@@ -105,7 +129,9 @@ export function styleToFragment(
       result.textDecorationColor = s.textDecorationColor as string
    }
    if (s.textDecorationStyle !== undefined) {
-      result.textDecorationStyle = s.textDecorationStyle
+      result.textDecorationStyle = getSupportedTextDecorationStyle(
+         s.textDecorationStyle
+      )
    }
 
    // Cache the result for non-array object styles

@@ -7,14 +7,15 @@
 
 #pragma once
 
-#include <optional>
-#include <NitroModules/NitroDefines.hpp>
-#include <NitroModules/NitroHash.hpp>
-#include <NitroModules/CachedProp.hpp>
-#include <react/renderer/core/ConcreteComponentDescriptor.h>
-#include <react/renderer/core/PropsParserContext.h>
+#include <NitroModules/ReactProp.hpp>
+#include <NitroModules/ViewComponentDescriptor.hpp>
+#include <NitroModules/ViewPropsHolderState.hpp>
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
 #include <react/renderer/components/view/ViewProps.h>
+#include <react/renderer/core/PropsParserContext.h>
+#include <react/renderer/core/RawProps.h>
+
+#include <string>
 
 #include "Fragment.hpp"
 #include <vector>
@@ -56,38 +57,110 @@ namespace margelo::nitro::nitrotext::views {
                          const react::RawProps& rawProps);
 
   public:
-    CachedProp<std::optional<std::vector<Fragment>>> fragments;
-    CachedProp<std::optional<Renderer>> renderer;
-    CachedProp<std::optional<bool>> selectable;
-    CachedProp<std::optional<bool>> allowFontScaling;
-    CachedProp<std::optional<EllipsizeMode>> ellipsizeMode;
-    CachedProp<std::optional<double>> numberOfLines;
-    CachedProp<std::optional<LineBreakStrategyIOS>> lineBreakStrategyIOS;
-    CachedProp<std::optional<DynamicTypeRamp>> dynamicTypeRamp;
-    CachedProp<std::optional<double>> maxFontSizeMultiplier;
-    CachedProp<std::optional<bool>> adjustsFontSizeToFit;
-    CachedProp<std::optional<double>> minimumFontScale;
-    CachedProp<std::optional<std::vector<MenuItem>>> menus;
-    CachedProp<std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>> onTextLayout;
-    CachedProp<std::optional<std::function<void()>>> onPress;
-    CachedProp<std::optional<std::function<void()>>> onPressIn;
-    CachedProp<std::optional<std::function<void()>>> onPressOut;
-    CachedProp<std::optional<std::string>> text;
-    CachedProp<std::optional<std::string>> selectionColor;
-    CachedProp<std::optional<double>> fontSize;
-    CachedProp<std::optional<FontWeight>> fontWeight;
-    CachedProp<std::optional<std::string>> fontColor;
-    CachedProp<std::optional<std::string>> fragmentBackgroundColor;
-    CachedProp<std::optional<FontStyle>> fontStyle;
-    CachedProp<std::optional<std::string>> fontFamily;
-    CachedProp<std::optional<double>> lineHeight;
-    CachedProp<std::optional<double>> letterSpacing;
-    CachedProp<std::optional<TextAlign>> textAlign;
-    CachedProp<std::optional<TextTransform>> textTransform;
-    CachedProp<std::optional<TextDecorationLine>> textDecorationLine;
-    CachedProp<std::optional<std::string>> textDecorationColor;
-    CachedProp<std::optional<TextDecorationStyle>> textDecorationStyle;
-    CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridNitroTextSpec>& /* ref */)>>> hybridRef;
+    nitro::ReactProp<std::optional<std::vector<Fragment>>> fragments;
+    nitro::ReactProp<std::optional<Renderer>> renderer;
+    nitro::ReactProp<std::optional<bool>> selectable;
+    nitro::ReactProp<std::optional<bool>> allowFontScaling;
+    nitro::ReactProp<std::optional<EllipsizeMode>> ellipsizeMode;
+    nitro::ReactProp<std::optional<double>> numberOfLines;
+    nitro::ReactProp<std::optional<LineBreakStrategyIOS>> lineBreakStrategyIOS;
+    nitro::ReactProp<std::optional<DynamicTypeRamp>> dynamicTypeRamp;
+    nitro::ReactProp<std::optional<double>> maxFontSizeMultiplier;
+    nitro::ReactProp<std::optional<bool>> adjustsFontSizeToFit;
+    nitro::ReactProp<std::optional<double>> minimumFontScale;
+    nitro::ReactProp<std::optional<std::vector<MenuItem>>> menus;
+    nitro::ReactProp<std::optional<std::function<void(const TextLayoutEvent& /* layout */)>>> onTextLayout;
+    nitro::ReactProp<std::optional<std::function<void()>>> onPress;
+    nitro::ReactProp<std::optional<std::function<void()>>> onPressIn;
+    nitro::ReactProp<std::optional<std::function<void()>>> onPressOut;
+    nitro::ReactProp<std::optional<std::string>> text;
+    nitro::ReactProp<std::optional<std::string>> selectionColor;
+    nitro::ReactProp<std::optional<double>> fontSize;
+    nitro::ReactProp<std::optional<FontWeight>> fontWeight;
+    nitro::ReactProp<std::optional<std::string>> fontColor;
+    nitro::ReactProp<std::optional<std::string>> fragmentBackgroundColor;
+    nitro::ReactProp<std::optional<FontStyle>> fontStyle;
+    nitro::ReactProp<std::optional<std::string>> fontFamily;
+    nitro::ReactProp<std::optional<double>> lineHeight;
+    nitro::ReactProp<std::optional<double>> letterSpacing;
+    nitro::ReactProp<std::optional<TextAlign>> textAlign;
+    nitro::ReactProp<std::optional<TextTransform>> textTransform;
+    nitro::ReactProp<std::optional<TextDecorationLine>> textDecorationLine;
+    nitro::ReactProp<std::optional<std::string>> textDecorationColor;
+    nitro::ReactProp<std::optional<TextDecorationStyle>> textDecorationStyle;
+    nitro::ReactProp<std::optional<std::function<void(const std::shared_ptr<HybridNitroTextSpec>& /* ref */)>>> hybridRef;
+
+    [[nodiscard]]
+    bool hasSameProps(const HybridNitroTextProps& other) const noexcept {
+      return fragments.hasSameValue(other.fragments) &&
+             renderer.hasSameValue(other.renderer) &&
+             selectable.hasSameValue(other.selectable) &&
+             allowFontScaling.hasSameValue(other.allowFontScaling) &&
+             ellipsizeMode.hasSameValue(other.ellipsizeMode) &&
+             numberOfLines.hasSameValue(other.numberOfLines) &&
+             lineBreakStrategyIOS.hasSameValue(other.lineBreakStrategyIOS) &&
+             dynamicTypeRamp.hasSameValue(other.dynamicTypeRamp) &&
+             maxFontSizeMultiplier.hasSameValue(other.maxFontSizeMultiplier) &&
+             adjustsFontSizeToFit.hasSameValue(other.adjustsFontSizeToFit) &&
+             minimumFontScale.hasSameValue(other.minimumFontScale) &&
+             menus.hasSameValue(other.menus) &&
+             onTextLayout.hasSameValue(other.onTextLayout) &&
+             onPress.hasSameValue(other.onPress) &&
+             onPressIn.hasSameValue(other.onPressIn) &&
+             onPressOut.hasSameValue(other.onPressOut) &&
+             text.hasSameValue(other.text) &&
+             selectionColor.hasSameValue(other.selectionColor) &&
+             fontSize.hasSameValue(other.fontSize) &&
+             fontWeight.hasSameValue(other.fontWeight) &&
+             fontColor.hasSameValue(other.fontColor) &&
+             fragmentBackgroundColor.hasSameValue(other.fragmentBackgroundColor) &&
+             fontStyle.hasSameValue(other.fontStyle) &&
+             fontFamily.hasSameValue(other.fontFamily) &&
+             lineHeight.hasSameValue(other.lineHeight) &&
+             letterSpacing.hasSameValue(other.letterSpacing) &&
+             textAlign.hasSameValue(other.textAlign) &&
+             textTransform.hasSameValue(other.textTransform) &&
+             textDecorationLine.hasSameValue(other.textDecorationLine) &&
+             textDecorationColor.hasSameValue(other.textDecorationColor) &&
+             textDecorationStyle.hasSameValue(other.textDecorationStyle) &&
+             hybridRef.hasSameValue(other.hybridRef);
+    }
+
+    [[nodiscard]]
+    bool hasAnyProvidedProps() const noexcept {
+      return fragments.isProvided() ||
+             renderer.isProvided() ||
+             selectable.isProvided() ||
+             allowFontScaling.isProvided() ||
+             ellipsizeMode.isProvided() ||
+             numberOfLines.isProvided() ||
+             lineBreakStrategyIOS.isProvided() ||
+             dynamicTypeRamp.isProvided() ||
+             maxFontSizeMultiplier.isProvided() ||
+             adjustsFontSizeToFit.isProvided() ||
+             minimumFontScale.isProvided() ||
+             menus.isProvided() ||
+             onTextLayout.isProvided() ||
+             onPress.isProvided() ||
+             onPressIn.isProvided() ||
+             onPressOut.isProvided() ||
+             text.isProvided() ||
+             selectionColor.isProvided() ||
+             fontSize.isProvided() ||
+             fontWeight.isProvided() ||
+             fontColor.isProvided() ||
+             fragmentBackgroundColor.isProvided() ||
+             fontStyle.isProvided() ||
+             fontFamily.isProvided() ||
+             lineHeight.isProvided() ||
+             letterSpacing.isProvided() ||
+             textAlign.isProvided() ||
+             textTransform.isProvided() ||
+             textDecorationLine.isProvided() ||
+             textDecorationColor.isProvided() ||
+             textDecorationStyle.isProvided() ||
+             hybridRef.isProvided();
+    }
 
   private:
     static bool filterObjectKeys(const std::string& propName);
@@ -96,32 +169,7 @@ namespace margelo::nitro::nitrotext::views {
   /**
    * State for the "NitroText" View.
    */
-  class HybridNitroTextState final {
-  public:
-    HybridNitroTextState() = default;
-    explicit HybridNitroTextState(const std::shared_ptr<HybridNitroTextProps>& props):
-      _props(props) {}
-
-  public:
-    [[nodiscard]]
-    const std::shared_ptr<HybridNitroTextProps>& getProps() const {
-      return _props;
-    }
-
-  public:
-#ifdef ANDROID
-  HybridNitroTextState(const HybridNitroTextState& /* previousState */, folly::dynamic /* data */) {}
-  folly::dynamic getDynamic() const {
-    throw std::runtime_error("HybridNitroTextState does not support folly!");
-  }
-  react::MapBuffer getMapBuffer() const {
-    throw std::runtime_error("HybridNitroTextState does not support MapBuffer!");
-  };
-#endif
-
-  private:
-    std::shared_ptr<HybridNitroTextProps> _props;
-  };
+  using HybridNitroTextState = nitro::ViewPropsHolderState<HybridNitroTextProps>;
 
   /**
    * The Shadow Node for the "NitroText" View.
@@ -134,21 +182,7 @@ namespace margelo::nitro::nitrotext::views {
   /**
    * The Component Descriptor for the "NitroText" View.
    */
-  class HybridNitroTextComponentDescriptor final: public react::ConcreteComponentDescriptor<HybridNitroTextShadowNode> {
-  public:
-    explicit HybridNitroTextComponentDescriptor(const react::ComponentDescriptorParameters& parameters);
-
-  public:
-    /**
-     * A faster path for cloning props - reuses the caching logic from `HybridNitroTextProps`.
-     */
-    std::shared_ptr<const react::Props> cloneProps(const react::PropsParserContext& context,
-                                                   const std::shared_ptr<const react::Props>& props,
-                                                   react::RawProps rawProps) const override;
-#ifdef ANDROID
-    void adopt(react::ShadowNode& shadowNode) const override;
-#endif
-  };
+  using HybridNitroTextComponentDescriptor = nitro::ViewComponentDescriptor<HybridNitroTextShadowNode>;
 
   /* The actual view for "NitroText" needs to be implemented in platform-specific code. */
 

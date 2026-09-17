@@ -37,8 +37,8 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
       [&](const std::optional<margelo::nitro::nitrotext::Fragment> &fragOpt) {
         auto a = react::TextAttributes::defaultTextAttributes();
 
-        if (props.allowFontScaling.value.has_value()) {
-          bool allowFontScaling = props.allowFontScaling.value.value();
+        if (props.allowFontScaling.get().has_value()) {
+          bool allowFontScaling = props.allowFontScaling.get().value();
           a.allowFontScaling = allowFontScaling;
           a.fontSizeMultiplier =
               allowFontScaling ? layoutContext.fontSizeMultiplier : 1.0f;
@@ -46,10 +46,10 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
           a.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
         }
 
-        if (props.dynamicTypeRamp.value.has_value()) {
+        if (props.dynamicTypeRamp.get().has_value()) {
           using NitroDTR = margelo::nitro::nitrotext::DynamicTypeRamp;
           using RNDTR = facebook::react::DynamicTypeRamp;
-          switch (props.dynamicTypeRamp.value.value()) {
+          switch (props.dynamicTypeRamp.get().value()) {
           case NitroDTR::CAPTION2:
             a.dynamicTypeRamp = RNDTR::Caption2;
             break;
@@ -88,8 +88,8 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
 
         if (fragOpt.has_value() && fragOpt->fontSize.has_value()) {
           a.fontSize = fragOpt->fontSize.value();
-        } else if (props.fontSize.value.has_value()) {
-          a.fontSize = props.fontSize.value.value();
+        } else if (props.fontSize.get().has_value()) {
+          a.fontSize = props.fontSize.get().value();
         }
 
         auto applyFontStyle =
@@ -111,14 +111,14 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
 
         if (fragOpt.has_value() && fragOpt->fontStyle.has_value()) {
           applyFontStyle(fragOpt->fontStyle.value());
-        } else if (props.fontStyle.value.has_value()) {
-          applyFontStyle(props.fontStyle.value.value());
+        } else if (props.fontStyle.get().has_value()) {
+          applyFontStyle(props.fontStyle.get().value());
         }
 
         if (fragOpt.has_value() && fragOpt->fontFamily.has_value()) {
           a.fontFamily = fragOpt->fontFamily.value();
-        } else if (props.fontFamily.value.has_value()) {
-          a.fontFamily = props.fontFamily.value.value();
+        } else if (props.fontFamily.get().has_value()) {
+          a.fontFamily = props.fontFamily.get().value();
         }
 
         auto applyFontWeight =
@@ -161,20 +161,20 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
 
         if (fragOpt.has_value() && fragOpt->fontWeight.has_value()) {
           applyFontWeight(fragOpt->fontWeight.value());
-        } else if (props.fontWeight.value.has_value()) {
-          applyFontWeight(props.fontWeight.value.value());
+        } else if (props.fontWeight.get().has_value()) {
+          applyFontWeight(props.fontWeight.get().value());
         }
 
         if (fragOpt.has_value() && fragOpt->lineHeight.has_value()) {
           a.lineHeight = fragOpt->lineHeight.value();
-        } else if (props.lineHeight.value.has_value()) {
-          a.lineHeight = props.lineHeight.value.value();
+        } else if (props.lineHeight.get().has_value()) {
+          a.lineHeight = props.lineHeight.get().value();
         }
 
         if (fragOpt.has_value() && fragOpt->letterSpacing.has_value()) {
           a.letterSpacing = fragOpt->letterSpacing.value();
-        } else if (props.letterSpacing.value.has_value()) {
-          a.letterSpacing = props.letterSpacing.value.value();
+        } else if (props.letterSpacing.get().has_value()) {
+          a.letterSpacing = props.letterSpacing.get().value();
         }
 
         auto applyAlign = [&](margelo::nitro::nitrotext::TextAlign al) {
@@ -204,8 +204,8 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
 
         if (fragOpt.has_value() && fragOpt->textAlign.has_value()) {
           applyAlign(fragOpt->textAlign.value());
-        } else if (props.textAlign.value.has_value()) {
-          applyAlign(props.textAlign.value.value());
+        } else if (props.textAlign.get().has_value()) {
+          applyAlign(props.textAlign.get().value());
         }
 
         auto applyTransform =
@@ -233,14 +233,14 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
 
         if (fragOpt.has_value() && fragOpt->textTransform.has_value()) {
           applyTransform(fragOpt->textTransform.value());
-        } else if (props.textTransform.value.has_value()) {
-          applyTransform(props.textTransform.value.value());
+        } else if (props.textTransform.get().has_value()) {
+          applyTransform(props.textTransform.get().value());
         }
 
-        if (props.lineBreakStrategyIOS.value.has_value()) {
+        if (props.lineBreakStrategyIOS.get().has_value()) {
           using RNLineBreakStrategy = facebook::react::LineBreakStrategy;
           using NitroLBS = margelo::nitro::nitrotext::LineBreakStrategyIOS;
-          switch (props.lineBreakStrategyIOS.value.value()) {
+          switch (props.lineBreakStrategyIOS.get().value()) {
           case NitroLBS::NONE:
             a.lineBreakStrategy = RNLineBreakStrategy::None;
             break;
@@ -257,9 +257,9 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
           }
         }
 
-        if (props.maxFontSizeMultiplier.value.has_value()) {
+        if (props.maxFontSizeMultiplier.get().has_value()) {
           a.maxFontSizeMultiplier =
-              props.maxFontSizeMultiplier.value.value();
+              props.maxFontSizeMultiplier.get().value();
         }
 
         a.layoutDirection = layoutConstraints.layoutDirection;
@@ -269,8 +269,8 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
 
   react::AttributedString attributedString;
 
-  if (props.fragments.value.has_value()) {
-    const auto &frags = props.fragments.value.value();
+  if (props.fragments.get().has_value()) {
+    const auto &frags = props.fragments.get().value();
     size_t lastNonEmptyIndex = SIZE_MAX;
 
     for (size_t i = frags.size(); i > 0; i--) {
@@ -315,7 +315,7 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
     }
   } else {
     const std::string textToMeasure =
-        props.text.value.has_value() ? props.text.value.value()
+        props.text.get().has_value() ? props.text.get().value()
                                      : std::string("");
 
     if (textToMeasure.empty()) {
@@ -324,20 +324,20 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
 
     const react::ShadowView shadowView(node);
 
-    if (!props.fontSize.value.has_value() &&
-        !props.fontWeight.value.has_value() &&
-        !props.fontStyle.value.has_value() &&
-        !props.fontFamily.value.has_value() &&
-        !props.fontColor.value.has_value() &&
-        !props.textAlign.value.has_value() &&
-        !props.textTransform.value.has_value() &&
-        !props.lineHeight.value.has_value() &&
-        !props.letterSpacing.value.has_value() &&
-        !props.textDecorationLine.value.has_value() &&
-        !props.textDecorationColor.value.has_value() &&
-        !props.textDecorationStyle.value.has_value() &&
-        !props.dynamicTypeRamp.value.has_value() &&
-        !props.allowFontScaling.value.has_value()) {
+    if (!props.fontSize.get().has_value() &&
+        !props.fontWeight.get().has_value() &&
+        !props.fontStyle.get().has_value() &&
+        !props.fontFamily.get().has_value() &&
+        !props.fontColor.get().has_value() &&
+        !props.textAlign.get().has_value() &&
+        !props.textTransform.get().has_value() &&
+        !props.lineHeight.get().has_value() &&
+        !props.letterSpacing.get().has_value() &&
+        !props.textDecorationLine.get().has_value() &&
+        !props.textDecorationColor.get().has_value() &&
+        !props.textDecorationStyle.get().has_value() &&
+        !props.dynamicTypeRamp.get().has_value() &&
+        !props.allowFontScaling.get().has_value()) {
       auto attrs = react::TextAttributes::defaultTextAttributes();
       attrs.layoutDirection = layoutConstraints.layoutDirection;
       attrs.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
@@ -357,37 +357,37 @@ std::optional<NitroTextLayoutInputs> prepareTextLayoutInputs(
   react::ParagraphAttributes paragraphAttributes;
 
   bool needsParagraphAttrs =
-      props.numberOfLines.value.has_value() ||
-      props.adjustsFontSizeToFit.value.has_value() ||
-      props.minimumFontScale.value.has_value() ||
-      props.ellipsizeMode.value.has_value();
+      props.numberOfLines.get().has_value() ||
+      props.adjustsFontSizeToFit.get().has_value() ||
+      props.minimumFontScale.get().has_value() ||
+      props.ellipsizeMode.get().has_value();
 
   if (needsParagraphAttrs) {
-    if (props.numberOfLines.value.has_value()) {
+    if (props.numberOfLines.get().has_value()) {
       auto n =
-          static_cast<int>(std::round(props.numberOfLines.value.value()));
+          static_cast<int>(std::round(props.numberOfLines.get().value()));
       if (n > 0) {
         paragraphAttributes.maximumNumberOfLines = n;
       }
     }
 
-    if (props.adjustsFontSizeToFit.value.has_value()) {
+    if (props.adjustsFontSizeToFit.get().has_value()) {
       paragraphAttributes.adjustsFontSizeToFit =
-          props.adjustsFontSizeToFit.value.value();
+          props.adjustsFontSizeToFit.get().value();
     }
 
-    if (props.minimumFontScale.value.has_value()) {
+    if (props.minimumFontScale.get().has_value()) {
 #if RN_VERSION_AT_LEAST(0, 81)
       paragraphAttributes.minimumFontScale =
-          props.minimumFontScale.value.value();
+          props.minimumFontScale.get().value();
 #endif
     }
 
-    if (props.ellipsizeMode.value.has_value()) {
+    if (props.ellipsizeMode.get().has_value()) {
       using NitroEllipsizeMode =
           margelo::nitro::nitrotext::EllipsizeMode;
       using RNEllipsizeMode = facebook::react::EllipsizeMode;
-      switch (props.ellipsizeMode.value.value()) {
+      switch (props.ellipsizeMode.get().value()) {
       case NitroEllipsizeMode::CLIP:
         paragraphAttributes.ellipsizeMode = RNEllipsizeMode::Clip;
         break;

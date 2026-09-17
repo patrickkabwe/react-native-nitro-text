@@ -19,7 +19,7 @@ public final class NitroTextAutolinking {
       return __cxxWrapped.getCxxPart()
     }()
   }
-  
+
   public static func isNitroTextRecyclable() -> Bool {
     return HybridNitroText.self is any RecyclableView.Type
   }

@@ -4,6 +4,7 @@
 //
 
 #include "NitroTextComponentDescriptor.hpp"
+#include <NitroModules/RawPropsCompat.hpp>
 #include <react/renderer/textlayoutmanager/TextLayoutManager.h>
 
 using namespace facebook;
@@ -11,7 +12,7 @@ using namespace margelo::nitro::nitrotext::views;
 
 NitroTextComponentDescriptor::NitroTextComponentDescriptor(const react::ComponentDescriptorParameters& parameters)
     : ConcreteComponentDescriptor(parameters,
-                                  react::RawPropsParser(/* enableJsiParser */ true)) {}
+                                  margelo::nitro::RawPropsCompat::makePropsParser()) {}
 
   std::shared_ptr<const react::Props> NitroTextComponentDescriptor::cloneProps(const react::PropsParserContext& context,
                                                                                      const std::shared_ptr<const react::Props>& props,
@@ -30,10 +31,13 @@ NitroTextComponentDescriptor::NitroTextComponentDescriptor(const react::Componen
 
 #ifdef ANDROID
     // On Android, wrap props into state for JNI roundtrip.
-    const HybridNitroTextProps& props = concreteShadowNode.getConcreteProps();
-    HybridNitroTextState state;
-    state.setProps(props);
-    concreteShadowNode.setStateData(std::move(state));
+    auto constBaseProps = concreteShadowNode.getProps();
+    auto constProps = std::static_pointer_cast<const HybridNitroTextProps>(constBaseProps);
+    const auto& previousProps = concreteShadowNode.getStateData().getProps();
+    if (previousProps == nullptr || !constProps->hasSameProps(*previousProps)) {
+      HybridNitroTextState state{std::move(constProps)};
+      concreteShadowNode.setStateData(std::move(state));
+    }
 #endif
 
     // Inject TextLayoutManager so measurement works on Fabric (iOS/macOS/etc.).
